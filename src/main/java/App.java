@@ -4,7 +4,7 @@
 
 //TODO DO STUFF!
 //TODO commit me
-//TODO was geht
+
 import javafx.application.Application;
 import javafx.stage.Stage;
 import org.tmatesoft.sqljet.core.SqlJetException;
