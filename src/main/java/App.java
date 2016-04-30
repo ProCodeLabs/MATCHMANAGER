@@ -12,7 +12,7 @@ import org.tmatesoft.sqljet.core.table.SqlJetDb;
 
 import java.io.File;
 
-//Hello Worldasdasdwerwer asdasd
+//Hello Worldasdasdwerwer asdasdwerwer
 
 public class App extends Application {
 
