@@ -5,6 +5,8 @@
 //TODO DO STUFF!
 //TODO commit me
 
+//TODO last commit today xD
+
 import javafx.application.Application;
 import javafx.stage.Stage;
 import org.tmatesoft.sqljet.core.SqlJetException;
@@ -13,7 +15,6 @@ import org.tmatesoft.sqljet.core.table.SqlJetDb;
 
 import java.io.File;
 
-//Hello Worldasdasdwerwer asdasdwerwerf sdfsdf
 
 public class App extends Application {
 
