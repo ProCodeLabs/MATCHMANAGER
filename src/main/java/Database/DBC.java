@@ -3,6 +3,7 @@ package Database;
 import java.io.File;
 import java.util.logging.Logger;
 
+//TODO Add Methods for Inputs
 
 public class DBC
 {
