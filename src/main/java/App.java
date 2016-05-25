@@ -1,14 +1,7 @@
-/**
- * Created by JOHNY on 30.04.2016.
- */
+import java.util.logging.*;
 
-//TODO DO STUFF!
-//TODO commit me
-
-//TODO last commit today xD
-
+import Common.LoggerExLevel;
 import javafx.application.Application;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -21,7 +14,6 @@ import org.tmatesoft.sqljet.core.SqlJetTransactionMode;
 import org.tmatesoft.sqljet.core.table.SqlJetDb;
 
 import java.io.File;
-import java.util.logging.Logger;
 
 //Test
 
@@ -41,7 +33,7 @@ public class App extends Application
 	{
 		launch( args );
 	}
-//teeesta1234
+
 	@Override
 	public void start( final Stage primaryStage ) throws SqlJetException
 	{

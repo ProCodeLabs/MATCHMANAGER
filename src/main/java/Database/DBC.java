@@ -14,7 +14,8 @@ public class DBC
 		try
 		{
 			f.createNewFile( );
-		} catch( Exception ex )
+		}
+		catch( Exception ex )
 		{
 			log.info( "Cannot create Database" );
 		}
