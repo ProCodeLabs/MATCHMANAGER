@@ -28,15 +28,13 @@ public class App extends Application
 	Logger log = Logger.getLogger( this.getClass( ).getName( ) );
 
 	public static void main( String[] args )
-	{
-
+    {
 		launch( args );
 	}
 
 	@Override
 	public void start( Stage primaryStage ) throws SqlJetException
 	{
-
 		try
 		{
 			Parent root = FXMLLoader.load( getClass( ).getResource( "fxml/layout.fxml" ) );
