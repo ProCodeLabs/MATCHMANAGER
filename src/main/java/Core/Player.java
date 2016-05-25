@@ -18,7 +18,7 @@ public class Player
 		this._image = _image;
 	}
 
-	//region GETTER UND SETTER
+	//region GETTER AND SETTER
 	public String getLastname( )
 	{
 		return _lastname;

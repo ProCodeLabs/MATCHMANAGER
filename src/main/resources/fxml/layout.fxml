@@ -5,7 +5,7 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane styleClass="root-style" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ViewController">
+<BorderPane styleClass="root-style" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.ViewController">
    <bottom>
       <Button fx:id="closeButton" mnemonicParsing="false" onAction="#closeWindow" prefHeight="27.0" prefWidth="500.0" text="OPEN" BorderPane.alignment="CENTER">
          <BorderPane.margin>

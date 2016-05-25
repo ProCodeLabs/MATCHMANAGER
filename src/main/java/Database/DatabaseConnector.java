@@ -47,7 +47,10 @@ public class DatabaseConnector
 	public void connectDatabase ( ) {
 		try {
 			if (connection != null)
+			{
 				return;
+			}
+
 			System.out.println("Creating Connection to Database...");
 			connection = DriverManager.getConnection( "jdbc:sqlite:" + _DatabaseName);
 			if (!connection.isClosed())
