@@ -14,14 +14,14 @@ public class Match
 	}
 
 	//region GETTER AND SETTER
-	public Team getTeamOne( )
+	public String getTeamOne( )
 	{
-		return teams[ 0 ];
+		return teams[ 0 ].getName();
 	}
 
-	public Team getTeamTwo( )
+	public String getTeamTwo( )
 	{
-		return teams[ 1 ];
+		return teams[ 1 ].getName();
 	}
 
 	public String getDate( )

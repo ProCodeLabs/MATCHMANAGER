@@ -10,7 +10,7 @@
 import Core.Match;
 import Core.Player;
 import Core.Team;
-import Database.DBC;
+import Database.DatabaseConnector;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -50,7 +50,7 @@ public class App extends Application
 	public void start( final Stage primaryStage ) throws SqlJetException
 	{
 		// DATABASE ------------------------------------------------------
-		DBC db = new DBC( );
+		DatabaseConnector db = new DatabaseConnector( );
 		db.databaseSetup( );
 		db.addPlayer( new Player( "Olof", "Meister", "OLOFMEISTER", "NULL"  ));
 		db.addTeam( new Team( "Fnatic" ) );

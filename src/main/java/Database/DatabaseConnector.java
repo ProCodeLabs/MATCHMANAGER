@@ -1,5 +1,6 @@
 package Database;
 
+import Common.LoggerExLevel;
 import Core.*;
 import org.tmatesoft.sqljet.core.SqlJetException;
 import org.tmatesoft.sqljet.core.SqlJetTransactionMode;
@@ -10,9 +11,9 @@ import java.util.logging.Logger;
 
 //TODO Add Methods for Inputs
 
-public class DBC
+public class DatabaseConnector
 {
-	private static final Logger log = Logger.getLogger( DBC.class.getClass( ).getName( ) );
+	private static final Logger log = Logger.getLogger( DatabaseConnector.class.getClass( ).getName( ) );
 
 	public void databaseSetup( ) throws SqlJetException
 	{
@@ -40,8 +41,7 @@ public class DBC
 		try
 		{
 			f.createNewFile( );
-		}
-		catch( Exception ex )
+		} catch( Exception ex )
 		{
 			log.info( "Cannot create Database" );
 		}
@@ -55,7 +55,7 @@ public class DBC
 				player.getLastname( ) + "," +
 				player.getNickname( ) + "," +
 				player.getImage( ) + ")";
-		log.info( "SQL STRING (ADDPLAYER) : " + sqlString );
+		log.log( LoggerExLevel.SUCCESS, "SQL STRING (ADDPLAYER) : " + sqlString );
 	}
 
 	public void addTeam( Team team )
@@ -63,14 +63,18 @@ public class DBC
 		String sqlString = "INSERT INTO Team " +
 				"VALUES(" +
 				team.getName( ) + ")";
-		log.info( "SQL STRING (ADDTEAM) : " + sqlString );
+		log.log( LoggerExLevel.SUCCESS, "SQL STRING (ADDTEAM) : " + sqlString );
 	}
 
-	public void addMatch( Match match) {
+	public void addMatch( Match match )
+	{
 		String sqlString = "INSERT INTO Team " +
 				"VALUES(" +
-				match.getDate() + ")";
-		log.info( "SQL STRING (ADDMATCH) : " + sqlString );
+				match.getDate( ) + "," +
+				match.getTeamOne( ).toString() + "," +
+				match.getTeamTwo( ).toString() +
+				")";
+		log.log( LoggerExLevel.SUCCESS, "SQL STRING (ADDMATCH) : " + sqlString );
 	}
 }
 

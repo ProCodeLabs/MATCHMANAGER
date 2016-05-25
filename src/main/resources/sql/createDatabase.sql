@@ -13,6 +13,7 @@ CREATE TABLE Team (
 
 CREATE TABLE Match (
   Id integer,
-  Name text,
-  Time date
+  Time date,
+  TeamOne text,
+  TeamTwo text
 );
