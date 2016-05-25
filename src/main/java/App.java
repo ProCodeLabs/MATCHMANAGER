@@ -41,7 +41,7 @@ public class App extends Application
 	{
 		launch( args );
 	}
-
+//asdasd
 	@Override
 	public void start( final Stage primaryStage ) throws SqlJetException
 	{
