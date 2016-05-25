@@ -55,9 +55,6 @@ public class App extends Application
 						xOffset = event.getSceneX( );
 						yOffset = event.getSceneY( );
 
-						//primaryStage.setX( event.getScreenX( ) - event.getSceneX( ) );
-						//primaryStage.setY( event.getScreenY( ) - event.getSceneY( ) );
-
 						isDragged = true;
 						event.consume( );
 					}
