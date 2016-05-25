@@ -1,5 +1,5 @@
 CREATE TABLE Player (
-  Id integer,
+  Id INTEGER PRIMARY KEY AUTOINCREMENT,
   Surname text,
   Lastname text,
   Nickname text,
@@ -7,12 +7,12 @@ CREATE TABLE Player (
 );
 
 CREATE TABLE Team (
-  Id integer,
+  Id INTEGER PRIMARY KEY AUTOINCREMENT,
   Name text
 );
 
 CREATE TABLE Match (
-  Id integer,
+  Id INTEGER PRIMARY KEY AUTOINCREMENT,
   Time date,
   TeamOne text,
   TeamTwo text

@@ -50,8 +50,9 @@ public class App extends Application
 	public void start( final Stage primaryStage ) throws SqlJetException
 	{
 		// DATABASE ------------------------------------------------------
-		DatabaseConnector db = new DatabaseConnector( );
-		db.databaseSetup( );
+		DatabaseConnector db = new DatabaseConnector("STARTUP");
+		db.connectDatabase();
+		//db.testStatement();
 		db.addPlayer( new Player( "Olof", "Meister", "OLOFMEISTER", "NULL"  ));
 		db.addTeam( new Team( "Fnatic" ) );
 		DateFormat dateFormat = new SimpleDateFormat( "yyyy/MM/dd HH:mm:ss");
