@@ -9,18 +9,21 @@ import java.util.ResourceBundle;
 /**
  * Created by JOHNY on 30.04.2016.
  */
-public class ViewController implements Initializable {
+public class ViewController implements Initializable
+{
 
-    public void initialize(URL location, ResourceBundle resources) {
+	public void initialize( URL location, ResourceBundle resources )
+	{
 
-    }
+	}
 
-    @FXML
-    Button closeButton;
+	@FXML
+	Button closeButton;
 
-    @FXML
-    public void closeWindow() {
-        Stage stage = (Stage) closeButton.getScene().getWindow();
-        stage.close();
-    }
+	@FXML
+	public void closeWindow( )
+	{
+		Stage stage = ( Stage ) closeButton.getScene( ).getWindow( );
+		stage.close( );
+	}
 }
