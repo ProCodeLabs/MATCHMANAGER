@@ -40,11 +40,14 @@ public class App extends Application
 
 		try
 		{
-			Parent root = FXMLLoader.load( getClass( ).getResource( "fxml/layout.fxml" ) );
+			Parent root = FXMLLoader.load( getClass( ).getResource( "fxml/SelectDb.fxml" ) );
 			primaryStage.initStyle( StageStyle.UNDECORATED );
+
 
 			Scene scene = new Scene( root );
 
+
+			scene.getStylesheets().add( getClass().getResource( "styles/form-style.css" ).toExternalForm() );
 
 			scene.addEventFilter( MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>( )
 			{
@@ -85,6 +88,7 @@ public class App extends Application
 
 
 			primaryStage.setScene( scene );
+			primaryStage.setFullScreen(  true );
 			primaryStage.show( );
 		}
 		catch( Exception ex )

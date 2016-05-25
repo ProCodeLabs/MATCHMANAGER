@@ -3,7 +3,7 @@ package ui.Helper;
 
 import java.util.function.*;
 
-public class UiUtil
+public class UiHelper
 {
 	public static <T> T buildComponent(T node, Consumer<T> initializer) {
 		{

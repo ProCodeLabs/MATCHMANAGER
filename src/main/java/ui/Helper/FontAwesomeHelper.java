@@ -28,7 +28,7 @@ public class FontAwesomeHelper
 		Label icon = createIconLabel(iconName);
 		icon.setStyle("-fx-font-size: " + iconSize + "px;");
 
-		return UiUtil.buildComponent( new Button(), button -> {
+		return UiHelper.buildComponent( new Button(), button -> {
 			button.setText( text );
 			button.setGraphic( icon );
 		} );
@@ -36,7 +36,7 @@ public class FontAwesomeHelper
 
 	public static Label createIconLabel(String iconName, String style)
 	{
-		return UiUtil.buildComponent( new Label(), label ->{
+		return UiHelper.buildComponent( new Label(), label ->{
 			label.setText( iconName );
 			label.setStyle( style );
 		} );
