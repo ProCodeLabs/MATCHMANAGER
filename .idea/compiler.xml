@@ -19,7 +19,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="SE2TEAMPROJECT" target="1.5" />
+      <module name="SE2TEAMPROJECT" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

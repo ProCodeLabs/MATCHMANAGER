@@ -1,16 +1,6 @@
-/**
- * Created by JOHNY on 30.04.2016.
- */
+import java.util.logging.*;
 
-//TODO DO STUFF!
-//TODO commit me
-
-//TODO last commit today xD
-
-import Core.Match;
-import Core.Player;
-import Core.Team;
-import Database.DatabaseConnector;
+import Common.LoggerExLevel;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -20,13 +10,12 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.tmatesoft.sqljet.core.SqlJetException;
+import org.tmatesoft.sqljet.core.SqlJetTransactionMode;
+import org.tmatesoft.sqljet.core.table.SqlJetDb;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.logging.Logger;
+import java.io.File;
 
-//Match
+//Test
 
 public class App extends Application
 {
@@ -45,20 +34,10 @@ public class App extends Application
 		launch( args );
 	}
 
-	//teeesta1234
 	@Override
 	public void start( final Stage primaryStage ) throws SqlJetException
 	{
-		// DATABASE ------------------------------------------------------
-		DatabaseConnector db = new DatabaseConnector("STARTUP");
-		db.connectDatabase();
-		//db.testStatement();
-		db.addPlayer( new Player( "Olof", "Meister", "OLOFMEISTER", "NULL"  ));
-		db.addTeam( new Team( "Fnatic" ) );
-		DateFormat dateFormat = new SimpleDateFormat( "yyyy/MM/dd HH:mm:ss");
-		Calendar cal = Calendar.getInstance();
-		db.addMatch(new Match(dateFormat.format(cal.getTime()).toString(), new Team( "Fnatic" ), new Team( "Astralis" ) ) );
-		// /DATABASE -----------------------------------------------------
+
 		try
 		{
 			Parent root = FXMLLoader.load( getClass( ).getResource( "fxml/layout.fxml" ) );
@@ -76,9 +55,6 @@ public class App extends Application
 						xOffset = event.getSceneX( );
 						yOffset = event.getSceneY( );
 
-						//primaryStage.setX( event.getScreenX( ) - event.getSceneX( ) );
-						//primaryStage.setY( event.getScreenY( ) - event.getSceneY( ) );
-
 						isDragged = true;
 						event.consume( );
 					}
@@ -91,7 +67,7 @@ public class App extends Application
 				{
 					if( isDragged )
 					{
-						primaryStage.setX( event.getScreenX( ) - xOffset );
+						primaryStage.setX( event.getScreenX( ) - xOffset  );
 						primaryStage.setY( event.getScreenY( ) - yOffset );
 
 						event.consume( );
@@ -110,13 +86,34 @@ public class App extends Application
 
 			primaryStage.setScene( scene );
 			primaryStage.show( );
-		} catch( Exception ex )
+		}
+		catch( Exception ex )
 		{
 			log.info( "Error in start: " + ex );
 		}
 
+		databaseSetup( );
 
 	}
 
+	public void databaseSetup( ) throws SqlJetException
+	{
+		String DB_NAME = "DATABASE.sqlite";
 
+		File dbFile = new File( DB_NAME );
+		dbFile.delete( );
+
+		SqlJetDb db = SqlJetDb.open( dbFile, true );
+		db.getOptions( ).setAutovacuum( true );
+		db.beginTransaction( SqlJetTransactionMode.WRITE );
+
+		try
+		{
+			db.getOptions( ).setUserVersion( 1 );
+		}
+		finally
+		{
+			db.commit( );
+		}
+	}
 }
