@@ -7,15 +7,16 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.tmatesoft.sqljet.core.SqlJetException;
 import org.tmatesoft.sqljet.core.SqlJetTransactionMode;
 import org.tmatesoft.sqljet.core.table.SqlJetDb;
+import sun.plugin2.message.Message;
 
 import java.io.File;
 
-//Test
 
 public class App extends Application
 {
@@ -35,8 +36,9 @@ public class App extends Application
 	}
 
 	@Override
-	public void start( final Stage primaryStage ) throws SqlJetException
+	public void start( final Stage primaryStage )
 	{
+
 
 		try
 		{
@@ -45,6 +47,9 @@ public class App extends Application
 
 			Scene scene = new Scene( root );
 
+
+			scene.setUserAgentStylesheet( "styles/form-style.css" );
+			//scene.getStylesheets().add( getClass().getResource( "styles/form-style" ).toExternalForm() );
 
 			scene.addEventFilter( MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>( )
 			{
@@ -67,7 +72,7 @@ public class App extends Application
 				{
 					if( isDragged )
 					{
-						primaryStage.setX( event.getScreenX( ) - xOffset  );
+						primaryStage.setX( event.getScreenX( ) - xOffset );
 						primaryStage.setY( event.getScreenY( ) - yOffset );
 
 						event.consume( );
@@ -96,24 +101,32 @@ public class App extends Application
 
 	}
 
-	public void databaseSetup( ) throws SqlJetException
+	public void databaseSetup( )
 	{
 		String DB_NAME = "DATABASE.sqlite";
 
-		File dbFile = new File( DB_NAME );
-		dbFile.delete( );
-
-		SqlJetDb db = SqlJetDb.open( dbFile, true );
-		db.getOptions( ).setAutovacuum( true );
-		db.beginTransaction( SqlJetTransactionMode.WRITE );
 
 		try
 		{
-			db.getOptions( ).setUserVersion( 1 );
+			File dbFile = new File( DB_NAME );
+			dbFile.delete( );
+
+			SqlJetDb db = SqlJetDb.open( dbFile, true );
+			db.getOptions( ).setAutovacuum( true );
+			db.beginTransaction( SqlJetTransactionMode.WRITE );
+
+			try
+			{
+				db.getOptions( ).setUserVersion( 1 );
+			}
+			finally
+			{
+				db.commit( );
+			}
 		}
-		finally
+		catch( Exception e )
 		{
-			db.commit( );
+
 		}
 	}
 }
