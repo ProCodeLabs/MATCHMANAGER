@@ -1,9 +1,9 @@
+package Database;
+
 import java.io.File;
 import java.util.logging.Logger;
 
-/**
- * Created by JOHNY on 25.05.2016.
- */
+
 public class DBC
 {
 	private static final Logger log = Logger.getLogger( DBC.class.getClass( ).getName( ) );
