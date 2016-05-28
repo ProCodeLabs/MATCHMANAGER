@@ -1,6 +1,5 @@
 import java.util.logging.*;
 
-import Common.LoggerExLevel;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -8,7 +7,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import org.tmatesoft.sqljet.core.SqlJetException;
 import org.tmatesoft.sqljet.core.SqlJetTransactionMode;
 import org.tmatesoft.sqljet.core.table.SqlJetDb;
@@ -40,12 +38,11 @@ public class App extends Application
 
 		try
 		{
-			Parent root = FXMLLoader.load( getClass( ).getResource( "fxml/SelectDb.fxml" ) );
-			primaryStage.initStyle( StageStyle.UNDECORATED );
+			Parent root = FXMLLoader.load( getClass( ).getResource("fxml/selectDb.fxml") );
+			//primaryStage.initStyle( StageStyle.UNDECORATED );
 
 
 			Scene scene = new Scene( root );
-
 
 			scene.getStylesheets().add( getClass().getResource( "styles/form-style.css" ).toExternalForm() );
 
@@ -88,7 +85,6 @@ public class App extends Application
 
 
 			primaryStage.setScene( scene );
-			primaryStage.setFullScreen(  true );
 			primaryStage.show( );
 		}
 		catch( Exception ex )
