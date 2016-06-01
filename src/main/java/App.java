@@ -1,30 +1,22 @@
 import java.util.logging.*;
 
 import javafx.application.Application;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+
 import org.tmatesoft.sqljet.core.SqlJetException;
 import org.tmatesoft.sqljet.core.SqlJetTransactionMode;
 import org.tmatesoft.sqljet.core.table.SqlJetDb;
+import ui.Helper.UiBaseContainer;
 
 import java.io.File;
 
-//Test
-
 public class App extends Application
 {
-
 	Logger log = Logger.getLogger( this.getClass( ).getName( ) );
-
-	private static double xOffset = 0;
-	private static double yOffset = 0;
-
-	private static double BORDER_HEIGHT = 18;
-	private static boolean isDragged = false;
 
 
 	public static void main( String[] args )
@@ -33,17 +25,59 @@ public class App extends Application
 	}
 
 	@Override
-	public void start( final Stage primaryStage ) throws SqlJetException
+	public void start( final Stage primaryStage )
 	{
+		try
+		{
+			primaryStage.initStyle( StageStyle.UNDECORATED );
+
+			BorderPane pane = FXMLLoader.load( getClass( ).getResource( "fxml/uiBase.fxml" ) );
+
+			pane.setCenter( FXMLLoader.load( getClass( ).getResource( "fxml/selectDatabase.fxml" ) ) );
+
+
+
+			Scene scene = new Scene( pane );
+
+			primaryStage.setScene( scene );
+			primaryStage.show( );
+		}
+		catch( Exception ex )
+		{
+			log.info( "Error in start: " + ex );
+		}
+	}
+
+	public void databaseSetup( ) throws SqlJetException
+	{
+		String DB_NAME = "DATABASE.sqlite";
+
+		File dbFile = new File( DB_NAME );
+		dbFile.delete( );
+
+		SqlJetDb db = SqlJetDb.open( dbFile, true );
+		db.getOptions( ).setAutovacuum( true );
+		db.beginTransaction( SqlJetTransactionMode.WRITE );
 
 		try
 		{
-			Parent root = FXMLLoader.load( getClass( ).getResource("fxml/selectDb.fxml") );
-			//primaryStage.initStyle( StageStyle.UNDECORATED );
+			db.getOptions( ).setUserVersion( 1 );
+		}
+		finally
+		{
+			db.commit( );
+		}
+	}
+}
 
 
-			Scene scene = new Scene( root );
 
+			/*
+				private static double xOffset = 0;
+	private static double yOffset = 0;
+
+	private static double BORDER_HEIGHT = 18;
+	private static boolean isDragged = false;
 			scene.getStylesheets().add( getClass().getResource( "styles/form-style.css" ).toExternalForm() );
 
 			scene.addEventFilter( MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>( )
@@ -81,39 +115,4 @@ public class App extends Application
 				{
 					isDragged = false;
 				}
-			} );
-
-
-			primaryStage.setScene( scene );
-			primaryStage.show( );
-		}
-		catch( Exception ex )
-		{
-			log.info( "Error in start: " + ex );
-		}
-
-		databaseSetup( );
-
-	}
-
-	public void databaseSetup( ) throws SqlJetException
-	{
-		String DB_NAME = "DATABASE.sqlite";
-
-		File dbFile = new File( DB_NAME );
-		dbFile.delete( );
-
-		SqlJetDb db = SqlJetDb.open( dbFile, true );
-		db.getOptions( ).setAutovacuum( true );
-		db.beginTransaction( SqlJetTransactionMode.WRITE );
-
-		try
-		{
-			db.getOptions( ).setUserVersion( 1 );
-		}
-		finally
-		{
-			db.commit( );
-		}
-	}
-}
+			} );*/
