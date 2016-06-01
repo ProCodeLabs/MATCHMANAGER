@@ -1,6 +1,3 @@
-import java.util.logging.*;
-
-import Common.LoggerExLevel;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -14,6 +11,7 @@ import org.tmatesoft.sqljet.core.SqlJetTransactionMode;
 import org.tmatesoft.sqljet.core.table.SqlJetDb;
 
 import java.io.File;
+import java.util.logging.Logger;
 
 //Test
 
