@@ -1,4 +1,4 @@
-package Core;
+package Database.CoreClasses;
 
 public class Match
 {

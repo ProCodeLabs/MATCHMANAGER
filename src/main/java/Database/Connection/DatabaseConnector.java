@@ -1,9 +1,9 @@
-package Database;
+package Database.Connection;
 
 import Common.LoggerExLevel;
-import Core.Match;
-import Core.Player;
-import Core.Team;
+import Database.CoreClasses.Match;
+import Database.CoreClasses.Player;
+import Database.CoreClasses.Team;
 import org.tmatesoft.sqljet.core.SqlJetException;
 import org.tmatesoft.sqljet.core.SqlJetTransactionMode;
 import org.tmatesoft.sqljet.core.table.SqlJetDb;
