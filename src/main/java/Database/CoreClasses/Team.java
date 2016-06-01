@@ -1,4 +1,4 @@
-package Core;
+package Database.CoreClasses;
 
 /**
  * Created by JOHNY on 25.05.2016.
