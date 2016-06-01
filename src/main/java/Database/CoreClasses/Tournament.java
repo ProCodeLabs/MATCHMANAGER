@@ -2,13 +2,9 @@ package Database.CoreClasses;
 
 import java.util.ArrayList;
 
-public interface Tournament
+public class Tournament
 {
-	ArrayList<Team> _Teams = new ArrayList<>();
-	ArrayList<Match> _Matches = new ArrayList<>();
-	ArrayList<Player> _Players = new ArrayList<>();
-
-	void addMatch();
-	void addTeam();
-	void addPlayer();
+	private ArrayList<Team> _Teams = new ArrayList<>();
+	private ArrayList<Match> _Matches = new ArrayList<>();
+	private ArrayList<Player> _Players = new ArrayList<>();
 }
