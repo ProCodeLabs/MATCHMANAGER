@@ -1,8 +1,5 @@
 package Core;
 
-/**
- * Created by JOHNY on 25.05.2016.
- */
 public class Team
 {
 	private String _name;
