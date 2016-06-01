@@ -1,18 +1,15 @@
-import java.util.logging.*;
-
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-
 import org.tmatesoft.sqljet.core.SqlJetException;
 import org.tmatesoft.sqljet.core.SqlJetTransactionMode;
 import org.tmatesoft.sqljet.core.table.SqlJetDb;
 import ui.Helper.UiBaseContainer;
 
 import java.io.File;
+import java.util.logging.Logger;
 
 public class App extends Application
 {
@@ -31,13 +28,20 @@ public class App extends Application
 		{
 			primaryStage.initStyle( StageStyle.UNDECORATED );
 
-			BorderPane pane = FXMLLoader.load( getClass( ).getResource( "fxml/uiBase.fxml" ) );
 
-			pane.setCenter( FXMLLoader.load( getClass( ).getResource( "fxml/selectDatabase.fxml" ) ) );
+			UiBaseContainer container = new UiBaseContainer( );
+			{
+				container.setTitle( "Select Database" );
+				container.setCenter( FXMLLoader.load( getClass( ).getResource( "fxml/panes/selectDatabase.fxml" ) ) );
+			}
 
 
+			//BorderPane pane = FXMLLoader.load( getClass( ).getResource( "fxml/uiBase.fxml" ) );
 
-			Scene scene = new Scene( pane );
+			//pane.setCenter( FXMLLoader.load( getClass( ).getResource( "fxml/panes/selectDatabase.fxml" ) ) );
+
+
+			Scene scene = new Scene( container );
 
 			primaryStage.setScene( scene );
 			primaryStage.show( );
