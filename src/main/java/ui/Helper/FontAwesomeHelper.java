@@ -10,12 +10,12 @@ public class FontAwesomeHelper
 {
 	public static Button createIconButton( String iconName )
 	{
-		return createIconButton( iconName, "", 16 );
+		return createIconButton( iconName, "", 1 );
 	}
 
 	public static Button createIconButton( String iconName, String text )
 	{
-		return createIconButton( iconName, text, 16 );
+		return createIconButton( iconName, text, 1 );
 	}
 
 	public static Button createIconButton( String iconName, int iconSize )
@@ -34,6 +34,8 @@ public class FontAwesomeHelper
 		return UIHelper.buildComponent( new Button( ), button -> {
 			button.setText( text );
 			button.setGraphic( icon );
+
+			button.getStyleClass().add( "button-icon" );
 		} );
 	}
 

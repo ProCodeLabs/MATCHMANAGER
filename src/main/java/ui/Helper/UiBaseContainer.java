@@ -80,13 +80,13 @@ public class UiBaseContainer extends BorderPane
 
 			HBox buttonBox = new HBox( );
 			{
-				Button btnClose = FontAwesomeHelper.createIconButton( FontAwesome.ICON_FOLDER_CLOSE, 2 );
+				Button btnClose = FontAwesomeHelper.createIconButton( FontAwesome.ICON_REMOVE, 2 );
 
 				buttonBox.getChildren( ).add( btnClose );
 			}
 			box.getChildren( ).add( buttonBox );
 
-			box.getChildren( ).add( FontAwesomeHelper.createIconLabel( FontAwesome.ICON_GLASS, 1 ) );
+			//box.getChildren( ).add( FontAwesomeHelper.createIconLabel( FontAwesome.ICON_GLASS, 1 ) );
 
 		}
 		setTop( box );

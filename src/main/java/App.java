@@ -42,7 +42,7 @@ public class App extends Application
 
 
 			Scene scene = new Scene( container );
-			scene.getStylesheets().add("styles/font-awesome.css");
+			scene.getStylesheets().add("styles/metroTheme.css");
 			scene.getStylesheets().add("styles/styles.css");
 
 			primaryStage.setScene( scene );
