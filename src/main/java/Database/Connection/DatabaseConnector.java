@@ -14,15 +14,26 @@ public class DatabaseConnector
 {
 	private static final Logger log = Logger.getLogger( DatabaseConnector.class.getClass( ).getName( ) );
 	private static Connection connection;
+	private static Statement statement;
 
-	private String _DatabaseName;
-
-	public DatabaseConnector( String _DatabaseName )
+	public DatabaseConnector( )
 	{
-		this._DatabaseName = _DatabaseName + ".sqlite";
+
 	}
 
-	public void connectDatabase( )
+	private void createStatement( )
+	{
+		try
+		{
+			statement = connection.createStatement( );
+		} catch( Exception ex )
+		{
+			log.log( LogLevel.ERROR, "Could not create SQL Statement -> " + ex );
+		}
+
+	}
+
+	public void connectDatabase(String DatabaseName )
 	{
 		try
 		{
@@ -32,18 +43,11 @@ public class DatabaseConnector
 			}
 
 			System.out.println( "Creating Connection to Database..." );
-			connection = DriverManager.getConnection( "jdbc:sqlite:" + _DatabaseName );
+			connection = DriverManager.getConnection( "jdbc:sqlite:" + DatabaseName );
 			if( !connection.isClosed( ) )
 			{
 				System.out.println( "...Connection established" );
-				try
-				{
-					Statement stmt = connection.createStatement( );
-
-				} catch( Exception ex )
-				{
-					log.log( LogLevel.ERROR, "FAIL WITH STATEMENT" + ex );
-				}
+				createStatement( );
 			}
 			else
 			{
@@ -89,8 +93,7 @@ public class DatabaseConnector
 
 		try
 		{
-			Statement stm = connection.createStatement( );
-			stm.execute( sqlString );
+			statement.execute( sqlString );
 			log.log( LogLevel.SUCCESS, "SQL STRING (ADDPLAYER) PASSED." );
 		} catch( Exception ex )
 		{
@@ -110,8 +113,7 @@ public class DatabaseConnector
 
 		try
 		{
-			Statement stm = connection.createStatement( );
-			stm.execute( sqlString );
+			statement.execute( sqlString );
 			log.log( LogLevel.SUCCESS, "SQL STRING (ADDTEAM) PASSED." );
 		} catch( Exception ex )
 		{
@@ -133,8 +135,7 @@ public class DatabaseConnector
 
 		try
 		{
-			Statement stm = connection.createStatement( );
-			stm.execute( sqlString );
+			statement.execute( sqlString );
 			log.log( LogLevel.SUCCESS, "SQL STRING (ADDMATCH) PASSED." );
 		} catch( Exception ex )
 		{
@@ -145,23 +146,49 @@ public class DatabaseConnector
 
 	public void removePlayer( Player player )
 	{
-		//TODO: Implement me
-		String sqlString = "";
+		try
+		{
+			deleteRow( "Player", player.getId( ) );
+			log.log( LogLevel.SUCCESS, "Player successfully deleted | ID = " + player.getId( ) );
+		} catch( Exception ex )
+		{
+			log.log( LogLevel.ERROR, "Player could not be deleted | ID = " + player.getId( ) + "\n" + ex );
+		}
 	}
 
 	public void removeTeam( Team team )
 	{
-		//TODO: Implement me
+		try
+		{
+			deleteRow( "Team", team.getId( ) );
+			log.log( LogLevel.SUCCESS, "Team successfully deleted | ID = " + team.getId( ) );
+		} catch( Exception ex )
+		{
+			log.log( LogLevel.ERROR, "Team could not be deleted | ID = " + team.getId( ) + "\n" + ex );
+		}
 	}
 
 	public void removeMatch( Match match )
 	{
-		//TODO: Implement me
+		try
+		{
+			deleteRow( "Match", match.getId( ) );
+			log.log( LogLevel.SUCCESS, "Player successfully deleted | ID = " + match.getId( ) );
+		} catch( Exception ex )
+		{
+			log.log( LogLevel.ERROR, "Player could not be deleted | ID = " + match.getId( ) + "\n" + ex );
+		}
 	}
 
 	public void clearTable( String tableName )
 	{
-		//TODO: Implement me!
+		try {
+			statement.executeUpdate( "DELETE FROM "+tableName );
+			log.log( LogLevel.SUCCESS, "Deleted data from "+tableName );
+		} catch( Exception ex ) {
+			log.log( LogLevel.ERROR, "Could not delete data from "+tableName +"\n"+ex );
+		}
+
 	}
 
 	public int getNextId( String tableName )
@@ -169,8 +196,7 @@ public class DatabaseConnector
 		String sqlString = "SELECT id FROM " + tableName;
 		try
 		{
-			Statement stm = connection.createStatement( );
-			ResultSet s = stm.executeQuery( sqlString );
+			ResultSet s = statement.executeQuery( sqlString );
 			int maxID = 0;
 			while( s.next( ) )
 			{
@@ -181,6 +207,22 @@ public class DatabaseConnector
 		{
 			log.log( LogLevel.ERROR, "Cant find Table" + ex );
 			return 0;
+		}
+	}
+
+	private boolean deleteRow( String table, int id ) throws Exception
+	{
+		String sqlString = String.format( "DELETE FROM '%s' WHERE Id = '%s'",
+										  table,
+										  id );
+
+		try
+		{
+			statement.executeUpdate( sqlString );
+			return true;
+		} catch( Exception ex )
+		{
+			throw new Exception( ex );
 		}
 	}
 

@@ -1,7 +1,5 @@
-import Database.Connection.DatabaseConnector;
-import Database.CoreClasses.Match;
+import Database.CoreClasses.Database;
 import Database.CoreClasses.Player;
-import Database.CoreClasses.Team;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -36,18 +34,16 @@ public class App extends Application
 	@Override
 	public void start( final Stage primaryStage ) throws SqlJetException
 	{
+		Database.setDatabase( "STARTUP" );
 		//DATABASE TEST
-		Player p = new Player( "x", "y", "z", "NULL" );
-		Team t = new Team( "Fnatic" );
-		Match m = new Match( "2016-10-05",t,t );
+		Player p = new Player( "Test", "123", "YOLO", "NULL" );
+		//Team t = new Team( "Astralis" );
+		//Team t2 = new Team( "Cloud9" );
+		//Match m = new Match( "2000-05-05",t,t2 );
 
-
-		DatabaseConnector dbc = new DatabaseConnector( "STARTUP" );
-		dbc.connectDatabase( );
-		dbc.addPlayer( p );
-		dbc.addTeam( t );
-		dbc.addMatch( m );
-		//dbc.testStatement();
+		//Database.removePlayer(new Player( 12 ));
+		//Database.removeTeam( new Team( 8 ) );
+		//Database.dropDataFromPlayerTable();
 
 		try
 		{
