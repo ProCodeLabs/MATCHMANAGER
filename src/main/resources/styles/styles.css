@@ -1,4 +1,12 @@
 
+.title-bar{
+    -fx-background-color: silver;
+}
+
+.title-bar-label{
+
+}
+
 .icons {
     -fx-font-family: FontAwesome;
     -fx-font-size: 16px;

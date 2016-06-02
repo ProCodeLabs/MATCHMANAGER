@@ -9,6 +9,7 @@
 <?import javafx.scene.layout.Region?>
 
 
+<?import javafx.scene.control.Label?>
 <Pane xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <BorderPane>

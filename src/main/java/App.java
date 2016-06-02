@@ -7,7 +7,7 @@ import javafx.stage.StageStyle;
 import org.tmatesoft.sqljet.core.SqlJetException;
 import org.tmatesoft.sqljet.core.SqlJetTransactionMode;
 import org.tmatesoft.sqljet.core.table.SqlJetDb;
-import ui.Helper.UiBaseContainer;
+import ui.Helper.UIBaseContainer;
 
 import java.io.File;
 import java.util.logging.Logger;
@@ -34,7 +34,7 @@ public class App extends Application
 					10
 			);
 
-			UiBaseContainer container = new UiBaseContainer( );
+			UIBaseContainer container = new UIBaseContainer( );
 			{
 				container.setTitle( "Select Database" );
 				container.setCenter( FXMLLoader.load( getClass( ).getResource( "fxml/panes/selectDatabase.fxml" ) ) );
@@ -42,6 +42,7 @@ public class App extends Application
 
 
 			Scene scene = new Scene( container );
+
 			scene.getStylesheets().add("styles/metroTheme.css");
 			scene.getStylesheets().add("styles/styles.css");
 
