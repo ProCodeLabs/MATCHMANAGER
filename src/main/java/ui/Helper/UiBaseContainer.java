@@ -1,11 +1,12 @@
 package ui.Helper;
 
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 import javafx.stage.Stage;
-import javafx.scene.layout.*;
 
 import java.util.logging.Logger;
 
@@ -21,13 +22,13 @@ public class UiBaseContainer extends BorderPane
 	double _yOffset = 0;
 
 
-	Label _titleLabel = new Label(  );
+	Label _titleLabel = new Label( );
 
 
 	public UiBaseContainer( )
 	{
 		addEventFilters( );
-		addTitleButtons();
+		addTitleButtons( );
 	}
 
 
@@ -61,27 +62,31 @@ public class UiBaseContainer extends BorderPane
 	}
 
 
-
-	void addTitleButtons()
+	void addTitleButtons( )
 	{
-		HBox box = new HBox(  );
+		HBox box = new HBox( );
 		{
 			{
 				//titleLabel.setStyle( "" );
 			}
-			box.getChildren().add( _titleLabel );
+			box.getChildren( ).add( _titleLabel );
 
-			Region region = new Region();
+			Region region = new Region( );
 			{
 
 			}
-			box.getChildren().add( region );
+			box.getChildren( ).add( region );
 
 
+			HBox buttonBox = new HBox( );
+			{
+				Button btnClose = FontAwesomeHelper.createIconButton( FontAwesome.ICON_FOLDER_CLOSE, 2 );
 
+				buttonBox.getChildren( ).add( btnClose );
+			}
+			box.getChildren( ).add( buttonBox );
 
-
-
+			box.getChildren( ).add( FontAwesomeHelper.createIconLabel( FontAwesome.ICON_GLASS, 1 ) );
 
 		}
 		setTop( box );

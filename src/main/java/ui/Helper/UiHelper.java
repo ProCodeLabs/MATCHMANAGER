@@ -1,17 +1,17 @@
 package ui.Helper;
 
 
-import java.util.function.*;
+import java.util.function.Consumer;
 
-public class UiHelper
+public class UIHelper
 {
-	public static <T> T buildComponent(T node, Consumer<T> initializer) {
+	public static <T> T buildComponent( T node, Consumer<T> initializer )
+	{
 		{
 			initializer.accept( node );
 		}
 		return node;
 	}
-
 
 
 }
