@@ -1,18 +1,14 @@
 package Database.Connection;
 
-import Common.LoggerExLevel;
+import Common.LogLevel;
 import Database.CoreClasses.Match;
 import Database.CoreClasses.Player;
 import Database.CoreClasses.Team;
-import org.tmatesoft.sqljet.core.SqlJetException;
-import org.tmatesoft.sqljet.core.SqlJetTransactionMode;
-import org.tmatesoft.sqljet.core.table.SqlJetDb;
 
-import java.io.File;
 import java.sql.*;
 import java.util.logging.Logger;
 
-//TODO Add Methods for Inputs
+//TODO: create static statement.
 
 public class DatabaseConnector
 {
@@ -23,120 +19,169 @@ public class DatabaseConnector
 
 	public DatabaseConnector( String _DatabaseName )
 	{
-		this._DatabaseName = _DatabaseName+".sqlite";
+		this._DatabaseName = _DatabaseName + ".sqlite";
 	}
 
-	public void databaseSetup( ) throws SqlJetException
+	public void connectDatabase( )
 	{
-		File dbFile = new File( _DatabaseName );
-		dbFile.delete( );
-
-		SqlJetDb db = SqlJetDb.open( dbFile, true );
-		db.getOptions( ).setAutovacuum( true );
-		db.beginTransaction( SqlJetTransactionMode.WRITE );
-
 		try
 		{
-			db.getOptions( ).setUserVersion( 1 );
-		} finally
-		{
-			db.commit( );
-		}
-	}
-
-	public void connectDatabase ( ) {
-		try {
-			if (connection != null)
+			if( connection != null )
 			{
 				return;
 			}
 
-			System.out.println("Creating Connection to Database...");
-			connection = DriverManager.getConnection( "jdbc:sqlite:" + _DatabaseName);
-			if (!connection.isClosed())
+			System.out.println( "Creating Connection to Database..." );
+			connection = DriverManager.getConnection( "jdbc:sqlite:" + _DatabaseName );
+			if( !connection.isClosed( ) )
 			{
 				System.out.println( "...Connection established" );
 				try
 				{
 					Statement stmt = connection.createStatement( );
 
-				} catch( Exception ex ) {
-					log.log( LoggerExLevel.ERROR, "FAIL WITH STATEMENT" + ex );
+				} catch( Exception ex )
+				{
+					log.log( LogLevel.ERROR, "FAIL WITH STATEMENT" + ex );
 				}
 			}
 			else
 			{
-				System.out.println("... Connection refused");
+				System.out.println( "... Connection refused" );
 			}
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
+		} catch( SQLException e )
+		{
+			throw new RuntimeException( e );
 		}
 
-		Runtime.getRuntime().addShutdownHook(new Thread() {
-			public void run() {
-				try {
-					if (!connection.isClosed() && connection != null) {
-						connection.close();
-						if (connection.isClosed())
-							System.out.println("Connection to Database closed");
+		Runtime.getRuntime( ).addShutdownHook( new Thread( )
+		{
+			public void run( )
+			{
+				try
+				{
+					if( !connection.isClosed( ) && connection != null )
+					{
+						connection.close( );
+						if( connection.isClosed( ) )
+							System.out.println( "Connection to Database closed" );
 					}
-				} catch (SQLException e) {
-					e.printStackTrace();
+				} catch( SQLException e )
+				{
+					e.printStackTrace( );
 				}
 			}
-		});
-	}
-
-	public void createNewDatabase( String name )
-	{
-		File f = new File( name + ".sqlite" );
-		try
-		{
-			f.createNewFile( );
-		} catch( Exception ex )
-		{
-			log.info( "Cannot create Database" );
-		}
+		} );
 	}
 
 	public void addPlayer( Player player )
 	{
-		String sqlString = "INSERT INTO Player " +
-				"VALUES(" +
-				player.getSurname( ) + "," +
-				player.getLastname( ) + "," +
-				player.getNickname( ) + "," +
-				player.getImage( ) + ")";
-		log.log( LoggerExLevel.SUCCESS, "SQL STRING (ADDPLAYER) : " + sqlString );
+		String id = Integer.toString( getNextId( "Player" ) );
+
+		String sqlString = String.format( "INSERT INTO Player VALUES ( '%s' ,'%s' , '%s' , '%s' , '%s' )",
+										  id,
+										  player.getSurname( ),
+										  player.getLastname( ),
+										  player.getNickname( ),
+										  player.getImage( ) );
+
+		log.log( LogLevel.SUCCESS, "SQL STRING (ADDPLAYER) short : " + sqlString );
+
+		try
+		{
+			Statement stm = connection.createStatement( );
+			stm.execute( sqlString );
+			log.log( LogLevel.SUCCESS, "SQL STRING (ADDPLAYER) PASSED." );
+		} catch( Exception ex )
+		{
+			log.log( LogLevel.ERROR, "SQL STRING (ADDPLAYER) FAILED. -> " + ex );
+		}
 	}
 
 	public void addTeam( Team team )
 	{
-		String sqlString = "INSERT INTO Team " +
-				"VALUES(" +
-				team.getName( ) + ")";
-		log.log( LoggerExLevel.SUCCESS, "SQL STRING (ADDTEAM) : " + sqlString );
+		String id = Integer.toString( getNextId( "Team" ) );
+
+		String sqlString = String.format( "INSERT INTO Team VALUES ( '%s' , '%s' )",
+										  id,
+										  team.getName( ) );
+
+		log.log( LogLevel.INFO, "SQL STRING (ADDTEAM) : " + sqlString );
+
+		try
+		{
+			Statement stm = connection.createStatement( );
+			stm.execute( sqlString );
+			log.log( LogLevel.SUCCESS, "SQL STRING (ADDTEAM) PASSED." );
+		} catch( Exception ex )
+		{
+			log.log( LogLevel.ERROR, "SQL STRING (ADDTEAM) FAILED. -> " + ex );
+		}
 	}
 
 	public void addMatch( Match match )
 	{
-		String sqlString = "INSERT INTO Team " +
-				"VALUES(" +
-				match.getDate( ) + "," +
-				match.getTeamOne( ).toString() + "," +
-				match.getTeamTwo( ).toString() +
-				")";
-		log.log( LoggerExLevel.SUCCESS, "SQL STRING (ADDMATCH) : " + sqlString );
-	}
+		String id = Integer.toString( getNextId( "Match" ) );
 
-	public void testStatement() {
+		String sqlString = String.format( "INSERT INTO Match VALUES ( '%s' , '%s' , '%s' , '%s')",
+										  id,
+										  match.getDate( ),
+										  match.getTeamOne( ),
+										  match.getTeamTwo( ) );
+
+		log.log( LogLevel.INFO, "SQL STRING (ADDMATCH) : " + sqlString );
+
 		try
 		{
-			Statement stmt = connection.createStatement( );
-			stmt.execute( "INSERT INTO Player VALUES ('Jonathan', 'Klaiber', 'J O H N Y #', 'NULL')" );
-		} catch( Exception ex ) {
-			log.log( LoggerExLevel.ERROR, "FAIL WITH STATEMENT" + ex );
+			Statement stm = connection.createStatement( );
+			stm.execute( sqlString );
+			log.log( LogLevel.SUCCESS, "SQL STRING (ADDMATCH) PASSED." );
+		} catch( Exception ex )
+		{
+			log.log( LogLevel.ERROR, "SQL STRING (ADDMATCH) FAILED. -> " + ex );
+		}
+
+	}
+
+	public void removePlayer( Player player )
+	{
+		//TODO: Implement me
+	}
+
+	public void removeTeam( Team team )
+	{
+		//TODO: Implement me
+	}
+
+	public void removeMatch( Match match )
+	{
+		//TODO: Implement me
+	}
+
+	public void clearTable( String tableName )
+	{
+		//TODO: Implement me!
+	}
+
+	public int getNextId( String tableName )
+	{
+		String sqlString = "SELECT id FROM " + tableName;
+		try
+		{
+			Statement stm = connection.createStatement( );
+			ResultSet s = stm.executeQuery( sqlString );
+			int maxID = 0;
+			while( s.next( ) )
+			{
+				maxID = s.getInt( "Id" );
+			}
+			return maxID + 1;
+		} catch( Exception ex )
+		{
+			log.log( LogLevel.ERROR, "Cant find Table" + ex );
+			return 0;
 		}
 	}
+
 }
 
