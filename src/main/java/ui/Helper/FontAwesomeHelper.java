@@ -31,7 +31,7 @@ public class FontAwesomeHelper
 			icon.getStyleClass( ).add( "fa" );
 		}
 
-		return UIHelper.buildComponent( new Button( ), button -> {
+		return UiHelper.buildComponent( new Button( ), button -> {
 			button.setText( text );
 			button.setGraphic( icon );
 

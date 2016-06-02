@@ -1,15 +1,15 @@
+import Database.Connection.DatabaseConnector;
+import Database.CoreClasses.Match;
+import Database.CoreClasses.Player;
+import Database.CoreClasses.Team;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import org.tmatesoft.sqljet.core.SqlJetException;
-import org.tmatesoft.sqljet.core.SqlJetTransactionMode;
-import org.tmatesoft.sqljet.core.table.SqlJetDb;
-import ui.Helper.UIBaseContainer;
+import ui.Helper.UiBaseContainer;
 
-import java.io.File;
 import java.util.logging.Logger;
 
 public class App extends Application
@@ -25,6 +25,18 @@ public class App extends Application
 	@Override
 	public void start( final Stage primaryStage )
 	{
+		Player p = new Player( "x", "y", "z", "NULL" );
+		Team t = new Team( "Fnatic" );
+		Match m = new Match( "2016-10-05",t,t );
+
+		DatabaseConnector dbc = new DatabaseConnector( "STARTUP" );
+		dbc.connectDatabase( );
+		dbc.addPlayer( p );
+		dbc.addTeam( t );
+		dbc.addMatch( m );
+		//dbc.testStatement();
+
+
 		try
 		{
 			primaryStage.initStyle( StageStyle.UNDECORATED );
@@ -34,7 +46,7 @@ public class App extends Application
 					10
 			);
 
-			UIBaseContainer container = new UIBaseContainer( );
+			UiBaseContainer container = new UiBaseContainer( );
 			{
 				container.setTitle( "Select Database" );
 				container.setCenter( FXMLLoader.load( getClass( ).getResource( "fxml/panes/selectDatabase.fxml" ) ) );
@@ -54,28 +66,5 @@ public class App extends Application
 			log.info( "Error in start: " + ex );
 		}
 
-		databaseSetup( );
-
-	}
-
-	public void databaseSetup( ) throws SqlJetException
-	{
-		String DB_NAME = "DATABASE.sqlite";
-
-		File dbFile = new File( DB_NAME );
-		dbFile.delete( );
-
-		SqlJetDb db = SqlJetDb.open( dbFile, true );
-		db.getOptions( ).setAutovacuum( true );
-		db.beginTransaction( SqlJetTransactionMode.WRITE );
-
-		try
-		{
-			db.getOptions( ).setUserVersion( 1 );
-		}
-		finally
-		{
-			db.commit( );
-		}
 	}
 }

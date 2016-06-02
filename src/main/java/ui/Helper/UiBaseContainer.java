@@ -5,6 +5,7 @@ import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 
@@ -17,11 +18,13 @@ public class UiBaseContainer extends BorderPane
 
 
 	boolean _isDragged = false;
+	boolean _isResizing = false;
 
 	double _xOffset = 0;
 	double _yOffset = 0;
 
 
+	HBox _titleBar = new HBox( );
 	Label _titleLabel = new Label( );
 
 
@@ -36,11 +39,23 @@ public class UiBaseContainer extends BorderPane
 	{
 		//TODO: fix multiple monitor movement bug
 		this.addEventFilter( MouseEvent.MOUSE_PRESSED, ( MouseEvent e ) -> {
-			if( e.getSceneY( ) <= 18 )
+			Stage parent = ( Stage ) getScene( ).getWindow( );
+
+			if( e.getSceneY( ) <= _titleBar.getHeight( ) )
 			{
 				_xOffset = e.getSceneX( );
 				_yOffset = e.getSceneY( );
 				_isDragged = true;
+				_isResizing = false;
+
+				e.isConsumed( );
+			}
+			else if( e.getSceneX( ) >= parent.getWidth( ) - 25 && e.getSceneY( ) >= parent.getHeight( ) - 25 )
+			{
+				_xOffset = parent.getWidth( ) - e.getX( );
+				_yOffset = parent.getHeight( ) - e.getY( );
+				_isDragged = false;
+				_isResizing = true;
 
 				e.isConsumed( );
 			}
@@ -51,45 +66,54 @@ public class UiBaseContainer extends BorderPane
 		} );
 
 		this.addEventFilter( MouseEvent.MOUSE_DRAGGED, ( MouseEvent e ) -> {
+			Stage parent = ( Stage ) getScene( ).getWindow( );
+
+
 			if( _isDragged )
 			{
-				Stage parent = ( Stage ) getScene( ).getWindow( );
-
 				parent.setX( e.getScreenX( ) - _xOffset );
 				parent.setY( e.getScreenY( ) - _yOffset );
 			}
+			else if( _isResizing )
+			{
+				parent.setWidth( e.getX( ) + _xOffset );
+				parent.setHeight( e.getY( ) + _yOffset );
+			}
+
 		} );
 	}
 
 
 	void addTitleButtons( )
 	{
-		HBox box = new HBox( );
 		{
 			{
 				//titleLabel.setStyle( "" );
 			}
-			box.getChildren( ).add( _titleLabel );
 
 			Region region = new Region( );
 			{
-
+				_titleBar.setHgrow( region, Priority.ALWAYS );
 			}
-			box.getChildren( ).add( region );
-
 
 			HBox buttonBox = new HBox( );
 			{
+				Button btnMinimize = FontAwesomeHelper.createIconButton( FontAwesome.ICON_MINUS, 2 );
+				{
+					btnMinimize.setOnAction( e -> ( ( Stage ) getScene( ).getWindow( ) ).setIconified( true ) );
+				}
+
 				Button btnClose = FontAwesomeHelper.createIconButton( FontAwesome.ICON_REMOVE, 2 );
+				{
 
-				buttonBox.getChildren( ).add( btnClose );
+				}
+				buttonBox.getChildren( ).addAll( btnMinimize, btnClose );
+
+
 			}
-			box.getChildren( ).add( buttonBox );
-
-			//box.getChildren( ).add( FontAwesomeHelper.createIconLabel( FontAwesome.ICON_GLASS, 1 ) );
-
+			_titleBar.getChildren( ).addAll( _titleLabel, region, buttonBox );
 		}
-		setTop( box );
+		setTop( _titleBar );
 	}
 
 
