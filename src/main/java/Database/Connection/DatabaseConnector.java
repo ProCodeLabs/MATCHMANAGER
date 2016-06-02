@@ -146,6 +146,7 @@ public class DatabaseConnector
 	public void removePlayer( Player player )
 	{
 		//TODO: Implement me
+		String sqlString = "";
 	}
 
 	public void removeTeam( Team team )
