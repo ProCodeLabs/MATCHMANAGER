@@ -1,3 +1,7 @@
+import Database.Connection.DatabaseConnector;
+import Database.CoreClasses.Match;
+import Database.CoreClasses.Player;
+import Database.CoreClasses.Team;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -7,10 +11,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.tmatesoft.sqljet.core.SqlJetException;
-import org.tmatesoft.sqljet.core.SqlJetTransactionMode;
-import org.tmatesoft.sqljet.core.table.SqlJetDb;
 
-import java.io.File;
 import java.util.logging.Logger;
 
 //Test
@@ -35,6 +36,18 @@ public class App extends Application
 	@Override
 	public void start( final Stage primaryStage ) throws SqlJetException
 	{
+		//DATABASE TEST
+		Player p = new Player( "x", "y", "z", "NULL" );
+		Team t = new Team( "Fnatic" );
+		Match m = new Match( "2016-10-05",t,t );
+
+
+		DatabaseConnector dbc = new DatabaseConnector( "STARTUP" );
+		dbc.connectDatabase( );
+		dbc.addPlayer( p );
+		dbc.addTeam( t );
+		dbc.addMatch( m );
+		//dbc.testStatement();
 
 		try
 		{
@@ -65,7 +78,7 @@ public class App extends Application
 				{
 					if( isDragged )
 					{
-						primaryStage.setX( event.getScreenX( ) - xOffset  );
+						primaryStage.setX( event.getScreenX( ) - xOffset );
 						primaryStage.setY( event.getScreenY( ) - yOffset );
 
 						event.consume( );
@@ -84,34 +97,12 @@ public class App extends Application
 
 			primaryStage.setScene( scene );
 			primaryStage.show( );
-		}
-		catch( Exception ex )
+		} catch( Exception ex )
 		{
 			log.info( "Error in start: " + ex );
 		}
 
-		databaseSetup( );
-
 	}
 
-	public void databaseSetup( ) throws SqlJetException
-	{
-		String DB_NAME = "DATABASE.sqlite";
 
-		File dbFile = new File( DB_NAME );
-		dbFile.delete( );
-
-		SqlJetDb db = SqlJetDb.open( dbFile, true );
-		db.getOptions( ).setAutovacuum( true );
-		db.beginTransaction( SqlJetTransactionMode.WRITE );
-
-		try
-		{
-			db.getOptions( ).setUserVersion( 1 );
-		}
-		finally
-		{
-			db.commit( );
-		}
-	}
 }
