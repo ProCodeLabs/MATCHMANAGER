@@ -74,19 +74,18 @@ public class DatabaseConnector
 		} );
 	}
 
-	//TODO: shorten sql string build -> String string = String.format("A string %s", aVariable);
 	public void addPlayer( Player player )
 	{
 		String id = Integer.toString( getNextId( "Player" ) );
 
-		String sqlString = "INSERT INTO Player " +
-				"VALUES ('" +
-				id + "','" +
-				player.getSurname( ) + "','" +
-				player.getLastname( ) + "','" +
-				player.getNickname( ) + "','" +
-				player.getImage( ) + "')";
-		log.log( LogLevel.SUCCESS, "SQL STRING (ADDPLAYER) : " + sqlString );
+		String sqlString = String.format( "INSERT INTO Player VALUES ( '%s' ,'%s' , '%s' , '%s' , '%s' )",
+										  id,
+										  player.getSurname( ),
+										  player.getLastname( ),
+										  player.getNickname( ),
+										  player.getImage( ) );
+
+		log.log( LogLevel.SUCCESS, "SQL STRING (ADDPLAYER) short : " + sqlString );
 
 		try
 		{
@@ -97,19 +96,16 @@ public class DatabaseConnector
 		{
 			log.log( LogLevel.ERROR, "SQL STRING (ADDPLAYER) FAILED. -> " + ex );
 		}
-
-
 	}
 
-	//TODO: shorten sql string build -> String string = String.format("A string %s", aVariable);
 	public void addTeam( Team team )
 	{
 		String id = Integer.toString( getNextId( "Team" ) );
 
-		String sqlString = "INSERT INTO Team " +
-				"VALUES('" +
-				id + "','" +
-				team.getName( ) + "')";
+		String sqlString = String.format( "INSERT INTO Team VALUES ( '%s' , '%s' )",
+										  id,
+										  team.getName( ) );
+
 		log.log( LogLevel.INFO, "SQL STRING (ADDTEAM) : " + sqlString );
 
 		try
@@ -123,17 +119,16 @@ public class DatabaseConnector
 		}
 	}
 
-	//TODO: shorten sql string build -> String string = String.format("A string %s", aVariable);
 	public void addMatch( Match match )
 	{
 		String id = Integer.toString( getNextId( "Match" ) );
 
-		String sqlString = "INSERT INTO Match " +
-				"VALUES('" +
-				id + "','" +
-				match.getDate( ) + "','" +
-				match.getTeamOne( ).toString( ) + "','" +
-				match.getTeamTwo( ).toString( ) + "')";
+		String sqlString = String.format( "INSERT INTO Match VALUES ( '%s' , '%s' , '%s' , '%s')",
+										  id,
+										  match.getDate( ),
+										  match.getTeamOne( ),
+										  match.getTeamTwo( ) );
+
 		log.log( LogLevel.INFO, "SQL STRING (ADDMATCH) : " + sqlString );
 
 		try
@@ -148,7 +143,6 @@ public class DatabaseConnector
 
 	}
 
-
 	public void removePlayer( Player player )
 	{
 		//TODO: Implement me
@@ -162,6 +156,11 @@ public class DatabaseConnector
 	public void removeMatch( Match match )
 	{
 		//TODO: Implement me
+	}
+
+	public void clearTable( String tableName )
+	{
+		//TODO: Implement me!
 	}
 
 	public int getNextId( String tableName )
