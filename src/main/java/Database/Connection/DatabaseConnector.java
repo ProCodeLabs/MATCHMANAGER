@@ -8,6 +8,8 @@ import Database.CoreClasses.Team;
 import java.sql.*;
 import java.util.logging.Logger;
 
+//TODO: create static statement.
+
 public class DatabaseConnector
 {
 	private static final Logger log = Logger.getLogger( DatabaseConnector.class.getClass( ).getName( ) );
