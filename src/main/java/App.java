@@ -53,6 +53,9 @@ public class App extends Application
 		{
 			log.info( "Error in start: " + ex );
 		}
+
+		databaseSetup( );
+
 	}
 
 	public void databaseSetup( ) throws SqlJetException
