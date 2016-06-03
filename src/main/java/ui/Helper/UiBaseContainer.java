@@ -118,7 +118,7 @@ public class UiBaseContainer extends BorderPane
 						Alert alert = new Alert( Alert.AlertType.CONFIRMATION );
 						alert.setTitle( "Close?" );
 						alert.setHeaderText( "Close?" );
-						alert.setContentText( "Are you sure you want to this?" );
+						alert.setContentText( "Are you sure you want to Close this Window?" );
 
 						Optional<ButtonType> result = alert.showAndWait( );
 						if( result.get( ) == ButtonType.OK )

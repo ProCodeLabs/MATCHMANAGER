@@ -1,20 +1,26 @@
 package ui.Controller;
 
 import Common.TaskManager;
+import Database.Connection.DatabaseHandler;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
 
 import java.io.File;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
+
+import static Common.Files.path;
 
 public class SelectDatabaseController implements Initializable
 {
+	private ObservableList<String> list = FXCollections.observableArrayList( );
+
+
 	@FXML
 	Button newButton;
 	@FXML
@@ -34,26 +40,56 @@ public class SelectDatabaseController implements Initializable
 	@FXML
 	public void buttonNewClicked( )
 	{
-		System.out.println( "New Clicked" );
+		//TODO: Touernamentname + File
+
+		TextInputDialog dialog = new TextInputDialog( "");
+		dialog.setTitle("Create Database");
+		dialog.setHeaderText("Create new Database");
+		dialog.setContentText("Please enter a Database name:");
+		Optional<String> result = dialog.showAndWait();
+		result.ifPresent(name -> {
+			DatabaseHandler.createNewDatabase( name );
+			list.add( name );
+		});
 	}
 
 	@FXML
 	public void buttonDeleteClicked( )
 	{
-		System.out.println( "Delete Clicked" );
+		Alert alert = new Alert( Alert.AlertType.CONFIRMATION );
+		alert.setTitle( "Dalete" );
+		alert.setHeaderText( "Delete" );
+		alert.setContentText( "Are you sure you want to Delete this?" );
+
+		Optional<ButtonType> result = alert.showAndWait( );
+		if( result.get( ) == ButtonType.OK )
+		{
+			DatabaseHandler.deleteDatabase(getSelectedPath());
+			list.remove( getSelected() );
+		}
+
+
 	}
 
 	@Override
 	public void initialize( URL location, ResourceBundle resources )
 	{
-		ObservableList<String> list = FXCollections.observableArrayList( );
-
-		TaskManager.runUiTask( ()->{
+		TaskManager.runUiTask( ( ) -> {
 			scanDataFolder( list );
 		} );
-
 		dataList.setItems( list );
 	}
+
+
+	public String getSelected( )
+	{
+		return dataList.getSelectionModel().getSelectedItem();
+	}
+
+	public String getSelectedPath() {
+		return  path+File.separator+getSelected();
+	}
+
 
 	public void scanDataFolder( ObservableList<String> data )
 	{
@@ -62,17 +98,10 @@ public class SelectDatabaseController implements Initializable
 		f.mkdir( );
 		for( File i : f.listFiles( ) )
 		{
-			try
-			{
-			 Thread.sleep( 250 );
-			}
-			catch( Exception e )
-			{
-
-			}
-
+			String s = i.getName().replace( ".sqlite","");
 			Platform.runLater( ( ) -> {
-				data.add( i.getName( ) );
+
+				data.add( s );
 			} );
 		}
 	}
