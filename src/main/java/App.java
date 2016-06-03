@@ -9,6 +9,7 @@ import javafx.stage.StageStyle;
 import org.tmatesoft.sqljet.core.SqlJetException;
 import ui.Helper.UiBaseContainer;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 //Test
@@ -39,7 +40,9 @@ public class App extends Application
 		//Team t = new Team( "Astralis" );
 		//Team t2 = new Team( "Cloud9" );
 		//Match m = new Match( "2000-05-05",t,t2 );
-
+		List<Player> list = Database.getPlayers();
+		Player p2 = list.get( 1 );
+		System.out.println(p.getNickname());
 		//Database.removePlayer(new Player( 12 ));
 		//Database.removeTeam( new Team( 8 ) );
 		//Database.dropDataFromPlayerTable();

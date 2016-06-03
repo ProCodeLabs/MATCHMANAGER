@@ -5,15 +5,24 @@ public class Match
 
 	private int _id;
 	private String _date;
-	private Team[] _teams = new Team[ 2 ];
+	private Team _teamOne;
+	private Team _teamTwo;
 
 	public Match( String _date, Team one, Team two )
 	{
 		this._id = Database.dbc.getNextId( "Match" );
 		this._date = _date;
-		this._teams[ 0 ] = one;
-		this._teams[ 1 ] = two;
+		this._teamOne = one;
+		this._teamTwo = two;
 		Database.dbc.addMatch( this );
+	}
+
+	public Match( int _id, String _date, String teamOne, String teamTwo )
+	{
+		this._id = _id;
+		this._date = _date;
+		this._teamOne.setName( teamOne );
+		this._teamTwo.setName( teamTwo );
 	}
 
 	public Match( int _id )
@@ -34,12 +43,12 @@ public class Match
 
 	public String getTeamOne( )
 	{
-		return _teams[ 0 ].getName( );
+		return _teamOne.getName( );
 	}
 
 	public String getTeamTwo( )
 	{
-		return _teams[ 1 ].getName( );
+		return _teamTwo.getName( );
 	}
 
 	public String getDate( )

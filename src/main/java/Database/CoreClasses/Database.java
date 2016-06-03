@@ -2,6 +2,8 @@ package Database.CoreClasses;
 
 import Database.Connection.DatabaseConnector;
 
+import java.util.List;
+
 public class Database
 {
 	protected static DatabaseConnector dbc = new DatabaseConnector( );
@@ -24,6 +26,10 @@ public class Database
 	public static void removeMatch( Match match )
 	{
 		dbc.removeMatch( match );
+	}
+
+	public  static List<Player> getPlayers() {
+		return dbc.getPlayers();
 	}
 
 	public static void dropDataFromPlayerTable( )

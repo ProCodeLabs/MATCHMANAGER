@@ -23,6 +23,15 @@ public class Player
 		this._id = _id;
 	}
 
+	public Player( int _id, String _surname, String _lastname, String _nickname, String _image )
+	{
+		this._id = _id;
+		this._surname = _surname;
+		this._lastname = _lastname;
+		this._nickname = _nickname;
+		this._image = _image;
+	}
+
 	//region GETTER AND SETTER
 	public boolean hasID( )
 	{

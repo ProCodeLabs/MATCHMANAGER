@@ -12,6 +12,12 @@ public class Team
 		Database.dbc.addTeam( this );
 	}
 
+	public Team( int _id, String _name )
+	{
+		this._id = _id;
+		this._name = _name;
+	}
+
 	public Team( int _id )
 	{
 		this._id = _id;

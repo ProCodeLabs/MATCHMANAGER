@@ -6,6 +6,8 @@ import Database.CoreClasses.Player;
 import Database.CoreClasses.Team;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 //TODO: create static statement.
@@ -33,7 +35,7 @@ public class DatabaseConnector
 
 	}
 
-	public void connectDatabase(String DatabaseName )
+	public void connectDatabase( String DatabaseName )
 	{
 		try
 		{
@@ -144,6 +146,83 @@ public class DatabaseConnector
 
 	}
 
+	public List<Player> getPlayers( )
+	{
+		List<Player> list = new ArrayList<>( );
+
+		String sqlString = "SELECT * FROM Player";
+		try
+		{
+			ResultSet result = statement.executeQuery( sqlString );
+			while( result.next( ) )
+			{
+				list.add( new Player(
+						result.getInt( "Id" ),
+						result.getString( "Surname" ),
+						result.getString( "Lastname" ),
+						result.getString( "Nickname" ),
+						result.getString( "Image" )
+				) );
+			}
+			log.log( LogLevel.SUCCESS, "Got Player Data from Table" );
+			return list;
+		} catch( Exception ex )
+		{
+			log.log( LogLevel.ERROR, "Could not get Player Data from Table" + ex );
+			return null;
+		}
+	}
+
+	public List<Team> getTeams( )
+	{
+		List<Team> list = new ArrayList<>( );
+
+		String sqlString = "SELECT * FROM Team";
+		try
+		{
+			ResultSet result = statement.executeQuery( sqlString );
+			while( result.next( ) )
+			{
+				list.add( new Team(
+						result.getInt( "Id" ),
+						result.getString( "Name" )
+				) );
+			}
+			log.log( LogLevel.SUCCESS, "Got Team Data from Table" );
+			return list;
+		} catch( Exception ex )
+		{
+			log.log( LogLevel.ERROR, "Could not get Team Data from Table" + ex );
+			return null;
+		}
+	}
+
+	public List<Match> getMatches( )
+	{
+		List<Match> list = new ArrayList<>( );
+
+		String sqlString = "SELECT * FROM Match";
+		try
+		{
+			ResultSet result = statement.executeQuery( sqlString );
+			while( result.next( ) )
+			{
+				list.add( new Match(
+						result.getInt( "Id" ),
+						result.getString( "Time" ),
+						result.getString( "TeamOne" ),
+						result.getString( "TeamTwo" )
+				) );
+			}
+			log.log( LogLevel.SUCCESS, "Got Player Data from Table" );
+			return list;
+		} catch( Exception ex )
+		{
+			log.log( LogLevel.ERROR, "Could not get Player Data from Table" + ex );
+			return null;
+		}
+	}
+
 	public void removePlayer( Player player )
 	{
 		try
@@ -182,11 +261,13 @@ public class DatabaseConnector
 
 	public void clearTable( String tableName )
 	{
-		try {
-			statement.executeUpdate( "DELETE FROM "+tableName );
-			log.log( LogLevel.SUCCESS, "Deleted data from "+tableName );
-		} catch( Exception ex ) {
-			log.log( LogLevel.ERROR, "Could not delete data from "+tableName +"\n"+ex );
+		try
+		{
+			statement.executeUpdate( "DELETE FROM " + tableName );
+			log.log( LogLevel.SUCCESS, "Deleted data from " + tableName );
+		} catch( Exception ex )
+		{
+			log.log( LogLevel.ERROR, "Could not delete data from " + tableName + "\n" + ex );
 		}
 
 	}
