@@ -2,7 +2,7 @@ package Database.CoreClasses;
 
 public class Player
 {
-	private int _id=0;
+	private int _id = 0;
 	private String _surname;
 	private String _lastname;
 	private String _nickname;
@@ -16,6 +16,11 @@ public class Player
 		this._nickname = _nickname;
 		this._image = _image;
 		Database.dbc.addPlayer( this );
+	}
+
+	public static void addPlayer()
+	{
+
 	}
 
 	public Player( int _id )
