@@ -1,5 +1,7 @@
 package ui.Controller;
 
+import Common.TaskManager;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -44,38 +46,34 @@ public class SelectDatabaseController implements Initializable
 	@Override
 	public void initialize( URL location, ResourceBundle resources )
 	{
-		ObservableList< String > list = FXCollections.observableArrayList();
+		ObservableList<String> list = FXCollections.observableArrayList( );
 
-		/*TaskManager.runTask( () ->{
+		TaskManager.runUiTask( ()->{
 			scanDataFolder( list );
-			return 0;
-		} );*/
+		} );
 
-		scanDataFolder( list );
 		dataList.setItems( list );
 	}
 
-	public void scanDataFolder( ObservableList< String > data )
+	public void scanDataFolder( ObservableList<String> data )
 	{
 		String path = System.getProperty( "user.home" ) + File.separator + "Matchmanager";
 		File f = new File( path );
 		f.mkdir( );
 		for( File i : f.listFiles( ) )
 		{
-		/*	try
+			try
 			{
-				Thread.sleep( 500 );
+			 Thread.sleep( 250 );
 			}
-			catch( Exception e  )
+			catch( Exception e )
 			{
 
-			}*/
+			}
 
-
-			data.add( i.getName() );
-
-			//System.out.println( i.getName() );
+			Platform.runLater( ( ) -> {
+				data.add( i.getName( ) );
+			} );
 		}
-
 	}
 }

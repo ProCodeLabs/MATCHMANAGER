@@ -7,9 +7,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 
-/**
- * Created by JOHNY on 03.06.2016.
- */
 public class TaskManager
 {
 	static final ExecutorService executor = Executors.newFixedThreadPool( 2 );
@@ -22,6 +19,12 @@ public class TaskManager
 				return callable.call();
 			}
 		});
+	}
+
+
+	public static void runUiTask( Runnable runnable)
+	{
+		executor.execute( runnable );
 	}
 
 
