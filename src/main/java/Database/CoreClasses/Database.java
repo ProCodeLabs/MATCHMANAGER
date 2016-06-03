@@ -2,9 +2,6 @@ package Database.CoreClasses;
 
 import Database.Connection.DatabaseConnector;
 
-/**
- * Created by JOHNY on 02.06.2016.
- */
 public class Database
 {
 	protected static DatabaseConnector dbc = new DatabaseConnector( );
