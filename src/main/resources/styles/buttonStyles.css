@@ -1,0 +1,38 @@
+.button-icon {
+    -fx-border-insets: 0;
+    -fx-background-insets: 0;
+    -fx-font-size: 1.5em;
+    -fx-background-color: rgba(0,0,0,0.0);
+    -fx-border-style: none;
+    -fx-text-fill: #212121;
+    -fx-border-radius: 0;
+}
+
+.button-icon:focused {
+    -fx-font-size: 1.5em;
+    -fx-border-style: none;
+    -fx-border-radius: 0;
+    -fx-border-color: transparent;
+}
+
+.button-icon:hover {
+    -fx-border-insets: 0;
+    -fx-background-insets: 0;
+    -fx-font-size: 1.5em;
+    -fx-border-radius: 0;
+    -fx-background-radius: 0;
+    -fx-border-style: none;
+    -fx-text-fill: lightcoral;
+    -fx-background-color: transparent;
+}
+
+.button-icon:pressed {
+    -fx-border-insets: 0;
+    -fx-background-insets: 0;
+    -fx-font-size: 1.5em;
+    -fx-border-radius: 0;
+    -fx-background-radius: 0;
+    -fx-border-style: none;
+    -fx-text-fill:darkseagreen;
+    -fx-background-color: transparent;
+}

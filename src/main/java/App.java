@@ -29,7 +29,7 @@ public class App extends Application
 
 			Font.loadFont(
 					getClass( ).getResource( "fonts/fontawesome-webfont.ttf" ).toExternalForm( ),
-					10
+					12
 			);
 
 			UiBaseContainer container = new UiBaseContainer( );
@@ -41,8 +41,15 @@ public class App extends Application
 
 			Scene scene = new Scene( container, 800, 600 );
 
-			scene.getStylesheets( ).add( "styles/metroTheme.css" );
-			scene.getStylesheets( ).add( "styles/styles.css" );
+			//String css = App.class.getResource( "styles/MetroTheme.css" ).toExternalForm( );
+			String css2 = App.class.getResource( "styles/buttonStyles.css" ).toExternalForm( );
+			scene.getStylesheets( ).clear( );
+			//scene.getStylesheets( ).add( css );
+			scene.getStylesheets( ).add( css2 );
+
+			//scene.getStylesheets().add( "styles/buttonStyles.css" );
+			//scene.getStylesheets( ).add( "styles/metroTheme.css" );
+			//scene.getStylesheets( ).add( "styles/styles.css" );
 
 			primaryStage.setScene( scene );
 			primaryStage.show( );

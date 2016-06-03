@@ -78,6 +78,7 @@ public class DatabaseConnector
 				}
 			}
 		} );
+
 	}
 
 	public void addPlayer( Player player )

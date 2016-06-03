@@ -107,13 +107,10 @@ public class UiBaseContainer extends BorderPane
 
 			HBox buttonBox = new HBox( );
 			{
-				Button btnMinimize = FontAwesomeHelper.createIconButton( FontAwesome.ICON_MINUS, 2 );
-				{
-					btnMinimize.setOnAction( e -> ( ( Stage ) getScene( ).getWindow( ) ).setIconified( true ) );
-				}
 
-				Button btnClose = FontAwesomeHelper.createIconButton( FontAwesome.ICON_REMOVE, 2 );
+				Button btnClose = new Button( );
 				{
+
 					btnClose.setOnAction( e -> {
 						Alert alert = new Alert( Alert.AlertType.CONFIRMATION );
 						alert.setTitle( "Close?" );
@@ -124,12 +121,25 @@ public class UiBaseContainer extends BorderPane
 						if( result.get( ) == ButtonType.OK )
 						{
 							Platform.exit( );
+							System.exit( 0 );
 						}
 					} );
 
 				}
-				buttonBox.getChildren( ).addAll( btnMinimize, btnClose );
+				btnClose.setStyle( "-fx-font-family: FontAwesome;" );
+				btnClose.getStyleClass().add( "button-icon" );
+				btnClose.setText( FontAwesome.ICON_REMOVE );
 
+
+				Button btnMinimize = new Button(  );
+				{
+					btnMinimize.setOnAction( e -> ( ( Stage ) getScene( ).getWindow( ) ).setIconified( true ) );
+				}
+				btnMinimize.setStyle( "-fx-font-family: FontAwesome" );
+				btnMinimize.getStyleClass().add( "button-icon" );
+				btnMinimize.setText( FontAwesome.ICON_MINUS );
+
+				buttonBox.getChildren( ).addAll( btnMinimize,btnClose);
 
 			}
 			_titleBar.getChildren( ).addAll( _titleLabel, region, buttonBox );
