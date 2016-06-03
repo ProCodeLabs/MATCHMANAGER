@@ -1,14 +1,13 @@
 import Database.CoreClasses.Database;
 import Database.CoreClasses.Player;
 import javafx.application.Application;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.tmatesoft.sqljet.core.SqlJetException;
+import ui.Helper.UiBaseContainer;
 
 import java.util.logging.Logger;
 
@@ -47,56 +46,33 @@ public class App extends Application
 
 		try
 		{
-			Parent root = FXMLLoader.load( getClass( ).getResource( "fxml/layout.fxml" ) );
 			primaryStage.initStyle( StageStyle.UNDECORATED );
 
-			Scene scene = new Scene( root );
+			Font.loadFont(
+					getClass( ).getResource( "fonts/fontawesome-webfont.ttf").toExternalForm(),
+					10
+			);
 
-
-			scene.addEventFilter( MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>( )
+			UiBaseContainer container = new UiBaseContainer( );
 			{
-				public void handle( MouseEvent event )
-				{
-					if( event.getSceneY( ) <= BORDER_HEIGHT )
-					{
-						xOffset = event.getSceneX( );
-						yOffset = event.getSceneY( );
+				container.setTitle( "Select Database" );
+				container.setCenter( FXMLLoader.load( getClass( ).getResource( "fxml/panes/selectDatabase.fxml" ) ) );
+			}
 
-						isDragged = true;
-						event.consume( );
-					}
-				}
-			} );
 
-			scene.addEventFilter( MouseEvent.MOUSE_DRAGGED, new EventHandler<MouseEvent>( )
-			{
-				public void handle( MouseEvent event )
-				{
-					if( isDragged )
-					{
-						primaryStage.setX( event.getScreenX( ) - xOffset );
-						primaryStage.setY( event.getScreenY( ) - yOffset );
+			Scene scene = new Scene( container );
 
-						event.consume( );
-					}
-				}
-			} );
-
-			scene.addEventFilter( MouseEvent.MOUSE_RELEASED, new EventHandler<MouseEvent>( )
-			{
-				public void handle( MouseEvent event )
-				{
-					isDragged = false;
-				}
-			} );
-
+			scene.getStylesheets().add("styles/metroTheme.css");
+			scene.getStylesheets().add("styles/styles.css");
 
 			primaryStage.setScene( scene );
 			primaryStage.show( );
-		} catch( Exception ex )
+		}
+		catch( Exception ex )
 		{
 			log.info( "Error in start: " + ex );
 		}
+
 
 	}
 
