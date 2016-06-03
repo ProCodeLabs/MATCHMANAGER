@@ -25,7 +25,7 @@
 
 }
 
-.button-normal {
+.button {
     -fx-padding: 5 22 5 22;
     -fx-border-style: null;
     -fx-background-radius: 0;
@@ -38,7 +38,7 @@
 }
 
 .button:hover {
-    -fx-background-color: #d8d8d8;
+    -fx-background-color: #3d3e43;
 }
 
 .button:pressed, .button:default:hover:pressed {

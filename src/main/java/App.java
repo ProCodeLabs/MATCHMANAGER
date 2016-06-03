@@ -39,7 +39,7 @@ public class App extends Application
 			}
 
 
-			Scene scene = new Scene( container, 800, 600 );
+			Scene scene = new Scene( container, 800, 400 );
 
 			//String css = App.class.getResource( "styles/MetroTheme.css" ).toExternalForm( );
 			String css2 = App.class.getResource( "styles/buttonStyles.css" ).toExternalForm( );

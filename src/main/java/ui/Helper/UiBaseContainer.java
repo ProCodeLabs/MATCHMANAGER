@@ -1,6 +1,7 @@
 package ui.Helper;
 
 import javafx.application.Platform;
+import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -34,10 +35,13 @@ public class UiBaseContainer extends BorderPane
 	Label _titleLabel = new Label( );
 
 
+
 	public UiBaseContainer( )
 	{
 		addEventFilters( );
 		addTitleButtons( );
+		_titleLabel.setPadding( new Insets( 10 ) );
+		_titleLabel.getStyleClass().add( "heading" );
 	}
 
 	void addEventFilters( )
@@ -103,6 +107,8 @@ public class UiBaseContainer extends BorderPane
 
 			Button btnClose = new Button( );
 			{
+				btnClose.setPadding( new Insets( 10 ) );
+				btnClose.setStyle( "-fx-font-size: 1.2em" );
 				btnClose.setOnAction( e -> {
 					Alert alert = new Alert( Alert.AlertType.CONFIRMATION );
 					alert.setTitle( "Close?" );
@@ -127,6 +133,7 @@ public class UiBaseContainer extends BorderPane
 			{
 				btnMinimize.setOnAction( e -> ( ( Stage ) getScene( ).getWindow( ) ).setIconified( true ) );
 			}
+			btnMinimize.setStyle( "-fx-font-size: 1.2em" );
 			btnMinimize.setStyle( "-fx-font-family: FontAwesome" );
 			btnMinimize.getStyleClass( ).add( "button-icon" );
 			btnMinimize.setText( FontAwesome.ICON_MINUS );
