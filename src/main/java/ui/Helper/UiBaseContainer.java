@@ -96,53 +96,42 @@ public class UiBaseContainer extends BorderPane
 	void addTitleButtons( )
 	{
 		{
-			{
-				//titleLabel.setStyle( "" );
-			}
-
 			Region region = new Region( );
 			{
 				_titleBar.setHgrow( region, Priority.ALWAYS );
 			}
 
-			HBox buttonBox = new HBox( );
+			Button btnClose = new Button( );
 			{
+				btnClose.setOnAction( e -> {
+					Alert alert = new Alert( Alert.AlertType.CONFIRMATION );
+					alert.setTitle( "Close?" );
+					alert.setHeaderText( "Close?" );
+					alert.setContentText( "Are you sure you want to Close this Window?" );
 
-				Button btnClose = new Button( );
-				{
-
-					btnClose.setOnAction( e -> {
-						Alert alert = new Alert( Alert.AlertType.CONFIRMATION );
-						alert.setTitle( "Close?" );
-						alert.setHeaderText( "Close?" );
-						alert.setContentText( "Are you sure you want to Close this Window?" );
-
-						Optional<ButtonType> result = alert.showAndWait( );
-						if( result.get( ) == ButtonType.OK )
-						{
-							Platform.exit( );
-							System.exit( 0 );
-						}
-					} );
-
-				}
-				btnClose.setStyle( "-fx-font-family: FontAwesome;" );
-				btnClose.getStyleClass().add( "button-icon" );
-				btnClose.setText( FontAwesome.ICON_REMOVE );
-
-
-				Button btnMinimize = new Button(  );
-				{
-					btnMinimize.setOnAction( e -> ( ( Stage ) getScene( ).getWindow( ) ).setIconified( true ) );
-				}
-				btnMinimize.setStyle( "-fx-font-family: FontAwesome" );
-				btnMinimize.getStyleClass().add( "button-icon" );
-				btnMinimize.setText( FontAwesome.ICON_MINUS );
-
-				buttonBox.getChildren( ).addAll( btnMinimize,btnClose);
+					Optional<ButtonType> result = alert.showAndWait( );
+					if( result.get( ) == ButtonType.OK )
+					{
+						Platform.exit( );
+						System.exit( 0 );
+					}
+				} );
 
 			}
-			_titleBar.getChildren( ).addAll( _titleLabel, region, buttonBox );
+			btnClose.setStyle( "-fx-font-family: FontAwesome;" );
+			btnClose.getStyleClass( ).add( "button-icon" );
+			btnClose.setText( FontAwesome.ICON_REMOVE );
+
+
+			Button btnMinimize = new Button( );
+			{
+				btnMinimize.setOnAction( e -> ( ( Stage ) getScene( ).getWindow( ) ).setIconified( true ) );
+			}
+			btnMinimize.setStyle( "-fx-font-family: FontAwesome" );
+			btnMinimize.getStyleClass( ).add( "button-icon" );
+			btnMinimize.setText( FontAwesome.ICON_MINUS );
+
+			_titleBar.getChildren( ).addAll( _titleLabel, region, btnMinimize, btnClose );
 		}
 		setTop( _titleBar );
 	}
