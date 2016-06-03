@@ -97,7 +97,7 @@ public class SelectDatabaseController implements Initializable
 	{
 		String path = System.getProperty( "user.home" ) + File.separator + "Matchmanager";
 		File f = new File( path );
-		if( !f.exists( ) )
+		if( f.exists( ) && !f.isDirectory( ) )
 		{
 			f.mkdir( );
 		}
