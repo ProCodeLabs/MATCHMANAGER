@@ -1,0 +1,40 @@
+
+.title-bar{
+    -fx-background-color: silver;
+}
+
+.title-bar-label{
+
+}
+
+.icons {
+    -fx-font-family: FontAwesome;
+    -fx-font-size: 16px;
+    -fx-text-fill: black;
+}
+
+.button-icon {
+    -fx-border-style: null;
+    -fx-padding: 0;
+    -fx-background-color: rgba(0, 0, 0, 0.0);
+
+}
+
+.button-icon:hover {
+    -fx-border-style: solid;
+    -fx-border-width: 1;
+    -fx-border-color: blue;
+
+    -fx-background-color: #d8d8d8;
+
+}
+
+.button-icon:pressed, .button-icon:default:hover:pressed {
+    -fx-background-color: black;
+    -fx-text-fill: white;
+}
+
+.button-icon:focused {
+    -fx-border-style: solid;
+
+}

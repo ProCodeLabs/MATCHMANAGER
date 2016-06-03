@@ -1,0 +1,20 @@
+<component name="ArtifactManager">
+  <artifact type="javafx" build-on-make="true" name="SE2TEAMPROJECT">
+    <output-path>$PROJECT_DIR$/out/artifacts/SE2TEAMPROJECT</output-path>
+    <properties id="javafx-properties">
+      <options>
+        <option name="appClass" value="App" />
+        <option name="description" value="" />
+        <option name="htmlParamFile" value="" />
+        <option name="paramFile" value="" />
+        <option name="title" value="MATCHMANAGER" />
+        <option name="vendor" value="" />
+      </options>
+    </properties>
+    <root id="root">
+      <element id="archive" name="SE2TEAMPROJECT.jar">
+        <element id="module-output" name="SE2TEAMPROJECT" />
+      </element>
+    </root>
+  </artifact>
+</component>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ListView VBox.vgrow="ALWAYS" />
+      <HBox spacing="10.0">
+         <children>
+            <Button mnemonicParsing="false" text="Load" />
+            <Region HBox.hgrow="ALWAYS" />
+            <Button mnemonicParsing="false" text="New" />
+            <Button mnemonicParsing="false" text="Delete" />
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <padding>
+            <Insets bottom="15.0" top="15.0" />
+         </padding>
+      </HBox>
+   </children>
+</VBox>
