@@ -34,6 +34,8 @@ public class SelectDatabaseController implements Initializable
 	@FXML
 	public void buttonLoadClicked( )
 	{
+		//TODO: Load selected data
+		String datapath = getSelectedPath( );
 		System.out.println( "Load clicked" );
 	}
 
@@ -42,15 +44,15 @@ public class SelectDatabaseController implements Initializable
 	{
 		//TODO: Touernamentname + File
 
-		TextInputDialog dialog = new TextInputDialog( "");
-		dialog.setTitle("Create Database");
-		dialog.setHeaderText("Create new Database");
-		dialog.setContentText("Please enter a Database name:");
-		Optional<String> result = dialog.showAndWait();
-		result.ifPresent(name -> {
+		TextInputDialog dialog = new TextInputDialog( "" );
+		dialog.setTitle( "Create Database" );
+		dialog.setHeaderText( "Create new Database" );
+		dialog.setContentText( "Please enter a Database name:" );
+		Optional<String> result = dialog.showAndWait( );
+		result.ifPresent( name -> {
 			DatabaseHandler.createNewDatabase( name );
 			list.add( name );
-		});
+		} );
 	}
 
 	@FXML
@@ -64,8 +66,8 @@ public class SelectDatabaseController implements Initializable
 		Optional<ButtonType> result = alert.showAndWait( );
 		if( result.get( ) == ButtonType.OK )
 		{
-			DatabaseHandler.deleteDatabase(getSelectedPath());
-			list.remove( getSelected() );
+			DatabaseHandler.deleteDatabase( getSelectedPath( ) );
+			list.remove( getSelected( ) );
 		}
 
 
@@ -83,22 +85,26 @@ public class SelectDatabaseController implements Initializable
 
 	public String getSelected( )
 	{
-		return dataList.getSelectionModel().getSelectedItem();
+		return dataList.getSelectionModel( ).getSelectedItem( );
 	}
 
-	public String getSelectedPath() {
-		return  path+File.separator+getSelected();
+	public String getSelectedPath( )
+	{
+		return path + File.separator + getSelected( );
 	}
-
 
 	public void scanDataFolder( ObservableList<String> data )
 	{
 		String path = System.getProperty( "user.home" ) + File.separator + "Matchmanager";
 		File f = new File( path );
-		f.mkdir( );
+		if( !f.exists( ) )
+		{
+			f.mkdir( );
+		}
+
 		for( File i : f.listFiles( ) )
 		{
-			String s = i.getName().replace( ".sqlite","");
+			String s = i.getName( ).replace( ".sqlite", "" );
 			Platform.runLater( ( ) -> {
 
 				data.add( s );
