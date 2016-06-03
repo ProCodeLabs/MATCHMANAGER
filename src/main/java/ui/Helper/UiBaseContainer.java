@@ -1,6 +1,9 @@
 package ui.Helper;
 
+import javafx.application.Platform;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -9,6 +12,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 
+import java.util.Optional;
 import java.util.logging.Logger;
 
 
@@ -65,6 +69,7 @@ public class UiBaseContainer extends BorderPane
 			}
 		} );
 
+
 		this.addEventFilter( MouseEvent.MOUSE_RELEASED, ( MouseEvent e ) -> {
 			_isDragged = false;
 			_isResizing = false;
@@ -109,6 +114,18 @@ public class UiBaseContainer extends BorderPane
 
 				Button btnClose = FontAwesomeHelper.createIconButton( FontAwesome.ICON_REMOVE, 2 );
 				{
+					btnClose.setOnAction( e -> {
+						Alert alert = new Alert( Alert.AlertType.CONFIRMATION );
+						alert.setTitle( "Close?" );
+						alert.setHeaderText( "Close?" );
+						alert.setContentText( "Are you sure you want to this?" );
+
+						Optional<ButtonType> result = alert.showAndWait( );
+						if( result.get( ) == ButtonType.OK )
+						{
+							Platform.exit( );
+						}
+					} );
 
 				}
 				buttonBox.getChildren( ).addAll( btnMinimize, btnClose );

@@ -7,15 +7,15 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
+<VBox xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.Controller.SelectDatabaseController">
    <children>
-      <ListView VBox.vgrow="ALWAYS" />
+      <ListView fx:id="dataList" VBox.vgrow="ALWAYS" />
       <HBox spacing="10.0">
          <children>
-            <Button mnemonicParsing="false" text="Load" />
+            <Button fx:id="loadButton" mnemonicParsing="false" onAction="#buttonLoadClicked" text="Load" />
             <Region HBox.hgrow="ALWAYS" />
-            <Button mnemonicParsing="false" text="New" />
-            <Button mnemonicParsing="false" text="Delete" />
+            <Button fx:id="newButton" mnemonicParsing="false" onAction="#buttonNewClicked" text="New" />
+            <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#buttonDeleteClicked" text="Delete" />
          </children>
          <opaqueInsets>
             <Insets />
