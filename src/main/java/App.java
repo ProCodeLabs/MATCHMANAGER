@@ -8,8 +8,6 @@ import ui.Helper.UiBaseContainer;
 
 import java.util.logging.Logger;
 
-//Test
-
 public class App extends Application
 {
 	final Logger log = Logger.getLogger( this.getClass( ).getName( ) );
@@ -46,10 +44,6 @@ public class App extends Application
 			scene.getStylesheets( ).clear( );
 			//scene.getStylesheets( ).add( css );
 			scene.getStylesheets( ).add( css2 );
-
-			//scene.getStylesheets().add( "styles/buttonStyles.css" );
-			//scene.getStylesheets( ).add( "styles/metroTheme.css" );
-			//scene.getStylesheets( ).add( "styles/styles.css" );
 
 			primaryStage.setScene( scene );
 			primaryStage.show( );

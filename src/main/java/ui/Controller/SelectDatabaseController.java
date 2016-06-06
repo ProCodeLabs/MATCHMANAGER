@@ -20,11 +20,12 @@ public class SelectDatabaseController implements Initializable
 {
 	private ObservableList<String> list = FXCollections.observableArrayList( );
 
-
 	@FXML
 	Button newButton;
+
 	@FXML
 	Button loadButton;
+
 	@FXML
 	Button deleteButton;
 
@@ -89,9 +90,9 @@ public class SelectDatabaseController implements Initializable
 	}
 
 	public String getSelectedPath( )
-	{
-		return path + File.separator + getSelected( );
-	}
+{
+	return path + File.separator + getSelected( );
+}
 
 	public void scanDataFolder( ObservableList<String> data )
 	{
