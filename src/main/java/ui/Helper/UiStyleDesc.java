@@ -1,0 +1,168 @@
+package ui.Helper;
+
+import javafx.application.Platform;
+import javafx.geometry.Insets;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
+import javafx.stage.Stage;
+
+import java.util.Optional;
+
+
+public class UiStyleDesc
+{
+	static final int RESIZE_RECT_SIZE = 18;
+	static final int RESIZE_RECT_MIN_SIZE = 50;
+
+
+	boolean _isDragged = false;
+	boolean _isResizing = false;
+
+	double _xOffset = 0;
+	double _yOffset = 0;
+
+
+	HBox _titleBar = new HBox( );
+	Label _titleLabel = new Label( );
+
+
+	//////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	public UiStyleDesc( Pane target )
+	{
+		_titleLabel.setPadding( new Insets( 10 ) );
+		_titleLabel.getStyleClass( ).add( "heading" );
+
+		initializeTitleButtons( target );
+		initializeEventFilter( target );
+	}
+
+
+
+	void initializeTitleButtons( Pane target )
+	{
+		Region region = new Region( );
+		{
+			_titleBar.setHgrow( region, Priority.ALWAYS );
+		}
+
+		Button btnClose = new Button( );
+		{
+			btnClose.setPadding( new Insets( 10 ) );
+			btnClose.setStyle( "-fx-font-size: 1.2em" );
+			btnClose.setOnAction( e -> {
+				Alert alert = new Alert( Alert.AlertType.CONFIRMATION );
+				alert.setTitle( "Close?" );
+				alert.setHeaderText( "Close?" );
+				alert.setContentText( "Are you sure you want to Close this Window?" );
+
+				Optional<ButtonType> result = alert.showAndWait( );
+				if( result.get( ) == ButtonType.OK )
+				{
+					Platform.exit( );
+					System.exit( 0 );
+				}
+			} );
+
+		}
+		btnClose.setStyle( "-fx-font-family: FontAwesome;" );
+		btnClose.getStyleClass( ).add( "button-icon" );
+		btnClose.setText( FontAwesome.ICON_REMOVE );
+
+
+		Button btnMinimize = new Button( );
+		{
+			btnMinimize.setOnAction( e -> ( ( Stage ) target.getScene( ).getWindow( ) ).setIconified( true ) );
+		}
+		btnMinimize.setStyle( "-fx-font-size: 1.2em" );
+		btnMinimize.setStyle( "-fx-font-family: FontAwesome" );
+		btnMinimize.getStyleClass( ).add( "button-icon" );
+		btnMinimize.setText( FontAwesome.ICON_MINUS );
+
+		_titleBar.getChildren( ).addAll( _titleLabel, region, btnMinimize, btnClose );
+	}
+
+	void initializeEventFilter( Pane target )
+	{
+
+		target.addEventFilter( MouseEvent.MOUSE_PRESSED, ( MouseEvent e ) -> {
+
+			Stage parent = ( Stage ) target.getScene( ).getWindow( );
+
+			if( e.getSceneY( ) <= _titleBar.getHeight( ) )
+			{
+				_xOffset = e.getSceneX( );
+				_yOffset = e.getSceneY( );
+				_isDragged = true;
+				_isResizing = false;
+
+				e.isConsumed( );
+			}
+			else if( e.getSceneX( ) >= parent.getWidth( ) - RESIZE_RECT_SIZE &&
+					e.getSceneY( ) >= parent.getHeight( ) - RESIZE_RECT_SIZE &&
+					e.getSceneX( ) <= parent.getWidth( ) &&
+					e.getSceneY( ) <= parent.getHeight( )
+					)
+			{
+				_xOffset = parent.getWidth( ) - e.getX( );
+				_yOffset = parent.getHeight( ) - e.getY( );
+				_isDragged = false;
+				_isResizing = true;
+
+				e.isConsumed( );
+			}
+		} );
+
+
+		target.addEventFilter( MouseEvent.MOUSE_RELEASED, ( MouseEvent e ) -> {
+			_isDragged = false;
+			_isResizing = false;
+		} );
+
+		target.addEventFilter( MouseEvent.MOUSE_DRAGGED, ( MouseEvent e ) -> {
+
+			Stage parent = ( Stage ) target.getScene( ).getWindow( );
+
+			if( _isDragged )
+			{
+				parent.setX( e.getScreenX( ) - _xOffset );
+				parent.setY( e.getScreenY( ) - _yOffset );
+
+				e.consume();
+			}
+			else if( _isResizing )
+			{
+				if( e.getX() + _xOffset >= RESIZE_RECT_MIN_SIZE )
+				{
+					parent.setWidth( e.getX( ) + _xOffset );
+				}
+
+				if( e.getY() + _yOffset >= RESIZE_RECT_MIN_SIZE )
+				{
+					parent.setHeight( e.getY( ) + _yOffset );
+				}
+
+				e.consume();
+			}
+		} );
+	}
+
+
+	public HBox getTitleBar( )
+	{
+		return _titleBar;
+	}
+
+	public void setTitle( String title )
+	{
+		_titleLabel.setText( title );
+	}
+
+}

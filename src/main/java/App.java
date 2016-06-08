@@ -4,7 +4,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
 import javafx.scene.text.Font;
 import javafx.stage.Modality;
@@ -12,6 +11,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import ui.Controller.SelectDatabaseController;
 import ui.Helper.UiBaseContainer;
+import ui.Helper.UiBaseDialog;
 
 import java.util.logging.Logger;
 
@@ -43,7 +43,6 @@ public class App extends Application
 			UiBaseContainer container = new UiBaseContainer( );
 			{
 				container.setCenter( "Select Database", SelectDatabaseController.RESOURCE_ID );
-				//container.setCenter( "Select Database", FXMLLoader.load( getClass( ).getResource( SelectDatabaseController.RESOURCE_ID ) ) );
 			}
 
 
@@ -59,7 +58,7 @@ public class App extends Application
 
 
 
-			Dialog dlg = new Dialog();
+			UiBaseDialog dlg = new UiBaseDialog();
 
 			FXMLLoader loader = new FXMLLoader( getClass().getResource( "fxml/dialogs/editMatchDialog.fxml" ) );
 			DialogPane pain = loader.load( );
@@ -67,7 +66,6 @@ public class App extends Application
 			dlg.getDialogPane().setContent( pain );
 			dlg.initOwner( primaryStage );
 			dlg.initModality( Modality.APPLICATION_MODAL );
-			//dlg.initStyle( StageStyle.UNDECORATED );
 			dlg.setTitle( pain.getHeaderText() );
 			dlg.setResizable( false );
 
@@ -76,6 +74,7 @@ public class App extends Application
 			} );
 
 			dlg.show();
+
 
 		}
 		catch( Exception ex )

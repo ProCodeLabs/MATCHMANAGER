@@ -7,6 +7,8 @@ public class ResourceLoader
 
 	Class _appClass;
 
+
+
 	public ResourceLoader( Class appClass )
 	{
 		assert THIS_INSTANCE == null;
@@ -14,6 +16,8 @@ public class ResourceLoader
 		THIS_INSTANCE = this;
 		_appClass = appClass;
 	}
+
+
 
 	public  static Class getResourceClass()
 	{
