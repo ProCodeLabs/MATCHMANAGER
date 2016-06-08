@@ -1,5 +1,18 @@
 package ui.Controller;
 
-public class editMatchDialogController
+import javafx.fxml.Initializable;
+
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class editMatchDialogController implements Initializable
 {
+
+
+	@Override
+	public void initialize( URL location, ResourceBundle resources )
+	{
+	}
+
+
 }
