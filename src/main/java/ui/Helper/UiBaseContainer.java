@@ -20,6 +20,7 @@ import java.util.logging.Logger;
 public class UiBaseContainer extends BorderPane
 {
 	static final int RESIZE_RECT_SIZE = 18;
+	static final int RESIZE_RECT_MIN_SIZE = 50;
 
 	final Logger log = Logger.getLogger( this.getClass( ).getName( ) );
 
@@ -46,8 +47,7 @@ public class UiBaseContainer extends BorderPane
 
 	void addEventFilters( )
 	{
-		//TODO: fix multiple monitor movement bug
-		this.addEventFilter( MouseEvent.MOUSE_PRESSED, ( MouseEvent e ) -> {
+		addEventFilter( MouseEvent.MOUSE_PRESSED, ( MouseEvent e ) -> {
 			Stage parent = ( Stage ) getScene( ).getWindow( );
 
 			if( e.getSceneY( ) <= _titleBar.getHeight( ) )
@@ -61,7 +61,8 @@ public class UiBaseContainer extends BorderPane
 			}
 			else if( e.getSceneX( ) >= parent.getWidth( ) - RESIZE_RECT_SIZE &&
 					e.getSceneY( ) >= parent.getHeight( ) - RESIZE_RECT_SIZE &&
-					e.getSceneX( ) <= parent.getWidth( ) && e.getSceneY( ) <= parent.getHeight( )
+					e.getSceneX( ) <= parent.getWidth( ) &&
+					e.getSceneY( ) <= parent.getHeight( )
 					)
 			{
 				_xOffset = parent.getWidth( ) - e.getX( );
@@ -74,12 +75,12 @@ public class UiBaseContainer extends BorderPane
 		} );
 
 
-		this.addEventFilter( MouseEvent.MOUSE_RELEASED, ( MouseEvent e ) -> {
+		addEventFilter( MouseEvent.MOUSE_RELEASED, ( MouseEvent e ) -> {
 			_isDragged = false;
 			_isResizing = false;
 		} );
 
-		this.addEventFilter( MouseEvent.MOUSE_DRAGGED, ( MouseEvent e ) -> {
+		addEventFilter( MouseEvent.MOUSE_DRAGGED, ( MouseEvent e ) -> {
 			Stage parent = ( Stage ) getScene( ).getWindow( );
 
 			if( _isDragged )
@@ -91,12 +92,12 @@ public class UiBaseContainer extends BorderPane
 			}
 			else if( _isResizing )
 			{
-				if( e.getX() + _xOffset > 50 )
+				if( e.getX() + _xOffset >= RESIZE_RECT_MIN_SIZE )
 				{
 					parent.setWidth( e.getX( ) + _xOffset );
 				}
 
-				if( e.getY() + _yOffset > 50 )
+				if( e.getY() + _yOffset >= RESIZE_RECT_MIN_SIZE )
 				{
 					parent.setHeight( e.getY( ) + _yOffset );
 				}

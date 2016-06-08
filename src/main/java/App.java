@@ -1,7 +1,12 @@
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.DialogPane;
 import javafx.scene.text.Font;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import ui.Helper.UiBaseContainer;
@@ -50,7 +55,7 @@ public class App extends Application
 			primaryStage.setScene( scene );
 			primaryStage.show( );
 
-			/*
+
 
 			Dialog dlg = new Dialog();
 
@@ -60,12 +65,16 @@ public class App extends Application
 			dlg.getDialogPane().setContent( pain );
 			dlg.initOwner( primaryStage );
 			dlg.initModality( Modality.APPLICATION_MODAL );
+			//dlg.initStyle( StageStyle.UNDECORATED );
 			dlg.setTitle( pain.getHeaderText() );
 			dlg.setResizable( false );
 
+			pain.lookupButton( ButtonType.CLOSE ).addEventFilter( ActionEvent.ACTION, e ->{
+				System.out.println( "TOPKEK" );
 
+			} );
 			dlg.show();
-			*/
+
 
 
 			/*Stage dlgStage = new Stage();
