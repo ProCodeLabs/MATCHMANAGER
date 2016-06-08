@@ -1,9 +1,10 @@
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
+import javafx.scene.control.DialogPane;
 import javafx.scene.text.Font;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import ui.Helper.UiBaseContainer;
@@ -51,13 +52,40 @@ public class App extends Application
 			primaryStage.setScene( scene );
 			primaryStage.show( );
 
-			/*Stage dialog = new Stage();
-			dialog.initStyle(StageStyle.UTILITY);
-			Scene dialogScene = new Scene(FXMLLoader.load( getClass().getResource( "fxml/dialogs/editPlayerDialog.fxml" ) ));
-			dialogScene.getStylesheets().add( css2 );
-			dialog.setScene(dialogScene);
-			dialog.show();
+
+			Dialog dlg = new Dialog();
+
+			FXMLLoader loader = new FXMLLoader( getClass().getResource( "fxml/dialogs/editMatchDialog.fxml" ) );
+			DialogPane pain = loader.load( );
+
+			dlg.getDialogPane().setContent( pain );
+			dlg.initOwner( primaryStage );
+			dlg.initModality( Modality.APPLICATION_MODAL );
+			dlg.setTitle( pain.getHeaderText() );
+			dlg.setResizable( false );
+
+			dlg.setResultConverter( e ->{
+				return null;
+			} );
+			dlg.show();
+
+
+
+			/*Stage dlgStage = new Stage();
+			dlgStage.setTitle( pain.getHeaderText() );
+
+			dlgStage.setResizable( false );
+			dlgStage.initModality( Modality.APPLICATION_MODAL );
+			dlgStage.initOwner( primaryStage );
+			Scene s = new Scene( pain );
+			dlgStage.setScene( s );
+
+
+
+			dlgStage.show();
+
 			*/
+			/*
 			Dialog<ButtonType> dlg = new Dialog<>();
 			dlg.setTitle( "ss" );
 			dlg.initStyle( StageStyle.UNDECORATED );
@@ -68,7 +96,7 @@ public class App extends Application
 					dlg.close();
 				}
 			} );
-
+			*/
 
 		}
 		catch( Exception ex )
