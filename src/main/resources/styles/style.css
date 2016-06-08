@@ -210,9 +210,7 @@ TextField {
     -fx-max-height: 1.5em;
 
     -fx-background-insets: -1.4, 0, 1;
-    -fx-background-radius: 1.4, 0, 0;
     -fx-padding: 10; /* 0.083333em; */
-
 
     /*-fx-font-size: 1.5em;*/
     -fx-background-radius: 0;
