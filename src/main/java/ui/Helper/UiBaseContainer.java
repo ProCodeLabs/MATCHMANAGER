@@ -86,11 +86,22 @@ public class UiBaseContainer extends BorderPane
 			{
 				parent.setX( e.getScreenX( ) - _xOffset );
 				parent.setY( e.getScreenY( ) - _yOffset );
+
+				e.consume();
 			}
 			else if( _isResizing )
 			{
-				parent.setWidth( e.getX( ) + _xOffset );
-				parent.setHeight( e.getY( ) + _yOffset );
+				if( e.getX() + _xOffset > 50 )
+				{
+					parent.setWidth( e.getX( ) + _xOffset );
+				}
+
+				if( e.getY() + _yOffset > 50 )
+				{
+					parent.setHeight( e.getY( ) + _yOffset );
+				}
+
+				e.consume();
 			}
 
 		} );

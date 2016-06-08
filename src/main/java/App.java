@@ -1,10 +1,7 @@
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.DialogPane;
 import javafx.scene.text.Font;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import ui.Helper.UiBaseContainer;
@@ -53,6 +50,7 @@ public class App extends Application
 			primaryStage.setScene( scene );
 			primaryStage.show( );
 
+			/*
 
 			Dialog dlg = new Dialog();
 
@@ -65,11 +63,9 @@ public class App extends Application
 			dlg.setTitle( pain.getHeaderText() );
 			dlg.setResizable( false );
 
-			dlg.setResultConverter( e ->{
-				return false;
-			} );
-			dlg.show();
 
+			dlg.show();
+			*/
 
 
 			/*Stage dlgStage = new Stage();
