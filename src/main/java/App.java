@@ -66,7 +66,7 @@ public class App extends Application
 			dlg.setResizable( false );
 
 			dlg.setResultConverter( e ->{
-				return null;
+				return false;
 			} );
 			dlg.show();
 
