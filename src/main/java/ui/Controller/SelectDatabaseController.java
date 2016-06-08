@@ -18,6 +18,8 @@ import static Common.Files.path;
 
 public class SelectDatabaseController implements Initializable
 {
+	public static final String RESOURCE_ID = "fxml/centerContent/selectDatabase.fxml";
+
 	private ObservableList<String> list = FXCollections.observableArrayList( );
 
 	@FXML

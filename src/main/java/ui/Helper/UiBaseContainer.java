@@ -1,6 +1,8 @@
 package ui.Helper;
 
+import Common.ResourceLoader;
 import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -13,8 +15,10 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.Optional;
 import java.util.logging.Logger;
+
 
 
 public class UiBaseContainer extends BorderPane
@@ -78,6 +82,8 @@ public class UiBaseContainer extends BorderPane
 		addEventFilter( MouseEvent.MOUSE_RELEASED, ( MouseEvent e ) -> {
 			_isDragged = false;
 			_isResizing = false;
+
+			e.consume();
 		} );
 
 		addEventFilter( MouseEvent.MOUSE_DRAGGED, ( MouseEvent e ) -> {
@@ -155,6 +161,13 @@ public class UiBaseContainer extends BorderPane
 		setTop( _titleBar );
 	}
 
+	public void setCenter( String title, String resourceId ) throws IOException
+	{
+		FXMLLoader loader = new FXMLLoader( ResourceLoader.getResourceClass().getResource( resourceId ) );
+
+		setTitle( title );
+		setCenter( loader.load() );
+	}
 
 	public void setTitle( String title )
 	{
