@@ -49,13 +49,21 @@
     -fx-padding: 1; /* 0.083333em; */
 }
 
-button {
+.heading {
+    -fx-font-size: 1.5em;
+    -fx-font-weight:bold ;
+}
+
+Button {
     -fx-border-style: none;
     -fx-background-color: #212121;
     -fx-text-fill: white;
 }
 
-.heading {
-    -fx-font-size: 1.5em;
-    -fx-font-weight:bold ;
+Button:hover {
+    -fx-background-color: #3d3e43;
+}
+
+Button:pressed {
+    -fx-background-color: #4078ed;
 }
