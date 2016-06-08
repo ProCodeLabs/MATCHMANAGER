@@ -3,31 +3,29 @@ package Common;
 
 public class ResourceLoader
 {
-	static ResourceLoader THIS_INSTANCE;
+	private static ResourceLoader _instance;
 
-	Class _appClass;
-
+	private Class _appClass;
 
 
 	public ResourceLoader( Class appClass )
 	{
-		assert THIS_INSTANCE == null;
+		assert _instance == null;
 
-		THIS_INSTANCE = this;
+		_instance = this;
 		_appClass = appClass;
 	}
 
 
-
-	public  static Class getResourceClass()
+	public static Class getResourceClass( )
 	{
-		return getInstance()._appClass;
+		return getInstance( )._appClass;
 	}
 
-	public static ResourceLoader getInstance()
+	public static ResourceLoader getInstance( )
 	{
-		assert THIS_INSTANCE != null;
+		assert _instance != null;
 
-		return THIS_INSTANCE;
+		return _instance;
 	}
 }

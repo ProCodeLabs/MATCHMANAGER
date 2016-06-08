@@ -1,17 +1,11 @@
 import Common.ResourceLoader;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.DialogPane;
 import javafx.scene.text.Font;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import ui.Controller.SelectDatabaseController;
 import ui.Helper.UiBaseContainer;
-import ui.Helper.UiBaseDialog;
 
 import java.util.logging.Logger;
 
@@ -31,8 +25,6 @@ public class App extends Application
 	{
 		try
 		{
-
-
 			primaryStage.initStyle( StageStyle.UNDECORATED );
 
 			Font.loadFont(
@@ -52,12 +44,11 @@ public class App extends Application
 			scene.getStylesheets( ).clear( );
 			scene.getStylesheets( ).add( css2 );
 
-
 			primaryStage.setScene( scene );
 			primaryStage.show( );
 
 
-
+			/*
 			UiBaseDialog dlg = new UiBaseDialog();
 
 			FXMLLoader loader = new FXMLLoader( getClass().getResource( "fxml/dialogs/editMatchDialog.fxml" ) );
@@ -74,14 +65,11 @@ public class App extends Application
 			} );
 
 			dlg.show();
-
-
+			*/
 		}
 		catch( Exception ex )
 		{
 			log.info( "Error in start: " + ex );
 		}
 	}
-
-
 }
