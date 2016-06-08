@@ -1,6 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ButtonType?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.DialogPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
 
 
-<DialogPane xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" />
+<DialogPane expanded="true" headerText="Edit Match" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.Controller.editMatchDialogController">
+   <content>
+      <VBox>
+         <children>
+            <HBox>
+               <children>
+                  <Label text="Datum" HBox.hgrow="ALWAYS">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </Label>
+                  <Region prefWidth="20.0" HBox.hgrow="ALWAYS" />
+                  <DatePicker />
+               </children>
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox>
+               <children>
+                  <Label text="Team A" HBox.hgrow="ALWAYS" />
+                  <Region HBox.hgrow="ALWAYS" />
+                  <ChoiceBox prefWidth="150.0" />
+               </children>
+            </HBox>
+            <HBox>
+               <children>
+                  <Label text="Team B" HBox.hgrow="ALWAYS" />
+                  <Region HBox.hgrow="ALWAYS" />
+                  <ChoiceBox prefWidth="150.0" />
+               </children>
+            </HBox>
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </VBox>
+   </content>
+   <buttonTypes>
+      <ButtonType fx:constant="CLOSE" />
+      <ButtonType fx:constant="APPLY" />
+   </buttonTypes>
+</DialogPane>
