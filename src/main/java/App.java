@@ -55,12 +55,13 @@ public class App extends Application
 
 			Dialog dlg = new Dialog();
 
-			FXMLLoader loader = new FXMLLoader( getClass().getResource( "fxml/dialogs/editMatchDialog.fxml" ) );
+			FXMLLoader loader = new FXMLLoader( getClass().getResource( "fxml/dialogs/editPlayerDialog.fxml" ) );
 			DialogPane pain = loader.load( );
 
 			dlg.getDialogPane().setContent( pain );
 			dlg.initOwner( primaryStage );
 			dlg.initModality( Modality.APPLICATION_MODAL );
+			dlg.initStyle( StageStyle.UNDECORATED );
 			dlg.setTitle( pain.getHeaderText() );
 			dlg.setResizable( false );
 
