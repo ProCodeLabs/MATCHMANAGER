@@ -66,7 +66,7 @@ public class App extends Application
 			dlg.getDialogPane().setContent( pain );
 			dlg.initOwner( primaryStage );
 			dlg.initModality( Modality.APPLICATION_MODAL );
-			dlg.setTitle( pain.getHeaderText() );
+			dlg.setDialogTitle( pain.getHeaderText() );
 			dlg.setResizable( false );
 
 			pain.lookupButton( ButtonType.CLOSE ).addEventFilter( ActionEvent.ACTION, e ->{

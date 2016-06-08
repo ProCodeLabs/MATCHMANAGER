@@ -6,19 +6,18 @@ import javafx.stage.StageStyle;
 
 public class UiBaseDialog<R> extends Dialog<R>
 {
-
 	UiStyleDesc desc;
 
 	public UiBaseDialog( )
 	{
-		super();
+		super( );
 		initStyle( StageStyle.UNDECORATED );
 
-		desc = new UiStyleDesc( getDialogPane() );
+		desc = new UiStyleDesc( getDialogPane( ), false );
+		desc.setOnCloseButton( ( ) -> getDialogPane( ).getScene( ).getWindow( ).hide( ) );
 
-		getDialogPane().setHeader( desc.getTitleBar() );
+		getDialogPane( ).setHeader( desc.getTitleBar( ) );
 	}
-
 
 	public void setDialogTitle( String text )
 	{
@@ -26,6 +25,4 @@ public class UiBaseDialog<R> extends Dialog<R>
 
 		setHeaderText( text );
 	}
-
-
 }
