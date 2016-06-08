@@ -1,0 +1,253 @@
+
+/*******************************************************************************
+ *                                                                             *
+ * Background Color : #2e2e2e                                                  *
+ * Pressed Color :  #4078ed                                                    *
+ * 2px -> 0.166667em                                                           *
+ *                                                                             *
+ ******************************************************************************/
+
+
+root {
+    -fx-background-color: #2e2e2e;
+    -fx-text-fill: white;
+}
+
+.background {
+    -fx-background-color: #2e2e2e;
+    -fx-text-fill: white;
+}
+
+.h1 {
+    -fx-font-size: 2em;
+}
+
+.h2 {
+    -fx-font-size: 1.75em;
+}
+
+.h3 {
+    -fx-font-size: 1.5em;
+}
+
+.h4 {
+    -fx-font-size: 1.25em;
+}
+
+.bold {
+    -fx-font-weight: bold;
+}
+
+.light {
+    -fx-font-weight: lighter;
+}
+
+Label {
+    -fx-text-fill: white;
+}
+
+
+/*******************************************************************************
+ *                                                                             *
+ * Button                                                                      *
+ *                                                                             *
+ ******************************************************************************/
+Button {
+    -fx-spacing: 5;
+    -fx-background-radius: 0;
+    -fx-border-style:solid;
+    -fx-border-color: white;
+    -fx-border-width: 0.166667em;
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+}
+
+Button:hover {
+    -fx-background-color: #3d3e43;
+}
+
+Button:pressed {
+    -fx-background-color: #4078ed;
+}
+
+
+/*******************************************************************************
+ *                                                                             *
+ * ChoiceBox                                                                   *
+ *                                                                             *
+ ******************************************************************************/
+ChoiceBox {
+    -fx-background-radius: 0.166667em;
+    -fx-border-radius: 0.166667em;
+    -fx-border-style: solid;
+    -fx-border-color: white;
+    -fx-background-color: #353535;
+    -fx-text-fill: white;
+}
+
+ChoiceBox .context-menu {
+    -fx-background-radius: 0;
+    -fx-border-style: none;
+    -fx-background-color: #353535;
+    -fx-text-fill: white;
+}
+
+ChoiceBox .menu-item .label {
+    -fx-text-fill: white;
+
+}
+
+ChoiceBox .menu-item:focused {
+    -fx-background-color: #4078ed;
+}
+
+ChoiceBox Label {
+    -fx-text-fill: white;
+}
+
+ChoiceBox Label .context-menu {
+    -fx-text-fill: white;
+}
+
+ChoiceBox:hover {
+    -fx-background-color: #3d3e43;
+}
+
+ChoiceBox:pressed {
+    -fx-background-color: #4078ed;
+}
+
+
+/*******************************************************************************
+ *                                                                             *
+ * DatePicker                                                                   *
+ *                                                                             *
+ ******************************************************************************/
+DatePicker {
+    -fx-background-radius: 0.166667em;
+    -fx-border-radius: 0.166667em;
+    -fx-border-style: solid;
+    -fx-border-color: white;
+    -fx-background-color: #353535;
+    -fx-text-fill: white;
+}
+
+DatePicker .date-picker-display-node {
+    -fx-background-color: #353535;
+    -fx-text-fill: white;
+}
+
+
+/*******************************************************************************
+ *                                                                             *
+ * ListView                                                                    *
+ *                                                                             *
+ ******************************************************************************/
+
+ListView .list-cell{
+    -fx-background-color: #353535;
+    -fx-text-fill: white;
+}
+
+ListView .list-cell:focused {
+    -fx-background-color: #4078ed;
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * DialogPane                                                                  *
+ *                                                                             *
+ ******************************************************************************/
+DialogPane {
+    -fx-background-color: #2e2e2e;
+    -fx-text-fill: white;
+    -fx-border-width: 0.166667em;
+    -fx-border-style: solid;
+    -fx-border-color: white;
+}
+
+DialogPane .button-bar .container .more .text {
+    -fx-fill: white;
+}
+
+
+/*******************************************************************************
+ *                                                                             *
+ * TitledPane                                                                  *
+ *                                                                             *
+ ******************************************************************************/
+TitledPane  {
+    -fx-background-color: #2e2e2e;
+    -fx-text-fill: white;
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * TextField                                                                   *
+ *                                                                             *
+ ******************************************************************************/
+TextField {
+    -fx-background-color: #353535;
+    -fx-border-style: solid;
+    -fx-border-color: white;
+    -fx-border-width: 0.166667em;
+    -fx-text-fill: white;
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * Util Buttons                                                                *
+ *                                                                             *
+ ******************************************************************************/
+.button-icon {
+    -fx-pref-height: 1.5em;
+    -fx-max-height: 1.5em;
+
+    -fx-background-insets: -1.4, 0, 1;
+    -fx-background-radius: 1.4, 0, 0;
+    -fx-padding: 10; /* 0.083333em; */
+
+
+    /*-fx-font-size: 1.5em;*/
+    -fx-background-radius: 0;
+    -fx-background-color: rgba(0,0,0,0.0);
+    -fx-border-style: none;
+    -fx-border-color: transparent;
+    -fx-text-fill: white;
+    -fx-border-radius: 0;
+}
+
+.button-icon:focused {
+
+    /*-fx-font-size: 1.5em;*/
+    -fx-border-style: none;
+    -fx-border-radius: 0;
+    -fx-border-color: transparent;
+}
+
+.button-icon:hover {
+
+    /*-fx-font-size: 1.5em;*/
+    -fx-border-radius: 0;
+    -fx-background-radius: 0;
+    -fx-border-style: none;
+    -fx-text-fill: #777777;
+    -fx-background-color: transparent;
+}
+
+.button-icon:pressed {
+
+    /*-fx-font-size: 1.5em;*/
+    -fx-border-radius: 0;
+    -fx-border-width: 0;
+    -fx-background-radius: 0;
+    -fx-border-style: none;
+    -fx-text-fill:#4078ed;
+    -fx-background-color: transparent;
+}
+
+.list-view:focused {
+    -fx-background-insets: -1.4, 0, 1;
+    -fx-background-radius: 1.4, 0, 0;
+    -fx-padding: 1; /* 0.083333em; */
+}

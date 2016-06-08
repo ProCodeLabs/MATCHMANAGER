@@ -42,12 +42,11 @@ public class App extends Application
 
 			Scene scene = new Scene( container, 800, 400 );
 
-			//String css = App.class.getResource( "styles/MetroTheme.css" ).toExternalForm( );
-			String css2 = App.class.getResource( "styles/buttonStyles.css" ).toExternalForm( );
-			scene.getStylesheets( ).clear( );
-			//scene.getStylesheets( ).add( css );
-			scene.getStylesheets( ).add( css2 );
 
+
+			String css = App.class.getResource( "styles/style.css" ).toExternalForm( );
+			scene.getStylesheets( ).clear( );
+			scene.getStylesheets( ).add( css );
 
 			primaryStage.setScene( scene );
 			primaryStage.show( );
@@ -61,7 +60,9 @@ public class App extends Application
 			*/
 			Dialog<ButtonType> dlg = new Dialog<>();
 			dlg.setTitle( "ss" );
-			dlg.setDialogPane( FXMLLoader.load( getClass().getResource( "fxml/dialogs/editPlayerDialog.fxml" ) ) );
+			dlg.initStyle( StageStyle.UNDECORATED );
+			dlg.setDialogPane( FXMLLoader.load( getClass().getResource( "fxml/dialogs/editTeamDialog.fxml" ) ) );
+
 			dlg.showAndWait().ifPresent( result -> {
 				if (result == ButtonType.CLOSE) {
 					dlg.close();

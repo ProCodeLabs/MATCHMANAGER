@@ -38,10 +38,11 @@ public class UiBaseContainer extends BorderPane
 
 	public UiBaseContainer( )
 	{
+		this.getStyleClass().add( "background" );
 		addEventFilters( );
 		addTitleButtons( );
 		_titleLabel.setPadding( new Insets( 10 ) );
-		_titleLabel.getStyleClass().add( "heading" );
+		_titleLabel.getStyleClass().add( "h1" );
 	}
 
 	void addEventFilters( )

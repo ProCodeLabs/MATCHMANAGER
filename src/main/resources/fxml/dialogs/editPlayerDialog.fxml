@@ -5,21 +5,18 @@
 <?import javafx.scene.control.ButtonType?>
 <?import javafx.scene.control.DialogPane?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 
-<DialogPane xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
+<DialogPane stylesheets="@../../styles/style.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
    <header>
-      <Label text="EDIT PLAYER">
+      <Label styleClass="h1" text="EDIT PLAYER">
          <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </padding>
-         <font>
-            <Font name="System Bold" size="12.0" />
-         </font>
       </Label>
    </header>
    <content>
@@ -27,13 +24,7 @@
          <children>
             <HBox>
                <children>
-                  <Label text="Surname" HBox.hgrow="ALWAYS">
-                     <HBox.margin>
-                        <Insets right="10.0" />
-                     </HBox.margin>
-                  </Label>
-                  <Region HBox.hgrow="ALWAYS" />
-                  <TextField HBox.hgrow="ALWAYS" />
+                  <TextField promptText="SURNAME" HBox.hgrow="ALWAYS" />
                </children>
                <VBox.margin>
                   <Insets bottom="10.0" />
@@ -41,13 +32,7 @@
             </HBox>
             <HBox>
                <children>
-                  <Label text="Lastname" HBox.hgrow="ALWAYS">
-                     <HBox.margin>
-                        <Insets right="10.0" />
-                     </HBox.margin>
-                  </Label>
-                  <Region HBox.hgrow="ALWAYS" />
-                  <TextField HBox.hgrow="ALWAYS" />
+                  <TextField promptText="LASTNAME" HBox.hgrow="ALWAYS" />
                </children>
                <VBox.margin>
                   <Insets bottom="10.0" />
@@ -56,9 +41,22 @@
             <HBox>
                <children>
                   <Region HBox.hgrow="ALWAYS" />
-                  <Button mnemonicParsing="false" text="ADD" />
+                  <Button mnemonicParsing="false" text="DELETE">
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button mnemonicParsing="false" text="ADD">
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin></Button>
                </children>
             </HBox>
+            <Separator prefWidth="200.0">
+               <VBox.margin>
+                  <Insets bottom="5.0" top="5.0" />
+               </VBox.margin>
+            </Separator>
          </children>
       </VBox>
    </content>

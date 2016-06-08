@@ -39,7 +39,7 @@
       </HBox>
    </children>
    <stylesheets>
-      <URL value="@../../styles/buttonStyles.css" />
+      <URL value="@../../styles/style.css" />
       <URL value="@../../styles/MetroTheme.css" />
    </stylesheets>
 </VBox>
