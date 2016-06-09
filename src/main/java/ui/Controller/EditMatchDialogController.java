@@ -8,7 +8,7 @@ import javafx.scene.control.DatePicker;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class EditMatchDialogController_ implements Initializable
+public class EditMatchDialogController implements Initializable
 {
 	@FXML
 	DatePicker _datePicker;

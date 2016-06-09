@@ -5,7 +5,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import ui.Controller.SelectDatabaseController_;
+import ui.Controller.SelectDatabaseController;
 import ui.Helper.UiBaseContainer;
 
 import java.util.logging.Logger;
@@ -34,7 +34,7 @@ public class App extends Application
 
 			UiBaseContainer container = new UiBaseContainer( );
 			{
-				container.setCenter( "Select Database", SelectDatabaseController_.RESOURCE_ID );
+				container.setCenter( "Select Database", SelectDatabaseController.RESOURCE_ID );
 			}
 
 			Scene scene = new Scene( container, 800, 400 );
