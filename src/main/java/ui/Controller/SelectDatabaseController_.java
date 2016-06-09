@@ -18,7 +18,7 @@ import java.util.logging.Logger;
 
 import static Common.Files.PATH;
 
-public class SelectDatabaseController implements Initializable
+public class SelectDatabaseController_ implements Initializable
 {
 	public static final String RESOURCE_ID = "fxml/centerContent/selectDatabase.fxml";
 
