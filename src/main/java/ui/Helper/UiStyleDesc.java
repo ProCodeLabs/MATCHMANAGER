@@ -42,7 +42,7 @@ public class UiStyleDesc
 	public UiStyleDesc( Pane target, boolean isContainer )
 	{
 		_titleLabel.setPadding( new Insets( 10 ) );
-		_titleLabel.getStyleClass( ).add( "heading" );
+		_titleLabel.getStyleClass( ).add( "h1" );
 		_isContainer = isContainer;
 
 		initializeTitleButtons( );
