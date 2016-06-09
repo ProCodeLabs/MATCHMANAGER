@@ -1,5 +1,6 @@
 package ui.Controller;
 
+import Common.LogLevel;
 import Common.TaskManager;
 import Database.Connection.DatabaseHandler;
 import javafx.application.Platform;
@@ -13,12 +14,17 @@ import java.io.File;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.logging.Logger;
 
-import static Common.Files.PATH;
+import static Common.Files.path;
 
 public class SelectDatabaseController implements Initializable
 {
-	private ObservableList<String> list = FXCollections.observableArrayList( );
+	public static final String RESOURCE_ID = "fxml/centerContent/selectDatabase.fxml";
+
+	final Logger log = Logger.getLogger( this.getClass( ).getName( ) );
+
+	ObservableList<String> _fileList = FXCollections.observableArrayList( );
 
 	@FXML
 	Button newButton;
@@ -32,6 +38,16 @@ public class SelectDatabaseController implements Initializable
 	@FXML
 	ListView<String> dataList;
 
+
+	@Override
+	public void initialize( URL location, ResourceBundle resources )
+	{
+		TaskManager.runUiTask( ( ) -> scanDataFolder( _fileList ) );
+		dataList.setItems( _fileList );
+	}
+
+
+
 	@FXML
 	public void buttonLoadClicked( )
 	{
@@ -43,8 +59,6 @@ public class SelectDatabaseController implements Initializable
 	@FXML
 	public void buttonNewClicked( )
 	{
-		//TODO: Touernamentname + File
-
 		TextInputDialog dialog = new TextInputDialog( "" );
 		dialog.setTitle( "Create Database" );
 		dialog.setHeaderText( "Create new Database" );
@@ -52,7 +66,7 @@ public class SelectDatabaseController implements Initializable
 		Optional<String> result = dialog.showAndWait( );
 		result.ifPresent( name -> {
 			DatabaseHandler.createNewDatabase( name );
-			list.add( name );
+			_fileList.add( name );
 		} );
 	}
 
@@ -68,20 +82,41 @@ public class SelectDatabaseController implements Initializable
 		if( result.get( ) == ButtonType.OK )
 		{
 			DatabaseHandler.deleteDatabase( getSelectedPath( ) );
-			list.remove( getSelected( ) );
+			_fileList.remove( getSelected( ) );
 		}
 
 
 	}
 
-	@Override
-	public void initialize( URL location, ResourceBundle resources )
+
+
+
+	public void scanDataFolder( ObservableList<String> data )
 	{
-		TaskManager.runUiTask( ( ) -> {
-			scanDataFolder( list );
-		} );
-		dataList.setItems( list );
+		String path = System.getProperty( "user.home" ) + File.separator + "Matchmanager";
+		File f = new File( path );
+		if( !f.exists( ) )
+		{
+			f.mkdir( ) ;
+		}
+
+		try
+		{
+			for( File i : f.listFiles( ) )
+			{
+				if( i.getName().lastIndexOf( ".sqlite" ) > 0 )
+				{
+					String s = i.getName( ).replace( ".sqlite", "" );
+					Platform.runLater( ( ) -> data.add( s ) );
+				}
+			}
+		}
+		catch( NullPointerException e )
+		{
+			log.log( LogLevel.ERROR, "File is null! " + e.getMessage( ) );
+		}
 	}
+
 
 
 	public String getSelected( )
@@ -90,26 +125,7 @@ public class SelectDatabaseController implements Initializable
 	}
 
 	public String getSelectedPath( )
-{
-	return PATH + File.separator + getSelected( );
-}
-
-	public void scanDataFolder( ObservableList<String> data )
 	{
-		String path = System.getProperty( "user.home" ) + File.separator + "Matchmanager";
-		File f = new File( path );
-		if( f.exists( ) && !f.isDirectory( ) )
-		{
-			f.mkdir( );
-		}
-
-		for( File i : f.listFiles( ) )
-		{
-			String s = i.getName( ).replace( ".sqlite", "" );
-			Platform.runLater( ( ) -> {
-
-				data.add( s );
-			} );
-		}
+		return path + File.separator + getSelected( );
 	}
 }

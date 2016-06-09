@@ -10,27 +10,19 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<DialogPane expanded="true" stylesheets="@../../styles/style.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.Controller.editMatchDialogController">
+<DialogPane expanded="true" headerText="Edit Match" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.Controller.editMatchDialogController">
    <content>
       <VBox>
          <children>
-            <Label styleClass="h1" text="EDIT MATCH">
-               <VBox.margin>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </VBox.margin>
-            </Label>
             <HBox>
                <children>
                   <Label text="Datum" HBox.hgrow="ALWAYS">
                      <HBox.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                        <Insets />
                      </HBox.margin>
                   </Label>
                   <Region prefWidth="20.0" HBox.hgrow="ALWAYS" />
-                  <DatePicker prefWidth="150.0">
-                     <HBox.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </HBox.margin></DatePicker>
+                  <DatePicker fx:id="_datePicker" />
                </children>
                <VBox.margin>
                   <Insets top="5.0" />
@@ -38,28 +30,16 @@
             </HBox>
             <HBox>
                <children>
-                  <Label text="Team A" HBox.hgrow="ALWAYS">
-                     <HBox.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </HBox.margin></Label>
+                  <Label text="Team A" HBox.hgrow="ALWAYS" />
                   <Region HBox.hgrow="ALWAYS" />
-                  <ChoiceBox prefWidth="150.0">
-                     <HBox.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </HBox.margin></ChoiceBox>
+                  <ChoiceBox fx:id="_teamSelectA" prefWidth="150.0" />
                </children>
             </HBox>
             <HBox>
                <children>
-                  <Label text="Team B" HBox.hgrow="ALWAYS">
-                     <HBox.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </HBox.margin></Label>
+                  <Label text="Team B" HBox.hgrow="ALWAYS" />
                   <Region HBox.hgrow="ALWAYS" />
-                  <ChoiceBox prefWidth="150.0">
-                     <HBox.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </HBox.margin></ChoiceBox>
+                  <ChoiceBox fx:id="_teamSelectB" prefWidth="150.0" />
                </children>
             </HBox>
          </children>
