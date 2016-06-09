@@ -1,10 +1,12 @@
-import Common.ResourceLoader;
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.DialogPane;
 import javafx.scene.text.Font;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import ui.Controller.SelectDatabaseController;
 import ui.Helper.UiBaseContainer;
 
 import java.util.logging.Logger;
@@ -12,7 +14,6 @@ import java.util.logging.Logger;
 public class App extends Application
 {
 	final Logger log = Logger.getLogger( this.getClass( ).getName( ) );
-	final ResourceLoader loader = new ResourceLoader(getClass());
 
 
 	public static void main( String[] args )
@@ -34,38 +35,70 @@ public class App extends Application
 
 			UiBaseContainer container = new UiBaseContainer( );
 			{
-				container.setCenter( "Select Database", SelectDatabaseController.RESOURCE_ID );
+				container.setTitle( "Select Database" );
+				container.setCenter( FXMLLoader.load( getClass( ).getResource( "fxml/centerContent/selectDatabase.fxml" ) ) );
+				//container.setCenter( FXMLLoader.load( getClass().getResource( "fxml/dialogs/editPlayerDialog.fxml" ) ) );
 			}
 
 
 			Scene scene = new Scene( container, 800, 400 );
 
-			String css2 = getClass( ).getResource( "styles/buttonStyles.css" ).toExternalForm( );
+
+
+			String css = App.class.getResource( "styles/style.css" ).toExternalForm( );
 			scene.getStylesheets( ).clear( );
-			scene.getStylesheets( ).add( css2 );
+			scene.getStylesheets( ).add( css );
 
 			primaryStage.setScene( scene );
 			primaryStage.show( );
 
 
-			/*
-			UiBaseDialog dlg = new UiBaseDialog();
+			Dialog dlg = new Dialog();
 
-			FXMLLoader loader = new FXMLLoader( getClass().getResource( "fxml/dialogs/editMatchDialog.fxml" ) );
+			FXMLLoader loader = new FXMLLoader( getClass().getResource( "fxml/dialogs/editPlayerDialog.fxml" ) );
 			DialogPane pain = loader.load( );
 
 			dlg.getDialogPane().setContent( pain );
 			dlg.initOwner( primaryStage );
 			dlg.initModality( Modality.APPLICATION_MODAL );
-			dlg.setDialogTitle( pain.getHeaderText() );
+			dlg.initStyle( StageStyle.UNDECORATED );
+			dlg.setTitle( pain.getHeaderText() );
 			dlg.setResizable( false );
 
-			pain.lookupButton( ButtonType.CLOSE ).addEventFilter( ActionEvent.ACTION, e ->{
-				System.out.println( "TOPKEK" );
+			dlg.setResultConverter( e ->{
+				return null;
 			} );
-
 			dlg.show();
+
+
+
+			/*Stage dlgStage = new Stage();
+			dlgStage.setTitle( pain.getHeaderText() );
+
+			dlgStage.setResizable( false );
+			dlgStage.initModality( Modality.APPLICATION_MODAL );
+			dlgStage.initOwner( primaryStage );
+			Scene s = new Scene( pain );
+			dlgStage.setScene( s );
+
+
+
+			dlgStage.show();
+
 			*/
+			/*
+			Dialog<ButtonType> dlg = new Dialog<>();
+			dlg.setTitle( "ss" );
+			dlg.initStyle( StageStyle.UNDECORATED );
+			dlg.setDialogPane( FXMLLoader.load( getClass().getResource( "fxml/dialogs/editTeamDialog.fxml" ) ) );
+
+			dlg.showAndWait().ifPresent( result -> {
+				if (result == ButtonType.CLOSE) {
+					dlg.close();
+				}
+			} );
+			*/
+
 		}
 		catch( Exception ex )
 		{

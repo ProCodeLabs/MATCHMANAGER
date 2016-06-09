@@ -8,9 +8,11 @@
  ******************************************************************************/
 
 
-root {
+.root {
     -fx-background-color: #2e2e2e;
     -fx-text-fill: white;
+    -fx-focus-color: #4078ed ;
+    -fx-faint-focus-color: #4078ed;
 }
 
 .background {
@@ -137,6 +139,10 @@ DatePicker .date-picker-display-node {
     -fx-text-fill: white;
 }
 
+DatePicker .date-picker-popup > .month-year-pane {
+    -fx-background-color: #353535;
+    -fx-text-fill: white;
+}
 
 /*******************************************************************************
  *                                                                             *
@@ -204,9 +210,7 @@ TextField {
     -fx-max-height: 1.5em;
 
     -fx-background-insets: -1.4, 0, 1;
-    -fx-background-radius: 1.4, 0, 0;
     -fx-padding: 10; /* 0.083333em; */
-
 
     /*-fx-font-size: 1.5em;*/
     -fx-background-radius: 0;
