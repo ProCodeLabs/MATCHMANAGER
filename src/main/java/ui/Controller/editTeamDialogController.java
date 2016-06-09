@@ -1,5 +1,5 @@
 package ui.Controller;
 
-public class editTeamDialogController
+public class EditTeamDialogController
 {
 }

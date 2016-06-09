@@ -8,8 +8,10 @@ import javafx.scene.control.TreeView;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class mainViewController implements Initializable
+public class MainViewController implements Initializable
 {
+	public static final String RESOURCE_ID = "fxml/centerContent/mainView.fxml";
+
 	@FXML
 	TreeView<String> treeView;
 

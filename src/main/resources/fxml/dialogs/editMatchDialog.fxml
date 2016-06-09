@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<DialogPane expanded="true" headerText="Edit Match" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.Controller.editMatchDialogController">
+<DialogPane expanded="true" headerText="Edit Match" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.Controller.EditMatchDialogController">
    <content>
       <VBox>
          <children>

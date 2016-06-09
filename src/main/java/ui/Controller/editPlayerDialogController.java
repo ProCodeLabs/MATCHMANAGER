@@ -7,7 +7,7 @@ import javafx.scene.control.DialogPane;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class editPlayerDialogController implements Initializable
+public class EditPlayerDialogController implements Initializable
 {
 	@FXML
 	DialogPane p;
