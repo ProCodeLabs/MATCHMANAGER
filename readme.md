@@ -1,5 +1,5 @@
 #MATCHMANAGER
 
 Contributors:
-Clemens Susenbeth
+Clemens Susenbeth,
 Jonathan Klaiber
