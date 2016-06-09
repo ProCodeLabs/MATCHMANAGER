@@ -257,4 +257,6 @@ public class FontAwesome
 	public static final String ICON_FOLDER_CLOSE_ALT = "\uf114";
 	public static final String ICON_FOLDER_OPEN_ALT = "\uf115";
 
+	public static final String ICON_SMILE_o = "\uf11b";
+	public static final String ICON_FROWN_O = "\uf119";
 }

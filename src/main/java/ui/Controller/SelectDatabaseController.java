@@ -59,8 +59,6 @@ public class SelectDatabaseController implements Initializable
 	@FXML
 	public void buttonNewClicked( )
 	{
-		//TODO: Touernamentname + File
-
 		TextInputDialog dialog = new TextInputDialog( "" );
 		dialog.setTitle( "Create Database" );
 		dialog.setHeaderText( "Create new Database" );

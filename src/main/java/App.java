@@ -1,6 +1,7 @@
 import Common.ResourceLoader;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -22,27 +23,24 @@ public class App extends Application
 	@Override
 	public void start( final Stage primaryStage )
 	{
+		primaryStage.initStyle( StageStyle.UNDECORATED );
+
 		try
 		{
-			primaryStage.initStyle( StageStyle.UNDECORATED );
-
-			Font.loadFont(
-					getClass( ).getResource( "fonts/fontawesome-webfont.ttf" ).toExternalForm( ),
-					12
-			);
+			if( Font.loadFont( ResourceLoader.getResourceUrl( "fonts/fontawesome-webfont.ttf" ), 12 ) == null )
+			{
+				throw new Exception( "Failed to load font!" );
+			}
 
 			UiBaseContainer container = new UiBaseContainer( );
 			{
 				container.setCenter( "Select Database", SelectDatabaseController.RESOURCE_ID );
 			}
 
-
 			Scene scene = new Scene( container, 800, 400 );
 
-
-			String css = App.class.getResource( "styles/style.css" ).toExternalForm( );
 			scene.getStylesheets( ).clear( );
-			scene.getStylesheets( ).add( css );
+			scene.getStylesheets( ).add( ResourceLoader.getResourceUrl( "styles/style.css" ) );
 
 			primaryStage.setScene( scene );
 			primaryStage.show( );
@@ -67,7 +65,14 @@ public class App extends Application
 		}
 		catch( Exception ex )
 		{
-			log.info( "Error in start: " + ex );
+			log.info( "startup failed!" + ex );
+
+			Alert msgBox = new Alert( Alert.AlertType.ERROR);
+			{
+				msgBox.setHeaderText( "Startup failed! :( " );
+				msgBox.setContentText( ex.toString( ) );
+			}
+			msgBox.showAndWait();
 		}
 	}
 }

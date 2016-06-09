@@ -16,6 +16,10 @@ public class ResourceLoader
 		_appClass = appClass;
 	}
 
+	public static String getResourceUrl( String name )
+	{
+		return getResourceClass( ).getResource( name ).toExternalForm( );
+	}
 
 	public static Class getResourceClass( )
 	{

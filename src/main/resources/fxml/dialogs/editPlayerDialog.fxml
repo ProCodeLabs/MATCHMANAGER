@@ -24,7 +24,7 @@
          <children>
             <HBox>
                <children>
-                  <TextField promptText="SURNAME" HBox.hgrow="ALWAYS" />
+                  <TextField promptText="FORENAME" HBox.hgrow="ALWAYS" />
                </children>
                <VBox.margin>
                   <Insets bottom="10.0" />
@@ -32,7 +32,7 @@
             </HBox>
             <HBox>
                <children>
-                  <TextField promptText="LASTNAME" HBox.hgrow="ALWAYS" />
+                  <TextField promptText="SURNAME" HBox.hgrow="ALWAYS" />
                </children>
                <VBox.margin>
                   <Insets bottom="10.0" />

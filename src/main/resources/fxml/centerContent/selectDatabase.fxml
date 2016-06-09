@@ -38,8 +38,4 @@
          </padding>
       </HBox>
    </children>
-   <stylesheets>
-      <URL value="@../../styles/style.css" />
-      <URL value="@../../styles/MetroTheme.css" />
-   </stylesheets>
 </VBox>
