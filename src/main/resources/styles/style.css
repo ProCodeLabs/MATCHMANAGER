@@ -150,6 +150,11 @@ DatePicker .date-picker-popup > .month-year-pane {
  *                                                                             *
  ******************************************************************************/
 
+ListView {
+    -fx-background-color: #353535;
+}
+
+
 ListView .list-cell{
     -fx-background-color: #353535;
     -fx-text-fill: white;
