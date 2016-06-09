@@ -14,7 +14,7 @@ import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-import static Common.Files.path;
+import static Common.Files.PATH;
 
 public class SelectDatabaseController implements Initializable
 {
@@ -91,7 +91,7 @@ public class SelectDatabaseController implements Initializable
 
 	public String getSelectedPath( )
 {
-	return path + File.separator + getSelected( );
+	return PATH + File.separator + getSelected( );
 }
 
 	public void scanDataFolder( ObservableList<String> data )

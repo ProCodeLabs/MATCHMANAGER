@@ -5,7 +5,7 @@ import Common.LogLevel;
 import java.io.File;
 import java.util.logging.Logger;
 
-import static Common.Files.path;
+import static Common.Files.PATH;
 
 public class DatabaseHandler
 {
@@ -14,8 +14,8 @@ public class DatabaseHandler
 
 	public static void createNewDatabase( String name )
 	{
-		File f = new File( path+File.separator+name + ".sqlite" );
-		System.out.println(path+File.separator+name + ".sqlite");
+		File f = new File( PATH +File.separator+name + ".sqlite" );
+		System.out.println( PATH +File.separator+name + ".sqlite");
 		try
 		{
 			f.createNewFile( );
@@ -28,7 +28,7 @@ public class DatabaseHandler
 
 	public static void deleteDatabase( String name )
 	{
-		File f = new File( path+File.separator+name+".sqlite"  );
+		File f = new File( PATH +File.separator+name+".sqlite"  );
 		try
 		{
 			f.delete( );

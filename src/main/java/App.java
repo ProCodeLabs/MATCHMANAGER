@@ -1,8 +1,10 @@
+import Common.Files;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
+import javafx.scene.image.Image;
 import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -35,20 +37,24 @@ public class App extends Application
 
 			UiBaseContainer container = new UiBaseContainer( );
 			{
-				container.setTitle( "Select Database" );
-				container.setCenter( FXMLLoader.load( getClass( ).getResource( "fxml/centerContent/selectDatabase.fxml" ) ) );
-				//container.setCenter( FXMLLoader.load( getClass().getResource( "fxml/dialogs/editPlayerDialog.fxml" ) ) );
+				container.setTitle( "OVERVIEW" );
+				container.setCenter( FXMLLoader.load( getClass( ).getResource( "fxml/centerContent/mainView.fxml" ) ) );
 			}
 
 
 			Scene scene = new Scene( container, 800, 400 );
 
 
+			primaryStage.getIcons().add( new Image( getClass().getResourceAsStream( Files.ICON)));
+
 
 			String css = App.class.getResource( "styles/style.css" ).toExternalForm( );
 			scene.getStylesheets( ).clear( );
 			scene.getStylesheets( ).add( css );
 
+			//Scene testScene = new Scene (FXMLLoader.load(getClass().getResource( "fxml/centerContent/mainView.fxml" )));
+
+			//primaryStage.setScene( testScene );
 			primaryStage.setScene( scene );
 			primaryStage.show( );
 
@@ -68,7 +74,7 @@ public class App extends Application
 			dlg.setResultConverter( e ->{
 				return null;
 			} );
-			dlg.show();
+			//dlg.show();
 
 
 
