@@ -1,7 +1,6 @@
 package ui.Controller;
 
 import Core.Database.StorageManager;
-import Database.Connection.DatabaseHandler;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -97,7 +96,7 @@ public class SelectDatabaseController implements Initializable {
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
-            DatabaseHandler.deleteDatabase(getSelectedPath());
+            //DatabaseHandler.deleteDatabase(getSelectedPath());
             _fileList.remove(getSelected());
         }
 

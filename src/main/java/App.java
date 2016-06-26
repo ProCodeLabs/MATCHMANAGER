@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 
 public class App extends Application
 {
-	private final Logger log = Logger.getLogger( this.getClass( ).getName( ) );
+	private final Logger logger = Logger.getLogger( this.getClass( ).getName( ) );
 
 
 
@@ -62,7 +62,7 @@ public class App extends Application
 		}
 		catch( Exception ex )
 		{
-			log.info( "startup failed!" + ex );
+			logger.info( "startup failed!" + ex );
 
 			UiAlert msgBox = new UiAlert( Alert.AlertType.ERROR );
 			{
@@ -82,11 +82,11 @@ public class App extends Application
 
 			Exception e = ( Exception ) event.getEventData( );
 
-			log.log( LogLevel.ERROR, "Core error! " + e.getMessage( ) );
+			logger.log( LogLevel.CRITICAL, "Core error! " + e.getMessage( ) );
 
 			UiAlert msgBox = new UiAlert( Alert.AlertType.ERROR );
 			{
-				msgBox.setHeaderText( "something failed! :( " );
+				msgBox.setHeaderText( "something went wrong :( " );
 				msgBox.setContentText( e.getMessage( ) );
 				msgBox.addStackTraceArea( e );
 			}

@@ -13,30 +13,22 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Paths;
-import java.util.concurrent.CompletableFuture;
-import java.util.logging.Logger;
 
 
 public class StorageManager
 {
-	private static final String _storageFolder = System.getProperty( "user.home" ) + File.separator + "Matchmanager";
-	private static final String _fileStuffix = ".sqlite";
-	private static final Logger log = Logger.getLogger( StorageManager.class.getName( ) );
+	private static final String STORAGE_FOLDER = System.getProperty( "user.home" ) + File.separator + "Matchmanager";
+	private static final String FILE_EXT = ".sqlite";
 
 
 	public static void createDatabase( String name ) throws IOException
 	{
-		String path = _storageFolder + File.separator + name + _fileStuffix;
+		String path = StorageManager.createFilePath( name );
 
-		try
+		if( !StorageManager.isValidPath( name ) )
 		{
-			Paths.get( path );
+			throw new IOException( "Filename is invalid: " + path );
 		}
-		catch( InvalidPathException | NullPointerException e )
-		{
-			throw new IOException( "Path is malformed Path: " + path + " " + e.getMessage( ) );
-		}
-
 
 		File f = new File( path );
 
@@ -48,6 +40,7 @@ public class StorageManager
 		try
 		{
 			SqlJetDb db = SqlJetDb.open( f, true );
+			db.getOptions( ).setAutovacuum( true );
 			db.beginTransaction( SqlJetTransactionMode.WRITE );
 			try
 			{
@@ -57,6 +50,7 @@ public class StorageManager
 			{
 				db.commit( );
 			}
+
 			db.close( );
 		}
 		catch( SqlJetException e )
@@ -65,17 +59,35 @@ public class StorageManager
 		}
 	}
 
-	public static CompletableFuture<SqlJetDb> loadStorageFile( String name )
+	public static SqlJetDb loadDatabase( String name ) throws IOException
 	{
+		String path = StorageManager.createFilePath( name );
 
-		return null;
+		File f = new File( path );
+
+		if( !f.exists( ) || f.isDirectory( ) )
+		{
+			throw new IOException( "Failed to open database! file not found or file is directory!" );
+		}
+
+		SqlJetDb db;
+		try
+		{
+			db = SqlJetDb.open( f, true );
+			db.getOptions( ).setAutovacuum( true );
+		}
+		catch( SqlJetException e )
+		{
+			throw new IOException( "Failed to open database " + e.getMessage( ) );
+		}
+
+		return db;
 	}
-
 
 	public static void scanStorageFolderAsync( ObservableList<String> target )
 	{
 		TaskManager.runTask( ( ) -> {
-			File f = new File( _storageFolder );
+			File f = new File( STORAGE_FOLDER );
 
 			if( !f.exists( ) )
 			{
@@ -84,7 +96,7 @@ public class StorageManager
 			else if( !f.isDirectory( ) )
 			{
 				GlobalInstance.getPrimaryStage( ).fireEvent(
-						new UiEvent( UiEvent.CORE_EXCEPTION, new IOException( "Storage folder is a file ( " + _storageFolder + " )" ) )
+						new UiEvent( UiEvent.CORE_EXCEPTION, new IOException( "Storage folder is a file ( " + STORAGE_FOLDER + " )" ) )
 				);
 				return;
 			}
@@ -93,11 +105,16 @@ public class StorageManager
 			{
 				for( File i : f.listFiles( ) )
 				{
+					if( i.isDirectory() )
+					{
+						continue;
+					}
+
 					String name = i.getName( );
 
-					if( name.lastIndexOf( _fileStuffix ) > 0 )
+					if( name.lastIndexOf( FILE_EXT ) > 0 )
 					{
-						Platform.runLater( ( ) -> target.add( name.replace( _fileStuffix, "" ) ) );
+						Platform.runLater( ( ) -> target.add( name.replace( FILE_EXT, "" ) ) );
 					}
 				}
 			}
@@ -108,4 +125,22 @@ public class StorageManager
 		} );
 	}
 
+
+	private static String createFilePath( String databaseName )
+	{
+		return STORAGE_FOLDER + File.separator + databaseName + FILE_EXT;
+	}
+
+	private static boolean isValidPath( String path )
+	{
+		try
+		{
+			Paths.get( path );
+		}
+		catch( InvalidPathException | NullPointerException e )
+		{
+			return false;
+		}
+		return true;
+	}
 }

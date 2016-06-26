@@ -83,7 +83,8 @@ public class UiBaseDialog<R> extends Dialog<R>
 	{
 		try
 		{
-			return getNodeList( getContentPane( ) ).stream( )
+			return getNodeList( getContentPane( ) )
+					.stream( )
 					.filter( n -> n.getId( ) != null && n.getId( ).equals( id ) )
 					.findFirst( )
 					.get( );
