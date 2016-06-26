@@ -45,8 +45,15 @@ public class UiBaseContainer extends BorderPane
 	{
 		FXMLLoader loader = new FXMLLoader( ResourceLoader.getResourceClass( ).getResource( resourceId ) );
 
-		setTitle( title );
-		setCenter( loader.load( ) );
+		try
+		{
+			setTitle( title );
+			setCenter( loader.load() );
+		}
+		catch( IOException e )
+		{
+
+		}
 	}
 
 	public void setTitle( String title )

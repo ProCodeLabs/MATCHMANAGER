@@ -1,9 +1,7 @@
 package ui.Controller;
 
-import Common.LogLevel;
-import Common.TaskManager;
+import Core.Database.StorageManager;
 import Database.Connection.DatabaseHandler;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -41,7 +39,7 @@ public class SelectDatabaseController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        TaskManager.runUiTask(() -> scanDataFolder(_fileList));
+        StorageManager.scanStorageFolderAsync( _fileList );
         dataList.setItems(_fileList);
     }
 
@@ -70,8 +68,8 @@ public class SelectDatabaseController implements Initializable {
         dialog.setHeaderText("Create new Database");
         dialog.setContentText("Please enter a Database name:");
         Optional<String> result = dialog.showAndWait();
-        result.ifPresent(name -> {
-            DatabaseHandler.createNewDatabase(name);
+        result.ifPresent( name -> {
+            StorageManager.createStorageFile( name );
             _fileList.add(name);
         });
     }
@@ -91,27 +89,6 @@ public class SelectDatabaseController implements Initializable {
 
 
     }
-
-
-    public void scanDataFolder(ObservableList<String> data) {
-        String path = System.getProperty("user.home") + File.separator + "Matchmanager";
-        File f = new File(path);
-        if (!f.exists()) {
-            f.mkdir();
-        }
-
-        try {
-            for (File i : f.listFiles()) {
-                if (i.getName().lastIndexOf(".sqlite") > 0) {
-                    String s = i.getName().replace(".sqlite", "");
-                    Platform.runLater(() -> data.add(s));
-                }
-            }
-        } catch (NullPointerException e) {
-            log.log(LogLevel.ERROR, "File is null! " + e.getMessage());
-        }
-    }
-
 
     public String getSelected() {
         return dataList.getSelectionModel().getSelectedItem();

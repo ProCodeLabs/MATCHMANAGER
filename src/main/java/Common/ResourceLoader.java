@@ -4,7 +4,6 @@ package Common;
 public class ResourceLoader
 {
 	private static ResourceLoader _instance;
-
 	private Class _appClass;
 
 
@@ -16,6 +15,15 @@ public class ResourceLoader
 		_appClass = appClass;
 	}
 
+
+	public static ResourceLoader getInstance( )
+	{
+		assert _instance != null;
+		return _instance;
+	}
+
+
+
 	public static String getResourceUrl( String name )
 	{
 		return getResourceClass( ).getResource( name ).toExternalForm( );
@@ -26,10 +34,4 @@ public class ResourceLoader
 		return getInstance( )._appClass;
 	}
 
-	public static ResourceLoader getInstance( )
-	{
-		assert _instance != null;
-
-		return _instance;
-	}
 }
