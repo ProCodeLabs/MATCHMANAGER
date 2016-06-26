@@ -20,7 +20,7 @@ public class TaskManager
 		} );
 	}
 
-	public static void runUiTask( Runnable runnable )
+	public static void runTask( Runnable runnable )
 	{
 		ForkJoinPool.commonPool( ).execute( runnable );
 	}

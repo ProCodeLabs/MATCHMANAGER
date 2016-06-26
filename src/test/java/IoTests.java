@@ -1,4 +1,3 @@
-import Core.MatchManager;
 import junit.framework.TestCase;
 import org.junit.Test;
 
@@ -15,10 +14,7 @@ public class IoTests extends TestCase
 	@Test(expected = IOException.class)
 	public void testMatchManagerInvalidPath() throws Exception
 	{
-		MatchManager m = new MatchManager();
-		{
-			m.loadDatabase( "asdasdasd" );
-		}
+
 		assertTrue( true );
 	}
 

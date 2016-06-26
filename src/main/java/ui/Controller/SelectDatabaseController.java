@@ -6,7 +6,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ListView;
 import ui.Helper.UiBaseContainer;
 
 import java.io.File;
@@ -20,7 +23,7 @@ import static Common.Files.PATH;
 public class SelectDatabaseController implements Initializable {
     public static final String RESOURCE_ID = "fxml/centerContent/selectDatabase.fxml";
 
-    final Logger log = Logger.getLogger(this.getClass().getName());
+    final Logger logger = Logger.getLogger( this.getClass().getName());
 
     ObservableList<String> _fileList = FXCollections.observableArrayList();
 
@@ -63,7 +66,18 @@ public class SelectDatabaseController implements Initializable {
 
     @FXML
     public void buttonNewClicked() {
-        TextInputDialog dialog = new TextInputDialog("");
+
+        CreateDatabaseDialogController dlg = new CreateDatabaseDialogController( _fileList );
+        {
+            dlg.addResultHandler( ( /*res*/ ) -> {
+
+            } );
+
+            dlg.showDialog();
+        }
+
+
+       /* TextInputDialog dialog = new TextInputDialog("");
         dialog.setTitle("Create Database");
         dialog.setHeaderText("Create new Database");
         dialog.setContentText("Please enter a Database name:");
@@ -71,7 +85,7 @@ public class SelectDatabaseController implements Initializable {
         result.ifPresent( name -> {
             StorageManager.createStorageFile( name );
             _fileList.add(name);
-        });
+        });*/
     }
 
     @FXML

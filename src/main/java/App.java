@@ -1,4 +1,4 @@
-import Common.ResourceLoader;
+import Common.LogLevel;
 import Core.GlobalInstance;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -8,6 +8,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import ui.Controller.SelectDatabaseController;
+import ui.Dialog.ModalEx.UiAlert;
 import ui.Helper.UiBaseContainer;
 import ui.Helper.UiEvent;
 
@@ -16,7 +17,8 @@ import java.util.logging.Logger;
 public class App extends Application
 {
 	private final Logger log = Logger.getLogger( this.getClass( ).getName( ) );
-	private final ResourceLoader loader = new ResourceLoader( getClass( ) );
+
+
 
 	public App( )
 	{
@@ -27,6 +29,7 @@ public class App extends Application
 	{
 		launch( args );
 	}
+
 
 	@Override
 	public void start( final Stage primaryStage )
@@ -52,7 +55,7 @@ public class App extends Application
 			Scene scene = new Scene( container, 800, 400 );
 
 			scene.getStylesheets( ).clear( );
-			scene.getStylesheets( ).add( ResourceLoader.getResourceUrl( "styles/style.css" ) );
+			scene.getStylesheets( ).add( GlobalInstance.getResourceUrl( "styles/style.css" ) );
 
 			primaryStage.setScene( scene );
 			primaryStage.show( );
@@ -61,10 +64,11 @@ public class App extends Application
 		{
 			log.info( "startup failed!" + ex );
 
-			Alert msgBox = new Alert( Alert.AlertType.ERROR );
+			UiAlert msgBox = new UiAlert( Alert.AlertType.ERROR );
 			{
 				msgBox.setHeaderText( "Startup failed! :( " );
 				msgBox.setContentText( ex.toString( ) );
+				msgBox.addStackTraceArea( ex );
 			}
 			msgBox.showAndWait( );
 		}
@@ -73,10 +77,18 @@ public class App extends Application
 	private void addCriticalErrorHandler( final Stage primaryStage )
 	{
 		primaryStage.addEventHandler( UiEvent.CORE_EXCEPTION, event -> {
-			Alert msgBox = new Alert( Alert.AlertType.ERROR );
+			assert event.getEventData( ) instanceof Exception;
+
+
+			Exception e = ( Exception ) event.getEventData( );
+
+			log.log( LogLevel.ERROR, "Core error! " + e.getMessage( ) );
+
+			UiAlert msgBox = new UiAlert( Alert.AlertType.ERROR );
 			{
 				msgBox.setHeaderText( "something failed! :( " );
-				msgBox.setContentText( ( ( Exception ) event.getEventData() ).getMessage( ) );
+				msgBox.setContentText( e.getMessage( ) );
+				msgBox.addStackTraceArea( e );
 			}
 			msgBox.showAndWait( );
 
@@ -84,22 +96,4 @@ public class App extends Application
 			System.exit( 0 );
 		} );
 	}
-
 }
-
-			/*
-			UiBaseDialog dlg = new UiBaseDialog( );
-			FXMLLoader loader = new FXMLLoader( getClass( ).getResource( "fxml/dialogs/editPlayerDialog.fxml" ) );
-			DialogPane pane = loader.load( );
-
-			dlg.getDialogPane( ).setContent( pane );
-			dlg.initOwner( primaryStage );
-			dlg.setDialogTitle( pain.getHeaderText( ) );
-
-
-			pane.lookupButton( ButtonType.CLOSE ).addEventFilter( ActionEvent.ACTION, e -> {
-				System.out.println( "TOPKEK" );
-			} );
-
-			dlg.show( );
-			*/

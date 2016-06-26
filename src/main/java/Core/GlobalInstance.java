@@ -31,9 +31,17 @@ public class GlobalInstance
 
 
 
+
+
+	public static java.net.URL getResource( String resourceName )
+	{
+		return getAppClass( ).getResource( resourceName );
+	}
+
 	public static String getResourceUrl( String resourceName )
 	{
-		return getAppClass().getResource( resourceName ).toExternalForm();
+		return getResource( resourceName ).toExternalForm( );
 	}
+
 
 }
