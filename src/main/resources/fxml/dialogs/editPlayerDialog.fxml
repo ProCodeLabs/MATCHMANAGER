@@ -74,6 +74,6 @@
       </HBox>
    </expandableContent>
    <buttonTypes>
-      <ButtonType fx:constant="CLOSE" />
+      <ButtonType fx:constant="CANCEL" />
    </buttonTypes>
 </DialogPane>

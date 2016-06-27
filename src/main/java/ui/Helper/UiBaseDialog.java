@@ -20,10 +20,11 @@ import java.util.logging.Logger;
 
 public class UiBaseDialog<R> extends Dialog<R>
 {
-	final Logger logger = Logger.getLogger( this.getClass( ).getName( ) );
+	private final Logger logger = Logger.getLogger( this.getClass( ).getName( ) );
+
+	private UiStyleDesc desc;
 
 
-	UiStyleDesc desc;
 
 	public UiBaseDialog( )
 	{
@@ -31,7 +32,9 @@ public class UiBaseDialog<R> extends Dialog<R>
 		initStyle( StageStyle.UNDECORATED );
 
 		desc = new UiStyleDesc( getDialogPane( ), false );
-		desc.setOnCloseButton( ( ) -> getDialogPane( ).getScene( ).getWindow( ).hide( ) );
+		{
+			desc.setOnCloseButton( ( ) -> remoteClose( ) );
+		}
 
 		getDialogPane( ).setHeader( desc.getTitleBar( ) );
 	}

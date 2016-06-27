@@ -1,4 +1,4 @@
-package ui.Controller;
+package ui.Dialog;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -8,7 +8,7 @@ import javafx.scene.control.DatePicker;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class EditMatchDialogController implements Initializable
+public class EditMatchDialog implements Initializable
 {
 	@FXML
 	DatePicker _datePicker;

@@ -6,6 +6,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TreeView;
+import ui.Dialog.EditPlayerDialog;
 import ui.Helper.UiBaseContainer;
 
 import java.net.URL;
@@ -81,7 +82,11 @@ public class MainViewController implements Initializable
 	@FXML
 	public void buttonEditPlayerClicked()
 	{
+		EditPlayerDialog dlg = new EditPlayerDialog();
+		{
 
+		}
+		dlg.showDialog();
 	}
 
 

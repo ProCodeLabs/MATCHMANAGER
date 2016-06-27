@@ -1,4 +1,4 @@
-package ui.Controller;
+package ui.Dialog;
 
 import Common.GlobalInstance;
 import Common.ParamFunction;

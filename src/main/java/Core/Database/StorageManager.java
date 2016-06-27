@@ -1,5 +1,6 @@
 package Core.Database;
 
+import Core.Helper.CoreException;
 import Core.MatchManager;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
@@ -27,7 +28,7 @@ public class StorageManager
 		return supplyAsync( ( ) -> {
 			String path = StorageManager.createFilePath( name );
 
-			if( name.length() <= 0 )
+			if( name.length( ) <= 0 )
 			{
 				throw new CompletionException( new IOException( "Filename cannot be empty" ) );
 			}
@@ -101,6 +102,18 @@ public class StorageManager
 			}
 
 			return new MatchManager( db );
+		} ).thenApply( r -> {
+
+			try
+			{
+				r.fetchData( );
+			}
+			catch( CoreException e )
+			{
+				throw new CompletionException( e );
+			}
+
+			return r;
 		} );
 	}
 

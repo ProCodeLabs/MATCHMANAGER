@@ -11,6 +11,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ListView;
+import ui.Dialog.CreateDatabaseDialog;
 import ui.Dialog.ModalEx.UiAlert;
 import ui.Helper.UiBaseContainer;
 import ui.Helper.UiEvent;
@@ -22,8 +23,6 @@ import java.util.ResourceBundle;
 public class SelectDatabaseController implements Initializable
 {
 	public static final String RESOURCE_ID = "fxml/centerContent/selectDatabase.fxml";
-	public static final String RESOURCE_ID_DLG_DBCR = "fxml/dialogs/createDatabaseDialog.fxml";
-
 
 	private ObservableList<String> fileList = FXCollections.observableArrayList( );
 

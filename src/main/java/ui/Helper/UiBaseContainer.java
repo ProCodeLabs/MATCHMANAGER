@@ -1,16 +1,12 @@
 package ui.Helper;
 
 import Common.GlobalInstance;
-import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import ui.Dialog.ModalEx.UiAlert;
+import ui.Dialog.CloseAppDialog;
 
 import java.io.IOException;
-import java.util.Optional;
 
 
 public class UiBaseContainer extends BorderPane
@@ -21,18 +17,9 @@ public class UiBaseContainer extends BorderPane
 	public UiBaseContainer( )
 	{
 		desc.setOnCloseButton( ( ) -> {
-			UiAlert alert = new UiAlert( Alert.AlertType.CONFIRMATION );
+			CloseAppDialog dlg = new CloseAppDialog();
 			{
-				alert.setTitle( "Close?" );
-				alert.setHeaderText( "Close?" );
-				alert.setContentText( "Are you sure you want to Close this Window?" );
-			}
-
-			Optional<ButtonType> result = alert.showAndWait( );
-			if( result.get( ) == ButtonType.OK )
-			{
-				Platform.exit( );
-				System.exit( 0 );
+				dlg.showDialog( );
 			}
 		} );
 
