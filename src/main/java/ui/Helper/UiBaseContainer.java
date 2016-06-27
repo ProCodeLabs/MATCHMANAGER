@@ -45,7 +45,7 @@ public class UiBaseContainer extends BorderPane
 	{
 		FXMLLoader loader = new FXMLLoader( GlobalInstance.getResource( resourceId ) );
 		{
-			setTitle( title );
+			setTitle( title.toUpperCase() );
 		}
 
 		try

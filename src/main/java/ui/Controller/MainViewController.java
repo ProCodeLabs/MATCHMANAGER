@@ -3,8 +3,10 @@ package ui.Controller;
 import Core.MatchManager;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.TreeItem;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TreeView;
+import ui.Helper.UiBaseContainer;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -14,7 +16,26 @@ public class MainViewController implements Initializable
 	public static final String RESOURCE_ID = "fxml/centerContent/mainView.fxml";
 
 	@FXML
-	private TreeView<String> treeView;
+	public TreeView<String> matchList;
+
+	@FXML
+	public Button closeDbButton;
+
+	@FXML
+	public Button editMatchButton;
+
+	@FXML
+	public Button editTeamButton;
+
+	@FXML
+	public Button editPlayerButton;
+
+	@FXML
+	public Label teamALabel;
+
+	@FXML
+	public Label teamBLabel;
+
 
 	private MatchManager manager;
 
@@ -22,7 +43,7 @@ public class MainViewController implements Initializable
 	@Override
 	public void initialize( URL location, ResourceBundle resources )
 	{
-		TreeItem<String> rootItem = new TreeItem<String>( "MATCHES" );
+	/*	TreeItem<String> rootItem = new TreeItem<String>( "MATCHES" );
 		rootItem.setExpanded( true );
 		for( int i = 1; i < 6; i++ )
 		{
@@ -30,7 +51,37 @@ public class MainViewController implements Initializable
 			rootItem.getChildren( ).add( item );
 		}
 
-		treeView = new TreeView<>( rootItem );
+		treeView = new TreeView<>( rootItem );*/
+	}
+
+
+	@FXML
+	public void buttonCloseDbClicked()
+	{
+		manager.Close();
+
+		UiBaseContainer container = ( UiBaseContainer ) closeDbButton.getScene( ).getRoot( );
+		{
+			container.setCenter( "Select Database", SelectDatabaseController.RESOURCE_ID );
+		}
+	}
+
+	@FXML
+	public void buttonEditMatchClicked()
+	{
+
+	}
+
+	@FXML
+	public void buttonEditTeamClicked()
+	{
+
+	}
+
+	@FXML
+	public void buttonEditPlayerClicked()
+	{
+
 	}
 
 

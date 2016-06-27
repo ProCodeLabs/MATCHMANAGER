@@ -16,6 +16,10 @@ public class MatchManager
 
 	}
 
+	public void Close()
+	{
+
+	}
 
 
 

@@ -79,7 +79,6 @@ public class App extends Application
 		primaryStage.addEventHandler( UiEvent.CORE_EXCEPTION, event -> {
 			assert event.getEventData( ) instanceof Exception;
 
-
 			Exception e = ( Exception ) event.getEventData( );
 
 			logger.log( LogLevel.CRITICAL, "Core error! " + e.getMessage( ) );

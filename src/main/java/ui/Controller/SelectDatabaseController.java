@@ -7,51 +7,50 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ListView;
 import ui.Dialog.ModalEx.UiAlert;
 import ui.Helper.UiBaseContainer;
-import ui.Helper.UiBaseDialog;
 import ui.Helper.UiEvent;
 
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.logging.Logger;
 
 public class SelectDatabaseController implements Initializable
 {
 	public static final String RESOURCE_ID = "fxml/centerContent/selectDatabase.fxml";
 	public static final String RESOURCE_ID_DLG_DBCR = "fxml/dialogs/createDatabaseDialog.fxml";
 
-	final Logger logger = Logger.getLogger( this.getClass( ).getName( ) );
 
-	ObservableList<String> _fileList = FXCollections.observableArrayList( );
-
-	@FXML
-	Button newButton;
+	private ObservableList<String> fileList = FXCollections.observableArrayList( );
 
 	@FXML
-	Button loadButton;
+	public Button newButton;
 
 	@FXML
-	Button deleteButton;
+	private Button loadButton;
 
 	@FXML
-	ListView<String> dataList;
+	public Button deleteButton;
+
+	@FXML
+	public ListView<String> dataList;
 
 
 	@Override
 	public void initialize( URL location, ResourceBundle resources )
 	{
-		StorageManager.scanStorageFolderAsync( _fileList )
+		StorageManager.scanStorageFolderAsync( fileList )
 				.exceptionally( e -> {
 					GlobalInstance.getPrimaryStage( ).fireEvent( new UiEvent( UiEvent.CORE_EXCEPTION, e ) );
 
 					return null;
 				} );
-		dataList.setItems( _fileList );
+		dataList.setItems( fileList );
 	}
-
 
 	@FXML
 	public void buttonLoadClicked( )
@@ -61,8 +60,7 @@ public class SelectDatabaseController implements Initializable
 			return;
 		}
 
-		StorageManager
-				.loadDatabase( getSelectedName( ) )
+		StorageManager.loadDatabase( getSelectedName( ) )
 				.thenApply( result -> {
 					Platform.runLater( ( ) -> {
 						UiBaseContainer container = ( UiBaseContainer ) loadButton.getScene( ).getRoot( );
@@ -92,37 +90,11 @@ public class SelectDatabaseController implements Initializable
 	@FXML
 	public void buttonNewClicked( )
 	{
-		UiBaseDialog dlg = new UiBaseDialog( );
+		CreateDatabaseDialog dlg = new CreateDatabaseDialog( );
 		{
-			dlg.setContent( RESOURCE_ID_DLG_DBCR );
-			dlg.initOwner( GlobalInstance.getPrimaryStage( ) );
-			dlg.setDialogTitle( "CREATE DATABASE" );
-			dlg.addDefaultCloseButtonHandler( );
+			dlg.setResultHandler( r -> fileList.add( r ) );
 		}
-
-		dlg.addButtonEventHandler( ButtonType.APPLY, e -> {
-			String name = ( ( TextField ) dlg.getElementById( "ID_DB_NAME" ) ).getText( );
-
-			StorageManager.createDatabase( name )
-					.thenApply( r -> {
-						Platform.runLater( ( ) -> _fileList.add( name ) );
-						return null;
-					} )
-					.exceptionally( ex -> {
-						Platform.runLater( ( ) -> {
-							UiAlert msgBox = new UiAlert( Alert.AlertType.ERROR );
-							{
-								msgBox.setHeaderText( "Failed to create database" );
-								msgBox.setContentText( ex.getMessage( ) );
-							}
-							msgBox.showAndWait( );
-						} );
-
-						return null;
-					} );
-		} );
-
-		dlg.showAndWait( );
+		dlg.showDialog( );
 	}
 
 	@FXML
@@ -147,7 +119,7 @@ public class SelectDatabaseController implements Initializable
 
 			StorageManager.deleteDatabase( name )
 					.thenApply( r -> {
-						Platform.runLater( ( ) -> _fileList.remove( name ) );
+						Platform.runLater( ( ) -> fileList.remove( name ) );
 
 						return null;
 					} )
@@ -166,10 +138,10 @@ public class SelectDatabaseController implements Initializable
 		}
 	}
 
+
 	public String getSelectedName( )
 	{
 		return dataList.getSelectionModel( ).getSelectedItem( );
 	}
-
 
 }

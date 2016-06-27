@@ -27,6 +27,11 @@ public class StorageManager
 		return supplyAsync( ( ) -> {
 			String path = StorageManager.createFilePath( name );
 
+			if( name.length() <= 0 )
+			{
+				throw new CompletionException( new IOException( "Filename cannot be empty" ) );
+			}
+
 			if( !StorageManager.isValidPath( name ) )
 			{
 				throw new CompletionException( new IOException( "Filename is invalid: " + path ) );

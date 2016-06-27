@@ -14,23 +14,23 @@
    <children>
       <HBox>
          <children>
-            <Button mnemonicParsing="false" text="CLOSE DATABASE">
+            <Button mnemonicParsing="false" text="CLOSE DATABASE" fx:id="closeDbButton" onAction="#buttonCloseDbClicked">
                <HBox.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </HBox.margin>
             </Button>
 
-            <Button mnemonicParsing="false" text="EDIT MATCH">
+            <Button mnemonicParsing="false" text="EDIT MATCH" fx:id="editMatchButton" onAction="#buttonEditMatchClicked">
                <HBox.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </HBox.margin>
             </Button>
-            <Button mnemonicParsing="false" text="EDIT TEAM">
+            <Button mnemonicParsing="false" text="EDIT TEAM" fx:id="editTeamButton" onAction="#buttonEditTeamClicked">
                <HBox.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </HBox.margin>
             </Button>
-            <Button mnemonicParsing="false" text="EDIT PLAYER">
+            <Button mnemonicParsing="false" text="EDIT PLAYER" fx:id="editPlayerButton" onAction="#buttonEditPlayerClicked">
                <HBox.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </HBox.margin>
@@ -44,7 +44,7 @@
       </Separator>
       <HBox VBox.vgrow="ALWAYS">
          <children>
-            <TreeView fx:id="treeView">
+            <TreeView fx:id="matchList">
                <HBox.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </HBox.margin>
@@ -53,7 +53,7 @@
                <children>
                   <HBox prefHeight="48.0" prefWidth="190.0" VBox.vgrow="ALWAYS">
                      <children>
-                        <Label styleClass="h4" text="Label">
+                        <Label styleClass="h4" text="Label" fx:id="teamALabel">
                            <padding>
                               <Insets top="2.0" />
                            </padding>
@@ -68,7 +68,7 @@
                            </HBox.margin>
                         </Label>
                         <Region HBox.hgrow="ALWAYS" />
-                        <Label styleClass="h4" text="Label">
+                        <Label styleClass="h4" text="Label" fx:id="teamBLabel">
                            <padding>
                               <Insets top="2.0" />
                            </padding>

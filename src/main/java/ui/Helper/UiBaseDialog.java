@@ -36,10 +36,14 @@ public class UiBaseDialog<R> extends Dialog<R>
 		getDialogPane( ).setHeader( desc.getTitleBar( ) );
 	}
 
+	public void remoteClose()
+	{
+		getDialogPane( ).getScene( ).getWindow( ).hide( );
+	}
 
 	public void addDefaultCloseButtonHandler( )
 	{
-		addButtonEventHandler( ButtonType.CANCEL, e -> getDialogPane( ).getScene( ).getWindow( ).hide( ) );
+		addButtonEventHandler( ButtonType.CANCEL, e -> remoteClose( ) );
 	}
 
 	public void addButtonEventHandler( ButtonType type, EventHandler<ActionEvent> handler )
@@ -49,29 +53,6 @@ public class UiBaseDialog<R> extends Dialog<R>
 		getContentPane( ).lookupButton( type ).addEventHandler( ActionEvent.ACTION, handler );
 	}
 
-
-	public void setDialogTitle( String text )
-	{
-		desc.setTitle( text );
-
-		setHeaderText( text );
-	}
-
-	public void setContent( String resourceId )
-	{
-		FXMLLoader loader = new FXMLLoader( GlobalInstance.getResource( resourceId ) );
-
-		try
-		{
-			getDialogPane( ).setContent( loader.load( ) );
-		}
-		catch( IOException e )
-		{
-			GlobalInstance.getPrimaryStage( ).fireEvent(
-					new UiEvent( UiEvent.CORE_EXCEPTION, "Failed to load resource! ( " + resourceId + " )" + e.getMessage( ) )
-			);
-		}
-	}
 
 	public DialogPane getContentPane( )
 	{
@@ -115,6 +96,32 @@ public class UiBaseDialog<R> extends Dialog<R>
 				getElementsRecursive( ( Parent ) i, nodes );
 			}
 		} );
+	}
+
+
+
+
+	public void setDialogTitle( String text )
+	{
+		desc.setTitle( text );
+
+		setHeaderText( text );
+	}
+
+	public void setContent( String resourceId )
+	{
+		FXMLLoader loader = new FXMLLoader( GlobalInstance.getResource( resourceId ) );
+
+		try
+		{
+			getDialogPane( ).setContent( loader.load( ) );
+		}
+		catch( IOException e )
+		{
+			GlobalInstance.getPrimaryStage( ).fireEvent(
+					new UiEvent( UiEvent.CORE_EXCEPTION, "Failed to load resource! ( " + resourceId + " )" + e.getMessage( ) )
+			);
+		}
 	}
 
 
