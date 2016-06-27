@@ -6,7 +6,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TreeView;
+import ui.Dialog.EditMatchDialog;
 import ui.Dialog.EditPlayerDialog;
+import ui.Dialog.EditTeamDialog;
 import ui.Helper.UiBaseContainer;
 
 import java.net.URL;
@@ -70,12 +72,17 @@ public class MainViewController implements Initializable
 	@FXML
 	public void buttonEditMatchClicked()
 	{
+		EditMatchDialog dlg = new EditMatchDialog();
 
+		dlg.showDialog();
 	}
 
 	@FXML
 	public void buttonEditTeamClicked()
 	{
+		EditTeamDialog dlg= new EditTeamDialog();
+
+		dlg.showDialog();
 
 	}
 

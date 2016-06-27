@@ -1,41 +1,38 @@
 package ui.Dialog;
 
-import Common.GlobalInstance;
 import Common.ParamFunction;
 import Core.Database.StorageManager;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
-import ui.Dialog.Helper.IUiDialog;
+import ui.Dialog.Helper.UiDialog;
 import ui.Dialog.ModalEx.UiAlert;
-import ui.Helper.UiBaseDialog;
 
 
-public class CreateDatabaseDialog implements IUiDialog
+public class CreateDatabaseDialog extends UiDialog
 {
 	public static final String RESOURCE_ID = "fxml/dialogs/createDatabaseDialog.fxml";
 
 	private ParamFunction<String> resultHandler;
 
+	@Override
 	public void showDialog( )
 	{
-		UiBaseDialog dlg = new UiBaseDialog( );
 		{
-			dlg.setContent( RESOURCE_ID );
-			dlg.initOwner( GlobalInstance.getPrimaryStage( ) );
-			dlg.setDialogTitle( "CREATE DATABASE" );
-			dlg.addDefaultCloseButtonHandler( );
+			setContent( RESOURCE_ID );
+			setDialogTitle( "CREATE DATABASE" );
+			addDefaultCloseButtonHandler( );
 		}
 
-		dlg.addButtonEventHandler( ButtonType.OK, e -> {
-			String name = ( ( TextField ) dlg.getElementById( "ID_DB_NAME" ) ).getText( );
+		addButtonEventHandler( ButtonType.OK, e -> {
+			String name = ( ( TextField ) getElementById( "ID_DB_NAME" ) ).getText( );
 
 			StorageManager.createDatabase( name )
 					.thenApply( r -> {
 						Platform.runLater( () -> {
 							resultHandler.apply( name );
-							dlg.remoteClose();
+							remoteClose();
 						} );
 
 						return null;
@@ -54,7 +51,7 @@ public class CreateDatabaseDialog implements IUiDialog
 					} );
 		} );
 
-		dlg.show( );
+		show( );
 	}
 
 	public void setResultHandler( ParamFunction<String> handler )
