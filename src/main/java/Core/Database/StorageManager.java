@@ -1,18 +1,19 @@
 package Core.Database;
 
-import Common.TaskManager;
-import Core.GlobalInstance;
+import Core.MatchManager;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import org.tmatesoft.sqljet.core.SqlJetException;
 import org.tmatesoft.sqljet.core.SqlJetTransactionMode;
 import org.tmatesoft.sqljet.core.table.SqlJetDb;
-import ui.Helper.UiEvent;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.InvalidPathException;
-import java.nio.file.Paths;
+import java.nio.file.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
+
+import static java.util.concurrent.CompletableFuture.supplyAsync;
 
 
 public class StorageManager
@@ -21,72 +22,113 @@ public class StorageManager
 	private static final String FILE_EXT = ".sqlite";
 
 
-	public static void createDatabase( String name ) throws IOException
+	public static CompletableFuture<Void> createDatabase( String name )
 	{
-		String path = StorageManager.createFilePath( name );
+		return supplyAsync( ( ) -> {
+			String path = StorageManager.createFilePath( name );
 
-		if( !StorageManager.isValidPath( name ) )
-		{
-			throw new IOException( "Filename is invalid: " + path );
-		}
+			if( !StorageManager.isValidPath( name ) )
+			{
+				throw new CompletionException( new IOException( "Filename is invalid: " + path ) );
+			}
 
-		File f = new File( path );
+			File f = new File( path );
 
-		if( f.exists( ) )
-		{
-			throw new IOException( "File already exists" );
-		}
+			if( f.exists( ) )
+			{
+				throw new CompletionException( new IOException( "File already exists" ) );
+			}
 
-		try
-		{
-			SqlJetDb db = SqlJetDb.open( f, true );
-			db.getOptions( ).setAutovacuum( true );
-			db.beginTransaction( SqlJetTransactionMode.WRITE );
 			try
 			{
-				db.getOptions( ).setUserVersion( 1 );
+				SqlJetDb db = SqlJetDb.open( f, true );
+				db.getOptions( ).setAutovacuum( true );
+				db.beginTransaction( SqlJetTransactionMode.WRITE );
+				try
+				{
+					db.getOptions( ).setUserVersion( 1 );
+				}
+				finally
+				{
+					db.commit( );
+				}
+
+				db.close( );
 			}
-			finally
+			catch( SqlJetException e )
 			{
-				db.commit( );
+				throw new CompletionException(
+						new IOException( "Failed to open db file! File corrupted? " + e.getMessage( ) )
+				);
 			}
 
-			db.close( );
-		}
-		catch( SqlJetException e )
-		{
-			throw new IOException( "Failed to open db file! File corrupted? " + e.getMessage( ) );
-		}
+			return null;
+		} );
+
 	}
 
-	public static SqlJetDb loadDatabase( String name ) throws IOException
+
+	public static CompletableFuture<MatchManager> loadDatabase( String name )
 	{
-		String path = StorageManager.createFilePath( name );
+		return supplyAsync( ( ) -> {
 
-		File f = new File( path );
+			File file;
+			try
+			{
+				file = openFile( name );
+			}
+			catch( IOException e )
+			{
+				throw new CompletionException( e );
+			}
 
-		if( !f.exists( ) || f.isDirectory( ) )
-		{
-			throw new IOException( "Failed to open database! file not found or file is directory!" );
-		}
+			SqlJetDb db;
+			try
+			{
+				db = SqlJetDb.open( file, true );
+				db.getOptions( ).setAutovacuum( true );
+			}
+			catch( SqlJetException e )
+			{
+				throw new CompletionException(
+						new IOException( "Failed to open database " + e.getMessage( ) )
+				);
+			}
 
-		SqlJetDb db;
-		try
-		{
-			db = SqlJetDb.open( f, true );
-			db.getOptions( ).setAutovacuum( true );
-		}
-		catch( SqlJetException e )
-		{
-			throw new IOException( "Failed to open database " + e.getMessage( ) );
-		}
-
-		return db;
+			return new MatchManager( db );
+		} );
 	}
 
-	public static void scanStorageFolderAsync( ObservableList<String> target )
+	public static CompletableFuture<Void> deleteDatabase( String name )
 	{
-		TaskManager.runTask( ( ) -> {
+		return supplyAsync( ( ) -> {
+			Path path = Paths.get( STORAGE_FOLDER, name + FILE_EXT );
+
+			try
+			{
+				Files.delete( path );
+			}
+			catch( NoSuchFileException x )
+			{
+				throw new CompletionException( x );
+			}
+			catch( DirectoryNotEmptyException x )
+			{
+				throw new CompletionException( x );
+			}
+			catch( IOException x )
+			{
+				throw new CompletionException( x );
+			}
+
+			return null;
+		} );
+	}
+
+
+	public static CompletableFuture<Void> scanStorageFolderAsync( ObservableList<String> target )
+	{
+		return supplyAsync( ( ) -> {
 			File f = new File( STORAGE_FOLDER );
 
 			if( !f.exists( ) )
@@ -95,17 +137,14 @@ public class StorageManager
 			}
 			else if( !f.isDirectory( ) )
 			{
-				GlobalInstance.getPrimaryStage( ).fireEvent(
-						new UiEvent( UiEvent.CORE_EXCEPTION, new IOException( "Storage folder is a file ( " + STORAGE_FOLDER + " )" ) )
-				);
-				return;
+				throw new CompletionException( new IOException( "Storage folder is a file ( " + STORAGE_FOLDER + " )" ) );
 			}
 
 			try
 			{
 				for( File i : f.listFiles( ) )
 				{
-					if( i.isDirectory() )
+					if( i.isDirectory( ) )
 					{
 						continue;
 					}
@@ -120,11 +159,31 @@ public class StorageManager
 			}
 			catch( NullPointerException e )
 			{
-				GlobalInstance.getPrimaryStage( ).fireEvent( new UiEvent( UiEvent.CORE_EXCEPTION, e ) );
+				throw new CompletionException( e );
 			}
+
+			return null;
 		} );
 	}
 
+	private static File openFile( String name ) throws IOException
+	{
+		String path = createFilePath( name );
+
+		if( !isValidPath( path ) )
+		{
+			throw new IOException( "Database name is invalid!" );
+		}
+
+		File file = new File( path );
+
+		if( !file.isFile( ) )
+		{
+			throw new IOException( "Target file isn't a valid file!" );
+		}
+
+		return file;
+	}
 
 	private static String createFilePath( String databaseName )
 	{

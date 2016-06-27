@@ -1,7 +1,7 @@
 package ui.Helper;
 
 
-import Core.GlobalInstance;
+import Common.GlobalInstance;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;

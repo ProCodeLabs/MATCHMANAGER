@@ -6,9 +6,9 @@ import java.util.UUID;
 
 public class Match
 {
-	private UUID _id;
-	private Date _date;
-	private Team[] _teams = new Team[ 2 ];
+	private UUID id;
+	private Date date;
+	private Team[] teams = new Team[ 2 ];
 
 
 	public Match( )

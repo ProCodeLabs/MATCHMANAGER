@@ -1,5 +1,5 @@
 import Common.LogLevel;
-import Core.GlobalInstance;
+import Common.GlobalInstance;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;

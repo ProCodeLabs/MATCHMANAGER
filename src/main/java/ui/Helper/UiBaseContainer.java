@@ -1,6 +1,6 @@
 package ui.Helper;
 
-import Core.GlobalInstance;
+import Common.GlobalInstance;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
@@ -11,23 +11,22 @@ import ui.Dialog.ModalEx.UiAlert;
 
 import java.io.IOException;
 import java.util.Optional;
-import java.util.logging.Logger;
 
 
 public class UiBaseContainer extends BorderPane
 {
-	final Logger log = Logger.getLogger( this.getClass( ).getName( ) );
-
-	UiStyleDesc desc = new UiStyleDesc( this, true );
-
+	private UiStyleDesc desc = new UiStyleDesc( this, true );
+	private Object controller;
 
 	public UiBaseContainer( )
 	{
 		desc.setOnCloseButton( ( ) -> {
-			UiAlert alert = new UiAlert ( Alert.AlertType.CONFIRMATION );
-			alert.setTitle( "Close?" );
-			alert.setHeaderText( "Close?" );
-			alert.setContentText( "Are you sure you want to Close this Window?" );
+			UiAlert alert = new UiAlert( Alert.AlertType.CONFIRMATION );
+			{
+				alert.setTitle( "Close?" );
+				alert.setHeaderText( "Close?" );
+				alert.setContentText( "Are you sure you want to Close this Window?" );
+			}
 
 			Optional<ButtonType> result = alert.showAndWait( );
 			if( result.get( ) == ButtonType.OK )
@@ -42,14 +41,17 @@ public class UiBaseContainer extends BorderPane
 		setTop( desc.getTitleBar( ) );
 	}
 
-	public void setCenter( String title, String resourceId ) throws IOException
+	public void setCenter( String title, String resourceId )
 	{
 		FXMLLoader loader = new FXMLLoader( GlobalInstance.getResource( resourceId ) );
-		setTitle( title );
+		{
+			setTitle( title );
+		}
 
 		try
 		{
 			setCenter( loader.load( ) );
+			controller = loader.getController( );
 		}
 		catch( IOException e )
 		{
@@ -58,6 +60,15 @@ public class UiBaseContainer extends BorderPane
 			);
 		}
 	}
+
+
+
+	public final <T> T getController( ) {
+		assert controller != null;
+
+		return (T)controller;
+	}
+
 
 	public void setTitle( String title )
 	{

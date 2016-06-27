@@ -10,12 +10,12 @@ public class MatchManager
 	final Logger logger = Logger.getLogger( this.getClass( ).getName( ) );
 
 
-	private SqlJetDb _database;
 
-	public MatchManager( )
+	public MatchManager( SqlJetDb db )
 	{
 
 	}
+
 
 
 
