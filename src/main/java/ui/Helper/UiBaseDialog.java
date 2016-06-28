@@ -24,8 +24,6 @@ public class UiBaseDialog<R> extends Dialog<R>
 
 	private UiStyleDesc desc;
 
-
-
 	public UiBaseDialog( )
 	{
 		super( );
@@ -39,7 +37,7 @@ public class UiBaseDialog<R> extends Dialog<R>
 		getDialogPane( ).setHeader( desc.getTitleBar( ) );
 	}
 
-	public void remoteClose()
+	public void remoteClose( )
 	{
 		getDialogPane( ).getScene( ).getWindow( ).hide( );
 	}
@@ -51,23 +49,16 @@ public class UiBaseDialog<R> extends Dialog<R>
 
 	public void addButtonEventHandler( ButtonType type, EventHandler<ActionEvent> handler )
 	{
-		assert getContentPane( ).lookupButton( type ) != null;
+		assert getDialogPane( ).lookupButton( type ) != null;
 
-		getContentPane( ).lookupButton( type ).addEventHandler( ActionEvent.ACTION, handler );
+		getDialogPane( ).lookupButton( type ).addEventHandler( ActionEvent.ACTION, handler );
 	}
-
-
-	public DialogPane getContentPane( )
-	{
-		return ( DialogPane ) getDialogPane( ).getContent( );
-	}
-
 
 	public Node getElementById( String id )
 	{
 		try
 		{
-			return getNodeList( getContentPane( ) )
+			return getNodeList( getDialogPane( ) )
 					.stream( )
 					.filter( n -> n.getId( ) != null && n.getId( ).equals( id ) )
 					.findFirst( )
@@ -102,12 +93,9 @@ public class UiBaseDialog<R> extends Dialog<R>
 	}
 
 
-
-
 	public void setDialogTitle( String text )
 	{
 		desc.setTitle( text );
-
 		setHeaderText( text );
 	}
 
@@ -117,7 +105,24 @@ public class UiBaseDialog<R> extends Dialog<R>
 
 		try
 		{
-			getDialogPane( ).setContent( loader.load( ) );
+			Object pane = loader.load( );
+
+			if( !( pane instanceof DialogPane ) )
+			{
+				throw new IOException( "resource is not a dialog pane! " + resourceId );
+			}
+
+			DialogPane dialogPane = ( DialogPane ) pane;
+			{
+				setDialogTitle( dialogPane.getHeaderText( ) );
+				getDialogPane( ).setContent( dialogPane.getContent( ) );
+
+				dialogPane.getButtonTypes( ).forEach(
+						b -> getDialogPane( ).getButtonTypes( ).add( b )
+				);
+			}
+
+			onContentLoad( loader );
 		}
 		catch( IOException e )
 		{
@@ -127,5 +132,10 @@ public class UiBaseDialog<R> extends Dialog<R>
 		}
 	}
 
+
+	//> virtual -> Override
+	public void onContentLoad( FXMLLoader loader )
+	{
+	}
 
 }

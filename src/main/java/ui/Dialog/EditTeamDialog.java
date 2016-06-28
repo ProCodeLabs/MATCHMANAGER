@@ -7,12 +7,15 @@ public class EditTeamDialog extends UiDialog
 	public static final String RESOURCE_ID = "fxml/dialogs/editTeamDialog.fxml";
 
 	@Override
-	public void showDialog( )
+	protected void onPrepareDialog( )
 	{
 		setContent( RESOURCE_ID );
 		setDialogTitle( "Edit Team" );
 
 
-		show();
+		//show();
 	}
+
+	@Override
+	protected Object getThisPtr( ) { return this; }
 }

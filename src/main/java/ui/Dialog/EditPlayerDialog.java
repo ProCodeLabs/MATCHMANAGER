@@ -7,7 +7,7 @@ public class EditPlayerDialog extends UiDialog
 	public static final String RESOURCE_ID = "fxml/dialogs/editPlayerDialog.fxml";
 
 	@Override
-	public void showDialog( )
+	protected void onPrepareDialog( )
 	{
 		setContent( RESOURCE_ID );
 
@@ -15,5 +15,11 @@ public class EditPlayerDialog extends UiDialog
 		addDefaultCloseButtonHandler( );
 
 		show( );
+	}
+
+	@Override
+	protected Object getThisPtr( )
+	{
+		return this;
 	}
 }

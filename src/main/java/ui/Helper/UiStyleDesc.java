@@ -95,8 +95,6 @@ public class UiStyleDesc
 				_yOffset = e.getSceneY( );
 				_isDragged = true;
 				_isResizing = false;
-
-				e.isConsumed( );
 			}
 			else if( e.getSceneX( ) >= parent.getWidth( ) - RESIZE_RECT_SIZE &&
 					e.getSceneY( ) >= parent.getHeight( ) - RESIZE_RECT_SIZE &&
@@ -109,8 +107,6 @@ public class UiStyleDesc
 				_yOffset = parent.getHeight( ) - e.getY( );
 				_isDragged = false;
 				_isResizing = true;
-
-				e.isConsumed( );
 			}
 		} );
 

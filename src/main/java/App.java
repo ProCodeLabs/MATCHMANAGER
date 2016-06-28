@@ -1,5 +1,5 @@
-import Common.LogLevel;
 import Common.GlobalInstance;
+import Common.LogLevel;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
@@ -17,7 +17,6 @@ import java.util.logging.Logger;
 public class App extends Application
 {
 	private final Logger logger = Logger.getLogger( this.getClass( ).getName( ) );
-
 
 
 	public App( )

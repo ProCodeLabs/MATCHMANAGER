@@ -1,13 +1,7 @@
 package ui.Dialog;
 
 import Common.ParamFunction;
-import Core.Database.StorageManager;
-import javafx.application.Platform;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.TextField;
 import ui.Dialog.Helper.UiDialog;
-import ui.Dialog.ModalEx.UiAlert;
 
 
 public class CreateDatabaseDialog extends UiDialog
@@ -17,15 +11,14 @@ public class CreateDatabaseDialog extends UiDialog
 	private ParamFunction<String> resultHandler;
 
 	@Override
-	public void showDialog( )
+	protected void onPrepareDialog( )
 	{
 		{
 			setContent( RESOURCE_ID );
 			setDialogTitle( "CREATE DATABASE" );
-			addDefaultCloseButtonHandler( );
 		}
 
-		addButtonEventHandler( ButtonType.OK, e -> {
+		/*addButtonEventHandler( ButtonType.OK, e -> {
 			String name = ( ( TextField ) getElementById( "ID_DB_NAME" ) ).getText( );
 
 			StorageManager.createDatabase( name )
@@ -49,10 +42,13 @@ public class CreateDatabaseDialog extends UiDialog
 
 						return null;
 					} );
-		} );
+		} );*/
 
-		show( );
+		//show( );
 	}
+
+	@Override
+	public Object getThisPtr( ) { return this; }
 
 	public void setResultHandler( ParamFunction<String> handler )
 	{

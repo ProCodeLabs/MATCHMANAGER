@@ -8,12 +8,18 @@ public class EditMatchDialog extends UiDialog
 
 
 	@Override
-	public void showDialog( )
+	protected void onPrepareDialog( )
 	{
 		setContent( RESOURCE_ID );
 
 		setDialogTitle( "Edit Match" );
 
-		show();
+		//show();
+	}
+
+	@Override
+	protected Object getThisPtr( )
+	{
+		return this;
 	}
 }
