@@ -1,33 +1,30 @@
 package Core.Database.Storage;
 
 
-import Common.Util;
+import Common.GlobalInstance;
 import Core.Database.Storage.Helper.IStorage;
 import org.tmatesoft.sqljet.core.SqlJetException;
 import org.tmatesoft.sqljet.core.table.SqlJetDb;
 
 import java.io.IOException;
-import java.io.InputStream;
 
 public class PlayerStorage implements IStorage
 {
-	static final String RESOURCE_ID = "sql/userStorage.sql";
+	static final String RESOURCE_ID = "sql/playerStorage.sql";
 
 	@Override
 	public void initializeStorage( SqlJetDb db ) throws SqlJetException
 	{
-		InputStream stream = getClass( ).getResourceAsStream( RESOURCE_ID );
-
-
 		String query;
 		try
 		{
-			query = Util.drainInputStream( stream );
+			query = GlobalInstance.readResource( RESOURCE_ID );
 		}
 		catch( IOException e )
 		{
 			throw new SqlJetException( "IO: Error " + e.getMessage() );
 		}
+
 
 		db.createTable( query );
 	}

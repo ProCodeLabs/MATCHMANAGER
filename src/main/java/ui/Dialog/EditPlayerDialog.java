@@ -15,4 +15,8 @@ public class EditPlayerDialog extends UiDialog
 		setDialogTitle( "EDIT PLAYER" );
 		addButtonEventHandler( ButtonType.CANCEL, e -> close( ) );
 	}
+
+	@Override
+	protected Object getThisPtr( ) { return this; }
+
 }

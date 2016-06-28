@@ -14,4 +14,9 @@ public class EditMatchDialog extends UiDialog
 
 		setDialogTitle( "Edit Match" );
 	}
+
+
+	@Override
+	protected Object getThisPtr( ) { return this; }
+
 }

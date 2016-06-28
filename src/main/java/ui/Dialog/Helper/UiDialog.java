@@ -1,6 +1,7 @@
 package ui.Dialog.Helper;
 
 import Common.GlobalInstance;
+import javafx.fxml.FXMLLoader;
 import ui.Helper.UiBaseDialog;
 
 public abstract class UiDialog extends UiBaseDialog
@@ -18,5 +19,14 @@ public abstract class UiDialog extends UiBaseDialog
 		}
 	}
 
+	@Override
+	public void onLoad( FXMLLoader loader )
+	{
+		loader.setController( getThisPtr( ) );
+	}
+
 	protected abstract void onPrepareDialog( );
+	protected abstract Object getThisPtr();
+
+
 }

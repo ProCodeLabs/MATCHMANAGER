@@ -216,6 +216,11 @@ TextField {
     -fx-text-fill: white;
 }
 
+.textfield-error
+{
+    -fx-border-color: red;
+}
+
 /*******************************************************************************
  *                                                                             *
  * Util Buttons                                                                *

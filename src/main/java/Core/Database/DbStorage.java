@@ -5,8 +5,6 @@ import Core.Database.Storage.PlayerStorage;
 import Core.Database.Storage.TeamStorage;
 import org.tmatesoft.sqljet.core.table.SqlJetDb;
 
-import java.util.concurrent.CompletableFuture;
-
 public class DbStorage
 {
 	private SqlJetDb db;
@@ -15,14 +13,5 @@ public class DbStorage
 	private TeamStorage teamStorage = new TeamStorage( );
 
 
-	public CompletableFuture<Void> loadDatabase( String name )
-	{
-		CompletableFuture<Void> future = CompletableFuture.supplyAsync( ()->{
-
-			return null;
-		} );
-
-		return future;
-	}
 
 }

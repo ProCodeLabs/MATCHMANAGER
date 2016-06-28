@@ -3,6 +3,9 @@ package Common;
 
 import javafx.stage.Stage;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 public class GlobalInstance
 {
 	private static Stage _primaryStage;
@@ -30,9 +33,6 @@ public class GlobalInstance
 	}
 
 
-
-
-
 	public static java.net.URL getResource( String resourceName )
 	{
 		return getAppClass( ).getResource( resourceName );
@@ -43,5 +43,16 @@ public class GlobalInstance
 		return getResource( resourceName ).toExternalForm( );
 	}
 
+	public static String readResource( String resourceName ) throws IOException
+	{
+		InputStream stream = getAppClass( ).getResourceAsStream( resourceName );
+
+		if( stream == null )
+		{
+			throw new IOException( "Failed to create stream! resource: " + resourceName );
+		}
+
+		return Util.drainInputStream( stream );
+	}
 
 }

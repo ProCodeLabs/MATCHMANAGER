@@ -10,6 +10,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
+import javafx.stage.Modality;
 import javafx.stage.StageStyle;
 
 import java.io.IOException;
@@ -28,6 +29,7 @@ public class UiBaseDialog<R> extends Dialog<R>
 	{
 		super( );
 		initStyle( StageStyle.UNDECORATED );
+		initModality( Modality.WINDOW_MODAL );
 
 		desc = new UiStyleDesc( getDialogPane( ), false );
 		{
@@ -40,8 +42,7 @@ public class UiBaseDialog<R> extends Dialog<R>
 	public void addButtonEventHandler( ButtonType type, EventHandler<ActionEvent> handler )
 	{
 		assert getDialogPane( ).lookupButton( type ) != null;
-
-		getDialogPane( ).lookupButton( type ).addEventHandler( ActionEvent.ACTION, handler );
+		getDialogPane( ).lookupButton( type ).addEventFilter( ActionEvent.ACTION, handler );
 	}
 
 	public Node getElementById( String id )
@@ -95,6 +96,8 @@ public class UiBaseDialog<R> extends Dialog<R>
 
 		try
 		{
+			onLoad( loader );
+
 			Object pane = loader.load( );
 
 			if( !( pane instanceof DialogPane ) )
@@ -119,4 +122,8 @@ public class UiBaseDialog<R> extends Dialog<R>
 			);
 		}
 	}
+
+
+	protected /*virtual*/ void onLoad( FXMLLoader loader ) { }
+
 }

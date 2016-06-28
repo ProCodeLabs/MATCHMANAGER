@@ -1,0 +1,4 @@
+
+CREATE TABLE team_storage(
+    id INTEGER NOT NULL PRIMARY KEY
+);

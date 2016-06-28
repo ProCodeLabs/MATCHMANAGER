@@ -13,7 +13,7 @@
    <content>
       <VBox>
          <children>
-            <TextField id="ID_DB_NAME" promptText="NAME" />
+            <TextField fx:id="databaseName" promptText="NAME" />
          </children>
       </VBox>
    </content>

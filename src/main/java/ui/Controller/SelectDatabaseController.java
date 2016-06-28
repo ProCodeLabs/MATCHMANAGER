@@ -114,7 +114,7 @@ public class SelectDatabaseController implements Initializable
 		Optional<ButtonType> result = alert.showAndWait( );
 		if( result.get( ) == ButtonType.OK )
 		{
-			String name = getSelectedName( );
+			final String name = getSelectedName( );
 
 			StorageManager.deleteDatabase( name )
 					.thenApply( r -> {

@@ -1,5 +1,6 @@
 package Core.Database;
 
+import Core.Database.Storage.PlayerStorage;
 import Core.Helper.CoreException;
 import Core.MatchManager;
 import javafx.application.Platform;
@@ -59,10 +60,22 @@ public class StorageManager
 					db.commit( );
 				}
 
+				PlayerStorage s = new PlayerStorage();
+				s.initializeStorage( db );
+
 				db.close( );
 			}
 			catch( SqlJetException e )
 			{
+				try
+				{
+					deleteDatabase( name ).get( );
+				}
+				catch( Exception ex )
+				{
+
+				}
+
 				throw new CompletionException(
 						new IOException( "Failed to open db file! File corrupted? " + e.getMessage( ) )
 				);

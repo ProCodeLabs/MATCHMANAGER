@@ -3,6 +3,7 @@ package ui.Dialog;
 import Common.ParamFunction;
 import Core.Database.StorageManager;
 import javafx.application.Platform;
+import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
@@ -16,16 +17,33 @@ public class CreateDatabaseDialog extends UiDialog
 
 	private ParamFunction<String> resultHandler;
 
+	@FXML
+	public TextField databaseName;
+
+	boolean b = false;
+
+
 	@Override
 	protected void onPrepareDialog( )
 	{
-		{
-			setContent( RESOURCE_ID );
-			setDialogTitle( "CREATE DATABASE" );
-		}
+		setContent( RESOURCE_ID );
+
+		setOnCloseRequest( e -> {
+			if( databaseName.getText().length() <= 0 )
+			{
+				databaseName.getStyleClass().add( "textfield-error" );
+				e.consume();
+				return;
+			}
+		} );
+
+		if(!b)
+			return;
+
 
 		addButtonEventHandler( ButtonType.OK, e -> {
-			String name = ( ( TextField ) getElementById( "ID_DB_NAME" ) ).getText( );
+
+			String name = databaseName.getText( );
 
 			StorageManager.createDatabase( name )
 					.thenApply( r -> {
@@ -55,5 +73,9 @@ public class CreateDatabaseDialog extends UiDialog
 	{
 		resultHandler = handler;
 	}
+
+
+	@Override
+	protected Object getThisPtr( ) { return this; }
 
 }

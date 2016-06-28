@@ -22,4 +22,7 @@ public class CloseAppDialog extends UiDialog
 
 		addButtonEventHandler( ButtonType.NO, e -> close( ) );
 	}
+
+	@Override
+	protected Object getThisPtr( ) { return this; }
 }
