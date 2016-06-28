@@ -11,11 +11,5 @@ public class EditTeamDialog extends UiDialog
 	{
 		setContent( RESOURCE_ID );
 		setDialogTitle( "Edit Team" );
-
-
-		//show();
 	}
-
-	@Override
-	protected Object getThisPtr( ) { return this; }
 }

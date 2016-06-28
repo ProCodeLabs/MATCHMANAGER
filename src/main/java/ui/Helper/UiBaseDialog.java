@@ -31,20 +31,10 @@ public class UiBaseDialog<R> extends Dialog<R>
 
 		desc = new UiStyleDesc( getDialogPane( ), false );
 		{
-			desc.setOnCloseButton( ( ) -> remoteClose( ) );
+			desc.setOnCloseButton( ( ) -> close( ) );
 		}
 
 		getDialogPane( ).setHeader( desc.getTitleBar( ) );
-	}
-
-	public void remoteClose( )
-	{
-		getDialogPane( ).getScene( ).getWindow( ).hide( );
-	}
-
-	public void addDefaultCloseButtonHandler( )
-	{
-		addButtonEventHandler( ButtonType.CANCEL, e -> remoteClose( ) );
 	}
 
 	public void addButtonEventHandler( ButtonType type, EventHandler<ActionEvent> handler )
@@ -121,8 +111,6 @@ public class UiBaseDialog<R> extends Dialog<R>
 						b -> getDialogPane( ).getButtonTypes( ).add( b )
 				);
 			}
-
-			onContentLoad( loader );
 		}
 		catch( IOException e )
 		{
@@ -131,11 +119,4 @@ public class UiBaseDialog<R> extends Dialog<R>
 			);
 		}
 	}
-
-
-	//> virtual -> Override
-	public void onContentLoad( FXMLLoader loader )
-	{
-	}
-
 }

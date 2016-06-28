@@ -13,13 +13,5 @@ public class EditMatchDialog extends UiDialog
 		setContent( RESOURCE_ID );
 
 		setDialogTitle( "Edit Match" );
-
-		//show();
-	}
-
-	@Override
-	protected Object getThisPtr( )
-	{
-		return this;
 	}
 }
