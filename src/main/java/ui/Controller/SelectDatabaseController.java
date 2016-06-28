@@ -43,11 +43,19 @@ public class SelectDatabaseController implements Initializable
 	public void initialize( URL location, ResourceBundle resources )
 	{
 		StorageManager.scanStorageFolderAsync( fileList )
+				.thenApply( r -> {
+					Platform.runLater( ( ) -> FXCollections.sort( fileList ) );
+					return null;
+				} )
 				.exceptionally( e -> {
-					GlobalInstance.getPrimaryStage( ).fireEvent( new UiEvent( UiEvent.CORE_EXCEPTION, e ) );
+					Platform.runLater(
+							( ) -> GlobalInstance.getPrimaryStage( )
+									.fireEvent( new UiEvent( UiEvent.CORE_EXCEPTION, e ) )
+					);
 
 					return null;
 				} );
+
 		dataList.setItems( fileList );
 	}
 
@@ -91,7 +99,13 @@ public class SelectDatabaseController implements Initializable
 	{
 		CreateDatabaseDialog dlg = new CreateDatabaseDialog( );
 		{
-			dlg.setResultHandler( r -> fileList.add( r ) );
+			dlg.setResultHandler( r -> {
+				fileList.add( r );
+
+				FXCollections.sort( fileList );
+
+				//dataList.getSelectionModel().select( r );
+			} );
 		}
 		dlg.showDialog( );
 	}

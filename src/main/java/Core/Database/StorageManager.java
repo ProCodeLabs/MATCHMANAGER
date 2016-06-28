@@ -105,7 +105,7 @@ public class StorageManager
 			try
 			{
 				db = SqlJetDb.open( file, true );
-				db.getOptions( ).setAutovacuum( true );
+				//db.getOptions( ).setAutovacuum( true );
 			}
 			catch( SqlJetException e )
 			{

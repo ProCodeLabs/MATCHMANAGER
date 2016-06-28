@@ -14,13 +14,12 @@ import ui.Dialog.ModalEx.UiAlert;
 public class CreateDatabaseDialog extends UiDialog
 {
 	public static final String RESOURCE_ID = "fxml/dialogs/createDatabaseDialog.fxml";
+	private static final String CSS_ERROR_CLS = "textfield-error";
 
 	private ParamFunction<String> resultHandler;
 
 	@FXML
 	public TextField databaseName;
-
-	boolean b = false;
 
 
 	@Override
@@ -28,28 +27,28 @@ public class CreateDatabaseDialog extends UiDialog
 	{
 		setContent( RESOURCE_ID );
 
-		setOnCloseRequest( e -> {
-			if( databaseName.getText().length() <= 0 )
+		databaseName.textProperty().addListener( e -> {
+			if( databaseName.getStyleClass( ).contains( CSS_ERROR_CLS ) )
 			{
-				databaseName.getStyleClass().add( "textfield-error" );
-				e.consume();
-				return;
+				databaseName.getStyleClass( ).remove( CSS_ERROR_CLS );
 			}
 		} );
 
-		if(!b)
-			return;
-
-
 		addButtonEventHandler( ButtonType.OK, e -> {
-
 			String name = databaseName.getText( );
+
+			if( databaseName.getText( ).length( ) <= 0 )
+			{
+				databaseName.getStyleClass( ).add( CSS_ERROR_CLS );
+				e.consume( );
+				return;
+			}
 
 			StorageManager.createDatabase( name )
 					.thenApply( r -> {
-						Platform.runLater( () -> {
+						Platform.runLater( ( ) -> {
 							resultHandler.apply( name );
-							close();
+							close( );
 						} );
 
 						return null;
