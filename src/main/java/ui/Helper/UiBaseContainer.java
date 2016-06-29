@@ -42,9 +42,7 @@ public class UiBaseContainer extends BorderPane
 		}
 		catch( IOException e )
 		{
-			GlobalInstance.getPrimaryStage( ).fireEvent(
-					new UiEvent( UiEvent.CORE_EXCEPTION, "Failed to load resource! ( " + resourceId + " )" + e.getMessage( ) )
-			);
+			GlobalInstance.fireGlobalEvent( new UiEvent( UiEvent.CORE_EXCEPTION, e ) );
 		}
 	}
 

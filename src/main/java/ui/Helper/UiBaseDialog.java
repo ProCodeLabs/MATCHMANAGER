@@ -117,13 +117,14 @@ public class UiBaseDialog<R> extends Dialog<R>
 		}
 		catch( IOException e )
 		{
-			GlobalInstance.getPrimaryStage( ).fireEvent(
-					new UiEvent( UiEvent.CORE_EXCEPTION, "Failed to load resource! ( " + resourceId + " )" + e.getMessage( ) )
-			);
+			GlobalInstance.fireGlobalEvent( new UiEvent( UiEvent.CORE_EXCEPTION, e ) );
 		}
+
 	}
 
 
-	protected /*virtual*/ void onLoad( FXMLLoader loader ) { }
+	protected /*virtual*/ void onLoad( FXMLLoader loader )
+	{
+	}
 
 }

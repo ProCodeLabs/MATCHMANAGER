@@ -1,7 +1,5 @@
 import Common.GlobalInstance;
-import Common.LogLevel;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.text.Font;
@@ -10,7 +8,7 @@ import javafx.stage.StageStyle;
 import ui.Controller.SelectDatabaseController;
 import ui.Dialog.ModalEx.UiAlert;
 import ui.Helper.UiBaseContainer;
-import ui.Helper.UiEvent;
+import ui.UiCoreEventHandler;
 
 import java.util.logging.Logger;
 
@@ -18,6 +16,7 @@ public class App extends Application
 {
 	private final Logger logger = Logger.getLogger( this.getClass( ).getName( ) );
 
+	private final UiCoreEventHandler eventHandler = new UiCoreEventHandler();
 
 	public App( )
 	{
@@ -35,7 +34,7 @@ public class App extends Application
 	{
 		GlobalInstance.setPrimaryStage( primaryStage );
 		{
-			addCriticalErrorHandler( primaryStage );
+			eventHandler.registerEvents( primaryStage );
 		}
 		primaryStage.initStyle( StageStyle.UNDECORATED );
 
@@ -71,27 +70,5 @@ public class App extends Application
 			}
 			msgBox.showAndWait( );
 		}
-	}
-
-	private void addCriticalErrorHandler( final Stage primaryStage )
-	{
-		primaryStage.addEventHandler( UiEvent.CORE_EXCEPTION, event -> {
-			assert event.getEventData( ) instanceof Exception;
-
-			Exception e = ( Exception ) event.getEventData( );
-
-			logger.log( LogLevel.CRITICAL, "Core error! " + e.getMessage( ) );
-
-			UiAlert msgBox = new UiAlert( Alert.AlertType.ERROR );
-			{
-				msgBox.setHeaderText( "something went wrong :( " );
-				msgBox.setContentText( e.getMessage( ) );
-				msgBox.addStackTraceArea( e );
-			}
-			msgBox.showAndWait( );
-
-			Platform.exit( );
-			System.exit( 0 );
-		} );
 	}
 }

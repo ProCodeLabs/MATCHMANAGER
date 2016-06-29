@@ -1,6 +1,8 @@
 package Common;
 
 
+import javafx.application.Platform;
+import javafx.event.Event;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -53,6 +55,11 @@ public class GlobalInstance
 		}
 
 		return Util.drainInputStream( stream );
+	}
+
+	public static void fireGlobalEvent( Event event )
+	{
+		Platform.runLater( ( ) -> getPrimaryStage( ).fireEvent( event ) );
 	}
 
 }

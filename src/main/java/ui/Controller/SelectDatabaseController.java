@@ -39,6 +39,11 @@ public class SelectDatabaseController implements Initializable
 	public ListView<String> dataList;
 
 
+
+	public SelectDatabaseController(  )
+	{
+	}
+
 	@Override
 	public void initialize( URL location, ResourceBundle resources )
 	{
@@ -48,11 +53,7 @@ public class SelectDatabaseController implements Initializable
 					return null;
 				} )
 				.exceptionally( e -> {
-					Platform.runLater(
-							( ) -> GlobalInstance.getPrimaryStage( )
-									.fireEvent( new UiEvent( UiEvent.CORE_EXCEPTION, e ) )
-					);
-
+					GlobalInstance.fireGlobalEvent( new UiEvent( UiEvent.CORE_EXCEPTION, e ) );
 					return null;
 				} );
 
@@ -101,6 +102,7 @@ public class SelectDatabaseController implements Initializable
 		{
 			dlg.setResultHandler( r -> {
 				fileList.add( r );
+
 
 				FXCollections.sort( fileList );
 
