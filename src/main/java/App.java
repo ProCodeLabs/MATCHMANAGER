@@ -10,13 +10,12 @@ import javafx.stage.StageStyle;
 import ui.Controller.SelectDatabaseController;
 import ui.Dialog.ModalEx.UiAlert;
 import ui.Helper.UiBaseContainer;
-import ui.UiCoreEventHandler;
+import ui.StageCore.Helper.UiEventRegistrar;
 
 public class App extends Application
 {
 	private final ILogger logger = LoggerFactory.createLogger( getClass( ) );
-
-	private final UiCoreEventHandler eventHandler = new UiCoreEventHandler( );
+	private final UiEventRegistrar registrar = new UiEventRegistrar();
 
 	public App( )
 	{
@@ -34,7 +33,7 @@ public class App extends Application
 	{
 		GlobalInstance.setPrimaryStage( primaryStage );
 		{
-			eventHandler.registerEvents( primaryStage );
+			registrar.registerEvents( primaryStage );
 		}
 		primaryStage.initStyle( StageStyle.UNDECORATED );
 

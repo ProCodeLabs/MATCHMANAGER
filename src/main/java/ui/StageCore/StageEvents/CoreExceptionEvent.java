@@ -1,4 +1,5 @@
-package ui;
+package ui.StageCore.StageEvents;
+
 
 import Common.LogLevel;
 import javafx.application.Platform;
@@ -6,22 +7,16 @@ import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import ui.Dialog.ModalEx.UiAlert;
 import ui.Helper.UiEvent;
+import ui.StageCore.Helper.IUiEventHandler;
 
 import java.util.logging.Logger;
 
-public class UiCoreEventHandler
+public class CoreExceptionEvent implements IUiEventHandler
 {
 	private final Logger logger = Logger.getLogger( this.getClass( ).getName( ) );
 
-
-	public void registerEvents( final Stage primaryStage )
-	{
-		addCriticalErrorHandler( primaryStage );
-		addLogItemHandler( primaryStage );
-	}
-
-
-	private void addCriticalErrorHandler( final Stage stage )
+	@Override
+	public void onRegisterEvents( Stage stage )
 	{
 		stage.addEventHandler( UiEvent.CORE_EXCEPTION, event -> {
 			assert event.getEventData( ) instanceof Exception;
@@ -41,15 +36,6 @@ public class UiCoreEventHandler
 			Platform.exit( );
 			System.exit( 0 );
 		} );
+
 	}
-
-	private void addLogItemHandler( final Stage stage )
-	{
-		stage.addEventFilter( UiEvent.LOG_ITEM, item -> {
-
-
-		} );
-	}
-
-
 }
