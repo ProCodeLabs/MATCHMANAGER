@@ -50,7 +50,7 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </HBox.margin>
             </TreeView>
-            <VBox HBox.hgrow="ALWAYS">
+            <VBox HBox.hgrow="ALWAYS" fx:id="matchInfoDisplay">
                <children>
                   <HBox prefHeight="48.0" prefWidth="190.0" VBox.vgrow="ALWAYS">
                      <children>

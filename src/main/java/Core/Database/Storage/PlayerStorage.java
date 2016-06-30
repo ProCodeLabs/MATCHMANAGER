@@ -1,32 +1,24 @@
 package Core.Database.Storage;
 
 
-import Common.GlobalInstance;
-import Core.Database.Storage.Helper.IStorage;
+import Core.Database.Storage.Helper.StorageHelper;
 import org.tmatesoft.sqljet.core.SqlJetException;
-import org.tmatesoft.sqljet.core.table.SqlJetDb;
 
-import java.io.IOException;
-
-public class PlayerStorage implements IStorage
+public class PlayerStorage extends StorageHelper
 {
+	static final String TABLE_NAME = "player_tbl";
 	static final String RESOURCE_ID = "sql/playerStorage.sql";
 
 	@Override
-	public void initializeStorage( SqlJetDb db ) throws SqlJetException
+	protected void onInitializeStorage( ) throws SqlJetException
 	{
-		String query;
-		try
-		{
-			query = GlobalInstance.readResource( RESOURCE_ID );
-		}
-		catch( IOException e )
-		{
-			throw new SqlJetException( "IO: Error " + e.getMessage() );
-		}
+		createTableFromResource( RESOURCE_ID );
+	}
 
-
-		db.createTable( query );
+	@Override
+	public boolean tableExists( )
+	{
+		return checkTableExists( TABLE_NAME );
 	}
 }
 

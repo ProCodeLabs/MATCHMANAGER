@@ -1,28 +1,23 @@
 package Core;
 
+import Core.Data.Match;
 import Core.Database.DbStorage;
-import Core.Helper.CoreException;
 import org.tmatesoft.sqljet.core.table.SqlJetDb;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 
-public class MatchManager
+public class MatchManager extends DbStorage
 {
 	final Logger logger = Logger.getLogger( this.getClass( ).getName( ) );
 
-	DbStorage storage = new DbStorage();
-
-
 	public MatchManager( SqlJetDb db )
 	{
-
+		super( db );
 	}
 
-	public void fetchData() throws CoreException
-	{
 
-	}
 
 	public void Close()
 	{
@@ -30,7 +25,11 @@ public class MatchManager
 	}
 
 
+	public List<Match> getMatches()
+	{
+		return null;
 
+	}
 
 
 

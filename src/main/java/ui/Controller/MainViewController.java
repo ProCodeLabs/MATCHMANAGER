@@ -5,9 +5,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
+import javafx.scene.layout.VBox;
+import ui.Dialog.AddPlayerDialog;
 import ui.Dialog.EditMatchDialog;
-import ui.Dialog.EditPlayerDialog;
 import ui.Dialog.EditTeamDialog;
 import ui.Helper.UiBaseContainer;
 
@@ -39,6 +41,9 @@ public class MainViewController implements Initializable
 	@FXML
 	public Label teamBLabel;
 
+	@FXML
+	public VBox matchInfoDisplay;
+
 
 	private MatchManager manager;
 
@@ -46,15 +51,37 @@ public class MainViewController implements Initializable
 	@Override
 	public void initialize( URL location, ResourceBundle resources )
 	{
-	/*	TreeItem<String> rootItem = new TreeItem<String>( "MATCHES" );
-		rootItem.setExpanded( true );
-		for( int i = 1; i < 6; i++ )
-		{
-			TreeItem<String> item = new TreeItem<String>( "MATCH - " + i );
-			rootItem.getChildren( ).add( item );
-		}
+		matchList.setRoot( createTreeList( ) );
+		matchInfoDisplay.setVisible( false );
 
-		treeView = new TreeView<>( rootItem );*/
+		matchList.getSelectionModel().selectedItemProperty().addListener( (observable, oldValue, newValue) -> {
+			matchInfoDisplay.setVisible( true );
+		});
+
+	}
+
+
+	private TreeItem<String> createTreeList()
+	{
+		TreeItem<String> root = new TreeItem<>( "MATCHES" );
+		{
+			TreeItem<String> due = new TreeItem<>( "PENDING" );
+			TreeItem<String> done = new TreeItem<>( "DONE" );
+
+
+			due.getChildren().add( new TreeItem<>( "MATCH 1" ) );
+			due.getChildren().add( new TreeItem<>( "MATCH 2" ) );
+			due.getChildren().add( new TreeItem<>( "MATCH 3" ) );
+
+			done.getChildren().add( new TreeItem<>( "MATCH 1" ) );
+			done.getChildren().add( new TreeItem<>( "MATCH 2" ) );
+			done.getChildren().add( new TreeItem<>( "MATCH 3" ) );
+
+
+
+			root.getChildren().addAll( due, done );
+		}
+		return root;
 	}
 
 
@@ -89,7 +116,7 @@ public class MainViewController implements Initializable
 	@FXML
 	public void buttonEditPlayerClicked()
 	{
-		EditPlayerDialog dlg = new EditPlayerDialog();
+		AddPlayerDialog dlg = new AddPlayerDialog();
 		{
 
 		}

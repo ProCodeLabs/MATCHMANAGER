@@ -1,4 +1,6 @@
 import Common.GlobalInstance;
+import Common.UtilLogger.ILogger;
+import Common.UtilLogger.LoggerFactory;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -10,13 +12,11 @@ import ui.Dialog.ModalEx.UiAlert;
 import ui.Helper.UiBaseContainer;
 import ui.UiCoreEventHandler;
 
-import java.util.logging.Logger;
-
 public class App extends Application
 {
-	private final Logger logger = Logger.getLogger( this.getClass( ).getName( ) );
+	private final ILogger logger = LoggerFactory.createLogger( getClass( ) );
 
-	private final UiCoreEventHandler eventHandler = new UiCoreEventHandler();
+	private final UiCoreEventHandler eventHandler = new UiCoreEventHandler( );
 
 	public App( )
 	{

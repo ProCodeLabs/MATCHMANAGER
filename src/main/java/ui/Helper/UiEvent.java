@@ -8,7 +8,8 @@ public class UiEvent extends Event
 {
 	public static final EventType<UiEvent> ANY = new EventType<UiEvent>( Event.ANY, "UIEVENT" );
 
-	public static final EventType<UiEvent> CORE_EXCEPTION = new EventType<UiEvent>( ANY, "COREEXCEPTION" );
+	public static final EventType<UiEvent> CORE_EXCEPTION = new EventType<>( ANY, "COREEXCEPTION" );
+	public static final EventType<UiEvent> LOG_ITEM = new EventType<>( ANY, "LOGITEM" );
 
 
 	public UiEvent( final EventType<? extends UiEvent> eventType )

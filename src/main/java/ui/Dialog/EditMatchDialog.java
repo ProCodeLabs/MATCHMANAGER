@@ -11,8 +11,6 @@ public class EditMatchDialog extends UiDialog
 	protected void onPrepareDialog( )
 	{
 		setContent( RESOURCE_ID );
-
-		setDialogTitle( "Edit Match" );
 	}
 
 

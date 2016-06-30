@@ -7,4 +7,7 @@ public interface IStorage
 {
 	void initializeStorage( SqlJetDb db ) throws SqlJetException;
 
+	boolean tableExists();
+
+	SqlJetDb getDatabase();
 }

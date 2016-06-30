@@ -3,17 +3,16 @@ package ui.Dialog;
 import javafx.scene.control.ButtonType;
 import ui.Dialog.Helper.UiDialog;
 
-public class EditPlayerDialog extends UiDialog
+public class AddPlayerDialog extends UiDialog
 {
-	public static final String RESOURCE_ID = "fxml/dialogs/editPlayerDialog.fxml";
+	public static final String RESOURCE_ID = "fxml/dialogs/addPlayerDialog.fxml";
 
 	@Override
 	protected void onPrepareDialog( )
 	{
 		setContent( RESOURCE_ID );
 
-		setDialogTitle( "EDIT PLAYER" );
-		addButtonEventHandler( ButtonType.CANCEL, e -> close( ) );
+		getDialogPane().getButtonTypes().add( new ButtonType( "ADD" ) );
 	}
 
 	@Override

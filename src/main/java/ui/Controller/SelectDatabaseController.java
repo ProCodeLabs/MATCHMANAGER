@@ -39,8 +39,7 @@ public class SelectDatabaseController implements Initializable
 	public ListView<String> dataList;
 
 
-
-	public SelectDatabaseController(  )
+	public SelectDatabaseController( )
 	{
 	}
 
@@ -69,7 +68,22 @@ public class SelectDatabaseController implements Initializable
 		}
 
 		StorageManager.loadDatabase( getSelectedName( ) )
-				.thenApply( result -> {
+				.thenApply( r -> {
+
+					Platform.runLater( ( ) -> {
+						UiBaseContainer container = ( UiBaseContainer ) loadButton.getScene( ).getRoot( );
+						{
+							container.setCenter( "TEAMSETUP", TeamSetupController.RESOURCE_ID );
+							//container.<MainViewController> getController( ).setMatchManager( result );
+						}
+
+
+					} );
+
+
+					return r;
+				} )
+				/*.thenApply( result -> {
 					Platform.runLater( ( ) -> {
 						UiBaseContainer container = ( UiBaseContainer ) loadButton.getScene( ).getRoot( );
 						{
@@ -79,7 +93,7 @@ public class SelectDatabaseController implements Initializable
 					} );
 
 					return null;
-				} )
+				} )*/
 				.exceptionally( e -> {
 					Platform.runLater( ( ) -> {
 						UiAlert msgBox = new UiAlert( Alert.AlertType.ERROR );

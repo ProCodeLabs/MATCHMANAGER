@@ -17,13 +17,13 @@ public class UiCoreEventHandler
 	public void registerEvents( final Stage primaryStage )
 	{
 		addCriticalErrorHandler( primaryStage );
-
+		addLogItemHandler( primaryStage );
 	}
 
 
-	private void addCriticalErrorHandler( final Stage primaryStage )
+	private void addCriticalErrorHandler( final Stage stage )
 	{
-		primaryStage.addEventHandler( UiEvent.CORE_EXCEPTION, event -> {
+		stage.addEventHandler( UiEvent.CORE_EXCEPTION, event -> {
 			assert event.getEventData( ) instanceof Exception;
 
 			Exception e = ( Exception ) event.getEventData( );
@@ -40,6 +40,14 @@ public class UiCoreEventHandler
 
 			Platform.exit( );
 			System.exit( 0 );
+		} );
+	}
+
+	private void addLogItemHandler( final Stage stage )
+	{
+		stage.addEventFilter( UiEvent.LOG_ITEM, item -> {
+
+
 		} );
 	}
 
