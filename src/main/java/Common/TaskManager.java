@@ -2,12 +2,13 @@ package Common;
 
 import javafx.concurrent.Task;
 
-import java.util.concurrent.Callable;
-import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.*;
 
 
 public class TaskManager
 {
+	private static final ScheduledExecutorService scheduledExecutor = Executors.newSingleThreadScheduledExecutor( );
+
 	public static <T> void runTask( Callable<T> callable )
 	{
 		ForkJoinPool.commonPool( ).execute( new Task<T>( )
@@ -23,5 +24,10 @@ public class TaskManager
 	public static void runTask( Runnable runnable )
 	{
 		ForkJoinPool.commonPool( ).execute( runnable );
+	}
+
+	public static void runScheduledTask( long delay, Runnable runnable )
+	{
+		scheduledExecutor.schedule( runnable, delay, TimeUnit.SECONDS );
 	}
 }

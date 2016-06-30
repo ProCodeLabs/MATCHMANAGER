@@ -114,13 +114,9 @@ public class SelectDatabaseController implements Initializable
 	{
 		CreateDatabaseDialog dlg = new CreateDatabaseDialog( );
 		{
-			dlg.setResultHandler( r -> {
+			dlg.setResultCallback( r -> {
 				fileList.add( r );
-
-
 				FXCollections.sort( fileList );
-
-				//dataList.getSelectionModel().select( r );
 			} );
 		}
 		dlg.showDialog( );

@@ -1,21 +1,69 @@
 package ui.Dialog;
 
+import Core.Data.Player;
+import javafx.fxml.FXML;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.TextField;
 import ui.Dialog.Helper.UiDialog;
 
-public class AddPlayerDialog extends UiDialog
+public class AddPlayerDialog extends UiDialog<Player>
 {
 	public static final String RESOURCE_ID = "fxml/dialogs/addPlayerDialog.fxml";
+
+	@FXML
+	public TextField forenameText;
+
+	@FXML
+	public TextField surnameText;
+
+	private Player player;
+
+
+	public AddPlayerDialog( )
+	{
+	}
+
+	public AddPlayerDialog( Player player )
+	{
+		this.player = player;
+	}
+
 
 	@Override
 	protected void onPrepareDialog( )
 	{
 		setContent( RESOURCE_ID );
 
-		getDialogPane().getButtonTypes().add( new ButtonType( "ADD" ) );
+		if( player != null )
+		{
+			forenameText.setText( player.getForename( ) );
+			surnameText.setText( player.getSurname( ) );
+
+			setDialogTitle( "EDIT PLAYER" );
+		}
+
+
+		addButtonEventHandler( ButtonType.OK, e -> {
+			if( forenameText.getText( ).isEmpty( ) )
+			{
+				e.consume( );
+			}
+
+			if( surnameText.getText( ).isEmpty( ) )
+			{
+				e.consume( );
+			}
+
+			resultCallback.apply(
+					new Player( 0, forenameText.getText( ), surnameText.getText( ) )
+			);
+		} );
 	}
 
 	@Override
-	protected Object getThisPtr( ) { return this; }
+	protected Object getThisPtr( )
+	{
+		return this;
+	}
 
 }

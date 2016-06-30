@@ -1,6 +1,5 @@
 package ui.Dialog;
 
-import Common.ParamFunction;
 import Core.Database.StorageManager;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -11,12 +10,11 @@ import ui.Dialog.Helper.UiDialog;
 import ui.Dialog.ModalEx.UiAlert;
 
 
-public class CreateDatabaseDialog extends UiDialog
+public class CreateDatabaseDialog extends UiDialog<String>
 {
 	public static final String RESOURCE_ID = "fxml/dialogs/createDatabaseDialog.fxml";
 	private static final String CSS_ERROR_CLS = "textfield-error";
 
-	private ParamFunction<String> resultHandler;
 
 	@FXML
 	public TextField databaseName;
@@ -47,7 +45,7 @@ public class CreateDatabaseDialog extends UiDialog
 			StorageManager.createDatabase( name )
 					.thenApply( r -> {
 						Platform.runLater( ( ) -> {
-							resultHandler.apply( name );
+							resultCallback.apply( name );
 							close( );
 						} );
 
@@ -67,12 +65,6 @@ public class CreateDatabaseDialog extends UiDialog
 					} );
 		} );
 	}
-
-	public void setResultHandler( ParamFunction<String> handler )
-	{
-		resultHandler = handler;
-	}
-
 
 	@Override
 	protected Object getThisPtr( ) { return this; }

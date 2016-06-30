@@ -1,19 +1,22 @@
 package ui.Dialog.Helper;
 
 import Common.GlobalInstance;
+import Common.ParamFunction;
 import javafx.fxml.FXMLLoader;
 import ui.Helper.UiBaseDialog;
 
-public abstract class UiDialog extends UiBaseDialog
+public abstract class UiDialog<T> extends UiBaseDialog
 {
 	public UiDialog( )
 	{
 		initOwner( GlobalInstance.getPrimaryStage( ) );
 	}
 
-	public void showDialog()
+	protected ParamFunction<T> resultCallback;
+
+	public void showDialog( )
 	{
-		onPrepareDialog();
+		onPrepareDialog( );
 		{
 			show( );
 		}
@@ -25,8 +28,17 @@ public abstract class UiDialog extends UiBaseDialog
 		loader.setController( getThisPtr( ) );
 	}
 
+
+
 	protected abstract void onPrepareDialog( );
-	protected abstract Object getThisPtr();
+
+	protected abstract Object getThisPtr( );
 
 
+
+
+	public void setResultCallback( ParamFunction<T> resultCallback )
+	{
+		this.resultCallback = resultCallback;
+	}
 }

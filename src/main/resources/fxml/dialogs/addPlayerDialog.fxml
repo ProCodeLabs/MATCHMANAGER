@@ -15,7 +15,7 @@
          <children>
             <HBox>
                <children>
-                  <TextField promptText="FORENAME" HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="forenameText" promptText="FORENAME" HBox.hgrow="ALWAYS" />
                </children>
                <VBox.margin>
                   <Insets bottom="10.0" />
@@ -23,7 +23,7 @@
             </HBox>
             <HBox>
                <children>
-                  <TextField promptText="SURNAME" HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="surnameText" promptText="SURNAME" HBox.hgrow="ALWAYS" />
                </children>
                <VBox.margin>
                   <Insets bottom="10.0" />
@@ -43,6 +43,7 @@
       </VBox>
    </content>
    <buttonTypes>
+      <ButtonType fx:constant="OK" />
       <ButtonType fx:constant="CANCEL" />
    </buttonTypes>
 </DialogPane>
