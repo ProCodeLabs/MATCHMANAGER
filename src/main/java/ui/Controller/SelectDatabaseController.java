@@ -11,9 +11,9 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ListView;
+import ui.Container.UiBaseContainer;
 import ui.Dialog.CreateDatabaseDialog;
 import ui.Dialog.ModalEx.UiAlert;
-import ui.Container.UiBaseContainer;
 import ui.Helper.UiEvent;
 
 import java.net.URL;
@@ -68,34 +68,26 @@ public class SelectDatabaseController implements Initializable
 		}
 
 		StorageManager.loadDatabase( getSelectedName( ) )
-				.thenApply( result -> {
+				.thenApply( manager -> {
 
-					if( /*result.isEmptyStorage()*/ true )
+					if( manager.isDatabaseEmpty( ) )
 					{
-						Platform.runLater( ( ) -> {
-							UiBaseContainer container = ( UiBaseContainer ) loadButton.getScene( ).getRoot( );
-							{
-								container.setCenter( "TEAMSETUP", TeamSetupController.RESOURCE_ID );
-								container.<TeamSetupController> getController( ).setMatchManager( result );
-							}
-						} );
+						Platform.runLater( ( ) -> TeamSetupController.updateContainerStage(
+								( UiBaseContainer ) loadButton.getScene( ).getRoot( ), manager
+						) );
 
 						return null;
 					}
 
-					return result;
+					return manager;
 				} )
-				.thenApply( result -> {
+				.thenApply( manager -> {
 
-					if( result != null )
+					if( manager != null )
 					{
-						Platform.runLater( ( ) -> {
-							UiBaseContainer container = ( UiBaseContainer ) loadButton.getScene( ).getRoot( );
-							{
-								container.setCenter( "OVERVIEW", ResultViewController.RESOURCE_ID );
-								container.<ResultViewController> getController( ).setMatchManager( result );
-							}
-						} );
+						Platform.runLater( ( ) -> ResultViewController.updateContainerStage(
+								( UiBaseContainer ) loadButton.getScene( ).getRoot( ), manager )
+						);
 					}
 
 					return null;

@@ -18,7 +18,7 @@ public interface IStorageImpl
 	CompletableFuture<List<Player>> getAllTeamPlayers( String teamName );
 
 
-	CompletableFuture<Team> addTeam( String matchName );
+	CompletableFuture<Team> addTeam( String teamName );
 
 	CompletableFuture<Void> addPlayerToTeam( Match match, Player user );
 

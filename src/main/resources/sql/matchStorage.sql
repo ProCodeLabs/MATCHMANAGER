@@ -4,6 +4,5 @@ CREATE TABLE match_storage (
 
   teamA INTEGER,
   teamB INTEGER,
-  result INTEGER,
-  date INTEGER NOT NULL
+  result INTEGER
 );

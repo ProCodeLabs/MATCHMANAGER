@@ -2,6 +2,8 @@ package ui.Container;
 
 import Common.Files;
 import Common.GlobalInstance;
+import Common.UtilLogger.ILogger;
+import Common.UtilLogger.LoggerFactory;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
@@ -14,6 +16,7 @@ import java.io.IOException;
 
 public class UiBaseContainer extends BorderPane
 {
+	private final ILogger logger = LoggerFactory.createLogger( getClass() );
 	private UiContainerHelper uiHelper = new UiContainerHelper( this );
 
 	protected UiStyleDesc desc = new UiStyleDesc( this, true );
@@ -29,6 +32,8 @@ public class UiBaseContainer extends BorderPane
 
 	public void setCenter( String title, String resourceId )
 	{
+		logger.info( "Switching center content to " + resourceId + " title " + title );
+
 		FXMLLoader loader = new FXMLLoader( GlobalInstance.getResource( resourceId ) );
 		{
 			setTitle( title.toUpperCase( ) );

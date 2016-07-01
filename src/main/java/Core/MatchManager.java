@@ -6,12 +6,18 @@ import Common.UtilLogger.LoggerFactory;
 import Core.Data.Match;
 import Core.Data.Player;
 import Core.Data.Team;
+import Core.Database.Storage.Helper.DbStorage;
 import Core.Database.Storage.Helper.IStorageImpl;
+import Core.Database.Storage.MatchStorage;
 import Core.Database.Storage.PlayerStorage;
+import Core.Database.Storage.TeamStorage;
+import Core.Helper.StorageException;
 import org.tmatesoft.sqljet.core.SqlJetException;
 import org.tmatesoft.sqljet.core.table.SqlJetDb;
 import ui.Helper.UiEvent;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
@@ -24,17 +30,33 @@ public class MatchManager implements IStorageImpl
 	final ILogger logger = LoggerFactory.createLogger( getClass( ) );
 
 	private SqlJetDb db;
+
+	//> used for easy iterations
+	private List<DbStorage> activeStorage = new ArrayList<>( );
+
 	private PlayerStorage playerStorage;
+	private TeamStorage teamStorage;
+	private MatchStorage matchStorage;
+
 
 	public MatchManager( SqlJetDb db )
 	{
 		this.db = db;
 
 		playerStorage = new PlayerStorage( db );
+		teamStorage = new TeamStorage( db );
+		matchStorage = new MatchStorage( db );
+		{
+			activeStorage.add( playerStorage );
+			activeStorage.add( teamStorage );
+			activeStorage.add( matchStorage );
+		}
 	}
 
 	public void close( )
 	{
+		logger.info( "Closing database " + getFileName( ) );
+
 		try
 		{
 			db.close( );
@@ -45,6 +67,16 @@ public class MatchManager implements IStorageImpl
 		}
 	}
 
+	public void initializeDatabase( ) throws IOException, SqlJetException
+	{
+		for( DbStorage i : activeStorage )
+		{
+			if( !i.tableExists( ) )
+			{
+				i.createTable( );
+			}
+		}
+	}
 
 	@Override
 	public CompletableFuture<Player> addPlayer( String teamName, Player player )
@@ -84,9 +116,16 @@ public class MatchManager implements IStorageImpl
 	}
 
 	@Override
-	public CompletableFuture<Team> addTeam( String matchName )
+	public CompletableFuture<Team> addTeam( String teamName )
 	{
-		return null;
+		return getTeam( teamName ).thenApply( r -> {
+			if( r != null )
+			{
+				throw new CompletionException( new StorageException( "Team with the name " + teamName + " already exists!" ) );
+			}
+
+			return teamStorage.createTeam( teamName );
+		} );
 	}
 
 	@Override
@@ -98,7 +137,7 @@ public class MatchManager implements IStorageImpl
 	@Override
 	public CompletableFuture<Team> getTeam( String teamName )
 	{
-		return null;
+		return supplyAsync( ( ) -> teamStorage.getTeam( teamName ) );
 	}
 
 	@Override
@@ -148,4 +187,23 @@ public class MatchManager implements IStorageImpl
 	{
 		return null;
 	}
+
+	public boolean isDatabaseEmpty( )
+	{
+		for( DbStorage i : activeStorage )
+		{
+			if( i.tableExists( ) && !i.isTableEmpty( ) )
+			{
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	public String getFileName( )
+	{
+		return db.getFile( ).getName( );
+	}
+
 }

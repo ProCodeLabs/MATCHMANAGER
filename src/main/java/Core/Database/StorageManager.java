@@ -100,7 +100,6 @@ public class StorageManager
 			try
 			{
 				db = SqlJetDb.open( file, true );
-				//db.getOptions( ).setAutovacuum( true );
 			}
 			catch( SqlJetException e )
 			{
@@ -110,18 +109,18 @@ public class StorageManager
 			}
 
 			return new MatchManager( db );
-		} ).thenApply( r -> {
+		} ).thenApply( manager -> {
 
-			/*try
+			try
 			{
-				r.fetchData( );
+				manager.initializeDatabase();
 			}
-			catch( CoreException e )
+			catch( IOException | SqlJetException e )
 			{
 				throw new CompletionException( e );
-			}*/
+			}
 
-			return r;
+			return manager;
 		} );
 	}
 

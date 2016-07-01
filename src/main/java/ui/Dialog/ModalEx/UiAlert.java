@@ -51,5 +51,4 @@ public class UiAlert extends Alert
 		getDialogPane( ).setExpandableContent( pane );
 	}
 
-
 }

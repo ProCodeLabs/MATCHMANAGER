@@ -4,12 +4,28 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
 <VBox stylesheets="@../../styles/style.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
    <children>
+      <HBox>
+         <children>
+            <Button mnemonicParsing="false" text="CLOSE DATABASE" />
+            <Region HBox.hgrow="ALWAYS" />
+            <Button mnemonicParsing="false" text="EDIT TEAMS" />
+         </children>
+         <VBox.margin>
+            <Insets bottom="10.0" />
+         </VBox.margin>
+      </HBox>
+      <Separator prefWidth="200.0">
+         <VBox.margin>
+            <Insets bottom="10.0" />
+         </VBox.margin>
+      </Separator>
       <HBox VBox.vgrow="ALWAYS">
          <children>
             <Region HBox.hgrow="ALWAYS" />
@@ -46,12 +62,12 @@
          <children>
             <Button disable="true" mnemonicParsing="false" prefWidth="100.0" text="LAST" />
             <Region HBox.hgrow="ALWAYS" />
+            <Button disable="true" mnemonicParsing="false" prefWidth="100.0" text="NEXT" />
             <Button disable="true" mnemonicParsing="false" prefWidth="100.0" text="FINISH">
                <HBox.margin>
-                  <Insets right="5.0" />
+                  <Insets left="5.0" />
                </HBox.margin>
             </Button>
-            <Button disable="true" mnemonicParsing="false" prefWidth="100.0" text="NEXT" />
          </children>
          <padding>
             <Insets top="10.0" />

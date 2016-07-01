@@ -2,6 +2,7 @@ package ui.Controller;
 
 import Core.Data.Player;
 import Core.MatchManager;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -10,6 +11,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import ui.Container.UiBaseContainer;
 import ui.Dialog.AddPlayerDialog;
 import ui.Dialog.AddTeamDialog;
 
@@ -18,6 +20,7 @@ import java.util.ResourceBundle;
 
 public class TeamSetupController implements Initializable
 {
+	public static final String CONTAINER_TITLE = "TEAMSETUP";
 	public static final String RESOURCE_ID = "fxml/centerContent/setupTeams.fxml";
 
 
@@ -38,6 +41,14 @@ public class TeamSetupController implements Initializable
 	public Label labelInfo;
 
 	private MatchManager manager;
+
+	public static void updateContainerStage( UiBaseContainer container, MatchManager manager )
+	{
+		container.setCenter( CONTAINER_TITLE, RESOURCE_ID );
+		{
+			container.<TeamSetupController> getController( ).setMatchManager( manager );
+		}
+	}
 
 
 	@Override
@@ -66,11 +77,15 @@ public class TeamSetupController implements Initializable
 	{
 		AddTeamDialog dlg = new AddTeamDialog( );
 		{
-			/*dlg.setResultCallback( r -> manager.addTeam( r ).thenApply( result -> {
-				Platform.runLater( ( ) -> teamList.add( result.getTeamName( ) ) );
+			dlg.setResultCallback( r -> manager.addTeam( r )
+					.thenApply( result -> {
+						Platform.runLater( ( ) -> teamList.add( result.getTeamName( ) ) );
 
-				return null;
-			} ) );*/
+						return null;
+					} ).exceptionally( e -> {
+						//>
+						return null;
+					} ) );
 		}
 		dlg.showDialog( );
 	}
