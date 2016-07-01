@@ -7,27 +7,27 @@ import Core.Data.Team;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-public interface IStorage
+public interface IStorageImpl
 {
-	CompletableFuture<Void> addPlayer( Player player );
+	CompletableFuture<Player> addPlayer( String teamName, Player player );
 
-	CompletableFuture<Void> updatePlayer( Player targetPlayer, Player newPlayer );
+	CompletableFuture<Void> updatePlayer( int id, Player newPlayer );
 
 	CompletableFuture<Player> getPlayer( int id );
 
 	CompletableFuture<List<Player>> getAllTeamPlayers( String teamName );
 
 
-	CompletableFuture<Void> addTeam( String matchName );
+	CompletableFuture<Team> addTeam( String matchName );
 
 	CompletableFuture<Void> addPlayerToTeam( Match match, Player user );
 
-	CompletableFuture<Team> getTeam( String name );
+	CompletableFuture<Team> getTeam( String teamName );
 
 	CompletableFuture<Void> updateTeam( Team targetTeam, Team newTeam );
 
 
-	CompletableFuture<Void> addMatch( Team teamA, Team teamB );
+	CompletableFuture<Match> addMatch( Team teamA, Team teamB );
 
 	CompletableFuture<Void> endMatch( Team winner );
 
@@ -36,8 +36,9 @@ public interface IStorage
 	CompletableFuture<Match> getMatch( int id );
 
 
+	CompletableFuture<List<Player>> getAllPlayers();
+
 	CompletableFuture<List<Team>> getAllTeams();
 
 	CompletableFuture<List<Match>> getAllMatches();
-
 }

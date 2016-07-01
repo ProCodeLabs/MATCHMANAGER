@@ -46,6 +46,8 @@ public class Logger implements ILogger
 	{
 		LogRecord record = new LogRecord( level, msg );
 		{
+			record.setSourceClassName( targetClass.getName() );
+
 			GlobalInstance.fireGlobalEvent( new UiEvent( UiEvent.LOG_ITEM, record ) );
 		}
 		System.out.println( record.getMessage() );

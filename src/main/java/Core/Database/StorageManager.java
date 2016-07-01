@@ -109,7 +109,7 @@ public class StorageManager
 				);
 			}
 
-			return new MatchManager( /*db*/ );
+			return new MatchManager( db );
 		} ).thenApply( r -> {
 
 			/*try

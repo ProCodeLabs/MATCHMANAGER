@@ -1,4 +1,5 @@
 
 CREATE TABLE team_storage(
-    id INTEGER NOT NULL PRIMARY KEY
+    id INTEGER NOT NULL PRIMARY KEY,
+    name TEXT NOT NULL
 );

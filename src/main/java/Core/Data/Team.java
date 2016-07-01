@@ -5,18 +5,22 @@ public class Team
 	private int id;
 	private String teamName;
 
-
-
-	public Team( )
+	public Team( int id, String teamName )
 	{
-
+		this.id = id;
+		this.teamName = teamName;
 	}
 
-	public String getTeamName()
+	public Team( String teamName )
 	{
-		return  teamName;
+		this.teamName = teamName;
 	}
 
+
+	public String getTeamName( )
+	{
+		return teamName;
+	}
 
 
 }

@@ -46,8 +46,16 @@
          <children>
             <Button disable="true" mnemonicParsing="false" prefWidth="100.0" text="LAST" />
             <Region HBox.hgrow="ALWAYS" />
+            <Button disable="true" mnemonicParsing="false" prefWidth="100.0" text="FINISH">
+               <HBox.margin>
+                  <Insets right="5.0" />
+               </HBox.margin>
+            </Button>
             <Button disable="true" mnemonicParsing="false" prefWidth="100.0" text="NEXT" />
          </children>
+         <padding>
+            <Insets top="10.0" />
+         </padding>
       </HBox>
    </children>
 </VBox>
