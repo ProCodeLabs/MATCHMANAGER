@@ -2,9 +2,9 @@ package ui.Container;
 
 import ui.Dialog.CloseAppDialog;
 
-public class UiCoreWindowContainer extends UiBaseContainer
+public class UiCoreWindow extends UiBaseContainer
 {
-	public UiCoreWindowContainer(  )
+	public UiCoreWindow(  )
 	{
 		super();
 

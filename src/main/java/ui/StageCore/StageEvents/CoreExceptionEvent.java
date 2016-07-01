@@ -1,7 +1,8 @@
 package ui.StageCore.StageEvents;
 
 
-import Common.LogLevel;
+import Common.UtilLogger.ILogger;
+import Common.UtilLogger.LoggerFactory;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
@@ -9,11 +10,9 @@ import ui.Dialog.ModalEx.UiAlert;
 import ui.Helper.UiEvent;
 import ui.StageCore.Helper.IUiEventHandler;
 
-import java.util.logging.Logger;
-
 public class CoreExceptionEvent implements IUiEventHandler
 {
-	private final Logger logger = Logger.getLogger( this.getClass( ).getName( ) );
+	private final ILogger logger = LoggerFactory.createLogger( getClass( ) );
 
 	@Override
 	public void onRegisterEvents( Stage stage )
@@ -23,7 +22,7 @@ public class CoreExceptionEvent implements IUiEventHandler
 
 			Exception e = ( Exception ) event.getEventData( );
 
-			logger.log( LogLevel.CRITICAL, "Core error! " + e.getMessage( ) );
+			logger.critical( "Core error! " + e.getMessage( ) );
 
 			UiAlert msgBox = new UiAlert( Alert.AlertType.ERROR );
 			{

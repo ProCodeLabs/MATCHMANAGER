@@ -1,21 +1,19 @@
-package ui.Helper;
+package ui.Container;
 
 
 import Common.GlobalInstance;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
 import javafx.stage.Modality;
 import javafx.stage.StageStyle;
+import ui.Helper.UiEvent;
+import ui.Helper.UiStyleDesc;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.NoSuchElementException;
 import java.util.logging.Logger;
 
 
@@ -23,7 +21,10 @@ public class UiBaseDialog<R> extends Dialog<R>
 {
 	private final Logger logger = Logger.getLogger( this.getClass( ).getName( ) );
 
+	private UiContainerHelper uiHelper;
 	private UiStyleDesc desc;
+
+
 
 	public UiBaseDialog( )
 	{
@@ -35,8 +36,14 @@ public class UiBaseDialog<R> extends Dialog<R>
 		{
 			desc.setOnCloseButton( ( ) -> close( ) );
 		}
+		uiHelper = new UiContainerHelper( getDialogPane() );
 
 		getDialogPane( ).setHeader( desc.getTitleBar( ) );
+	}
+
+
+	protected /*virtual*/ void onLoad( FXMLLoader loader )
+	{
 	}
 
 	public void addButtonEventHandler( ButtonType type, EventHandler<ActionEvent> handler )
@@ -44,45 +51,6 @@ public class UiBaseDialog<R> extends Dialog<R>
 		assert getDialogPane( ).lookupButton( type ) != null;
 		getDialogPane( ).lookupButton( type ).addEventFilter( ActionEvent.ACTION, handler );
 	}
-
-	public Node getElementById( String id )
-	{
-		try
-		{
-			return getNodeList( getDialogPane( ) )
-					.stream( )
-					.filter( n -> n.getId( ) != null && n.getId( ).equals( id ) )
-					.findFirst( )
-					.get( );
-		}
-		catch( NoSuchElementException e )
-		{
-			logger.info( "No element found with id " + id + " > " + e.getMessage( ) );
-			return null;
-		}
-	}
-
-	private ArrayList<Node> getNodeList( Parent parent )
-	{
-		ArrayList<Node> nodes = new ArrayList<>( 16 );
-		{
-			getElementsRecursive( parent, nodes );
-		}
-		return nodes;
-	}
-
-	private void getElementsRecursive( Parent parent, ArrayList<Node> nodes )
-	{
-		parent.getChildrenUnmodifiable( ).forEach( i -> {
-			nodes.add( i );
-
-			if( i instanceof Parent )
-			{
-				getElementsRecursive( ( Parent ) i, nodes );
-			}
-		} );
-	}
-
 
 	public void setDialogTitle( String text )
 	{
@@ -119,12 +87,13 @@ public class UiBaseDialog<R> extends Dialog<R>
 		{
 			GlobalInstance.fireGlobalEvent( new UiEvent( UiEvent.CORE_EXCEPTION, e ) );
 		}
-
 	}
 
 
-	protected /*virtual*/ void onLoad( FXMLLoader loader )
+	public UiContainerHelper getHelper()
 	{
+		return uiHelper;
 	}
+
 
 }

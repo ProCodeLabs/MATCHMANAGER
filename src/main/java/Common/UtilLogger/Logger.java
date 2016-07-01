@@ -1,9 +1,9 @@
 package Common.UtilLogger;
 
 
+import Common.GlobalInstance;
 import Common.LogLevel;
-import Common.ParamFunction;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import ui.Helper.UiEvent;
 
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
@@ -11,16 +11,11 @@ import java.util.logging.LogRecord;
 public class Logger implements ILogger
 {
 	private Class targetClass;
-	private ParamFunction<String> onLogCb = r -> { throw new NotImplementedException(); };
-
-
 
 	public Logger( Class targetClass )
 	{
 		this.targetClass = targetClass;
 	}
-
-
 
 	@Override
 	public void info( String msg )
@@ -51,9 +46,8 @@ public class Logger implements ILogger
 	{
 		LogRecord record = new LogRecord( level, msg );
 		{
-
+			GlobalInstance.fireGlobalEvent( new UiEvent( UiEvent.LOG_ITEM, record ) );
 		}
-
 		System.out.println( record.getMessage() );
 	}
 }

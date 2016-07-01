@@ -13,15 +13,20 @@ import java.util.ArrayList;
 
 public abstract class UiStage implements IUiStage
 {
-	private final ILogger logger = LoggerFactory.createLogger( getClass( ) );
 	private static final ArrayList<String> activeContents = new ArrayList<>( );
+
+	private final ILogger logger = LoggerFactory.createLogger( getClass( ) );
 	protected Stage stage;
+	protected UiWindowContainer container;
 
 
 	public /*virtual*/ void onSetPosition( )
 	{
 	}
 
+	public /*virtual*/ void onCloseStage( )
+	{
+	}
 
 	public boolean createStage( String title, String resourceId, long width, long height )
 	{
@@ -34,7 +39,7 @@ public abstract class UiStage implements IUiStage
 		{
 			stage.initStyle( StageStyle.UNDECORATED );
 
-			UiWindowContainer container = new UiWindowContainer( );
+			container = new UiWindowContainer( );
 			{
 				container.setCenter( title, resourceId );
 			}
@@ -44,7 +49,11 @@ public abstract class UiStage implements IUiStage
 		stage.addEventFilter( WindowEvent.WINDOW_HIDING, e ->
 		{
 			logger.info( "Pane " + resourceId + " closed" );
-			activeContents.remove( resourceId );
+
+			onCloseStage( );
+			{
+				activeContents.remove( resourceId );
+			}
 		} );
 
 		return true;
@@ -82,5 +91,10 @@ public abstract class UiStage implements IUiStage
 	public Stage getStage( )
 	{
 		return stage;
+	}
+
+	public UiWindowContainer getContainer( )
+	{
+		return container;
 	}
 }

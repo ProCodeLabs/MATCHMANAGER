@@ -11,10 +11,4 @@ public class LoggerFactory
 		return l;
 	}
 
-	private static void onLogMessage(  )
-	{
-
-
-	}
-
 }

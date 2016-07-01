@@ -7,7 +7,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import ui.Container.UiCoreWindowContainer;
+import ui.Container.UiCoreWindow;
 import ui.Controller.SelectDatabaseController;
 import ui.Dialog.ModalEx.UiAlert;
 import ui.StageCore.Helper.UiEventRegistrar;
@@ -47,7 +47,7 @@ public class App extends Application
 				throw new Exception( "Failed to load font!" );
 			}
 
-			UiCoreWindowContainer container = new UiCoreWindowContainer( );
+			UiCoreWindow container = new UiCoreWindow( );
 			{
 				container.setCenter( "Select Database", SelectDatabaseController.RESOURCE_ID );
 			}

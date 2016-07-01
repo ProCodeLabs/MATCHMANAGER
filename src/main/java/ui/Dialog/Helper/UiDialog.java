@@ -3,7 +3,7 @@ package ui.Dialog.Helper;
 import Common.GlobalInstance;
 import Common.ParamFunction;
 import javafx.fxml.FXMLLoader;
-import ui.Helper.UiBaseDialog;
+import ui.Container.UiBaseDialog;
 
 public abstract class UiDialog<T> extends UiBaseDialog
 {

@@ -14,8 +14,11 @@ import java.io.IOException;
 
 public class UiBaseContainer extends BorderPane
 {
+	private UiContainerHelper uiHelper = new UiContainerHelper( this );
+
 	protected UiStyleDesc desc = new UiStyleDesc( this, true );
 	protected Object controller;
+
 
 	protected UiBaseContainer( )
 	{
@@ -46,8 +49,8 @@ public class UiBaseContainer extends BorderPane
 	{
 		Scene scene = new Scene( this, width, height );
 		{
-			scene.getStylesheets().clear();
-			scene.getStylesheets().add( GlobalInstance.getResourceUrl( Files.PATH_STYLE_RESOURCE ) );
+			scene.getStylesheets( ).clear( );
+			scene.getStylesheets( ).add( GlobalInstance.getResourceUrl( Files.PATH_STYLE_RESOURCE ) );
 		}
 		return scene;
 	}
@@ -63,5 +66,10 @@ public class UiBaseContainer extends BorderPane
 	public void setTitle( String title )
 	{
 		desc.setTitle( title );
+	}
+
+	public UiContainerHelper getUiHelper( )
+	{
+		return uiHelper;
 	}
 }
