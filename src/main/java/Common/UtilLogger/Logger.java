@@ -53,5 +53,7 @@ public class Logger implements ILogger
 		{
 
 		}
+
+		System.out.println( record.getMessage() );
 	}
 }

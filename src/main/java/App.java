@@ -1,19 +1,21 @@
+import Common.Files;
 import Common.GlobalInstance;
 import Common.UtilLogger.ILogger;
 import Common.UtilLogger.LoggerFactory;
 import javafx.application.Application;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import ui.Container.UiCoreWindowContainer;
 import ui.Controller.SelectDatabaseController;
 import ui.Dialog.ModalEx.UiAlert;
-import ui.Helper.UiBaseContainer;
 import ui.StageCore.Helper.UiEventRegistrar;
 
 public class App extends Application
 {
+	private static final String APP_TITLE = "Matchmanager v0.1";
+
 	private final ILogger logger = LoggerFactory.createLogger( getClass( ) );
 	private final UiEventRegistrar registrar = new UiEventRegistrar();
 
@@ -36,25 +38,20 @@ public class App extends Application
 			registrar.registerEvents( primaryStage );
 		}
 		primaryStage.initStyle( StageStyle.UNDECORATED );
+		primaryStage.setTitle( APP_TITLE );
 
 		try
 		{
-			if( Font.loadFont( GlobalInstance.getResourceUrl( "fonts/fontawesome-webfont.ttf" ), 12 ) == null )
+			if( Font.loadFont( GlobalInstance.getResourceUrl( Files.PATH_FONT_RESOURCE ), 12 ) == null )
 			{
 				throw new Exception( "Failed to load font!" );
 			}
 
-			UiBaseContainer container = new UiBaseContainer( );
+			UiCoreWindowContainer container = new UiCoreWindowContainer( );
 			{
 				container.setCenter( "Select Database", SelectDatabaseController.RESOURCE_ID );
 			}
-
-			Scene scene = new Scene( container, 800, 400 );
-
-			scene.getStylesheets( ).clear( );
-			scene.getStylesheets( ).add( GlobalInstance.getResourceUrl( "styles/style.css" ) );
-
-			primaryStage.setScene( scene );
+			primaryStage.setScene( container.createScene( 800, 400 ) );
 			primaryStage.show( );
 		}
 		catch( Exception ex )

@@ -1,28 +1,24 @@
-package ui.Helper;
+package ui.Container;
 
+import Common.Files;
 import Common.GlobalInstance;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import ui.Dialog.CloseAppDialog;
+import ui.Helper.UiEvent;
+import ui.Helper.UiStyleDesc;
 
 import java.io.IOException;
 
 
 public class UiBaseContainer extends BorderPane
 {
-	private UiStyleDesc desc = new UiStyleDesc( this, true );
-	private Object controller;
+	protected UiStyleDesc desc = new UiStyleDesc( this, true );
+	protected Object controller;
 
-	public UiBaseContainer( )
+	protected UiBaseContainer( )
 	{
-		desc.setOnCloseButton( ( ) -> {
-			CloseAppDialog dlg = new CloseAppDialog();
-			{
-				dlg.showDialog( );
-			}
-		} );
-
 		desc.setOnMinimizeButton( ( ) -> ( ( Stage ) getScene( ).getWindow( ) ).setIconified( true ) );
 
 		setTop( desc.getTitleBar( ) );
@@ -32,7 +28,7 @@ public class UiBaseContainer extends BorderPane
 	{
 		FXMLLoader loader = new FXMLLoader( GlobalInstance.getResource( resourceId ) );
 		{
-			setTitle( title.toUpperCase() );
+			setTitle( title.toUpperCase( ) );
 		}
 
 		try
@@ -46,12 +42,21 @@ public class UiBaseContainer extends BorderPane
 		}
 	}
 
+	public Scene createScene( double width, double height )
+	{
+		Scene scene = new Scene( this, width, height );
+		{
+			scene.getStylesheets().clear();
+			scene.getStylesheets().add( GlobalInstance.getResourceUrl( Files.PATH_STYLE_RESOURCE ) );
+		}
+		return scene;
+	}
 
-
-	public final <T> T getController( ) {
+	public final <T> T getController( )
+	{
 		assert controller != null;
 
-		return (T)controller;
+		return ( T ) controller;
 	}
 
 
