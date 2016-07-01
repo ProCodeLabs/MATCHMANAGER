@@ -1,7 +1,9 @@
 package ui.Controller;
 
 import Core.Data.Player;
+import Core.MatchManager;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -35,12 +37,25 @@ public class TeamSetupController implements Initializable
 	@FXML
 	public Label labelInfo;
 
+	private MatchManager manager;
+
 
 	@Override
 	public void initialize( URL location, ResourceBundle resources )
 	{
 		teamListView.setItems( teamList );
 		playerListView.setItems( playerList );
+
+		teamListView.getSelectionModel( ).getSelectedItems( ).addListener( new ListChangeListener<String>( )
+		{
+			@Override
+			public void onChanged( Change<? extends String> c )
+			{
+				playerList.clear( );
+
+			}
+		} );
+
 
 		//teamListView.setDisable( true );
 		//playerListView.setDisable( true );
@@ -51,7 +66,11 @@ public class TeamSetupController implements Initializable
 	{
 		AddTeamDialog dlg = new AddTeamDialog( );
 		{
-			dlg.setResultCallback( r -> teamList.add( r ) );
+			/*dlg.setResultCallback( r -> manager.addTeam( r ).thenApply( result -> {
+				Platform.runLater( ( ) -> teamList.add( result.getTeamName( ) ) );
+
+				return null;
+			} ) );*/
 		}
 		dlg.showDialog( );
 	}
@@ -94,7 +113,7 @@ public class TeamSetupController implements Initializable
 		}
 		else
 		{
-			AddPlayerDialog dlg = new AddPlayerDialog( new Player( 0, "asdf", "aasdasd22") );
+			AddPlayerDialog dlg = new AddPlayerDialog( new Player( 0, "asdf", "aasdasd22" ) );
 			{
 				dlg.showDialog( );
 			}
@@ -130,4 +149,9 @@ public class TeamSetupController implements Initializable
 		labelInfo.setText( "Info: " + text );
 	}
 
+
+	public void setMatchManager( MatchManager manager )
+	{
+		this.manager = manager;
+	}
 }

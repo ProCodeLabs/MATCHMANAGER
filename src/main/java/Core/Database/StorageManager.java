@@ -1,7 +1,5 @@
 package Core.Database;
 
-import Core.Database.Storage.PlayerStorage;
-import Core.Helper.CoreException;
 import Core.MatchManager;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
@@ -60,9 +58,6 @@ public class StorageManager
 					db.commit( );
 				}
 
-				PlayerStorage s = new PlayerStorage();
-				s.initializeStorage( db );
-
 				db.close( );
 			}
 			catch( SqlJetException e )
@@ -114,17 +109,17 @@ public class StorageManager
 				);
 			}
 
-			return new MatchManager( db );
+			return new MatchManager( /*db*/ );
 		} ).thenApply( r -> {
 
-			try
+			/*try
 			{
 				r.fetchData( );
 			}
 			catch( CoreException e )
 			{
 				throw new CompletionException( e );
-			}
+			}*/
 
 			return r;
 		} );

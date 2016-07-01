@@ -1,16 +1,9 @@
 package Core.Database.Storage.Helper;
 
 
-import Common.GlobalInstance;
-import org.tmatesoft.sqljet.core.SqlJetException;
-import org.tmatesoft.sqljet.core.SqlJetTransactionMode;
-import org.tmatesoft.sqljet.core.table.SqlJetDb;
-
-import java.io.IOException;
-
-public abstract class StorageHelper implements IStorage
+public abstract class StorageHelper
 {
-	private SqlJetDb db;
+	/*private SqlJetDb db;
 
 	//>
 	protected abstract void onInitializeStorage( ) throws SqlJetException;
@@ -67,5 +60,5 @@ public abstract class StorageHelper implements IStorage
 	public SqlJetDb getDatabase( )
 	{
 		return db;
-	}
+	}*/
 }

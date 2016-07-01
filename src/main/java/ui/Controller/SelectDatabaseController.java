@@ -68,32 +68,38 @@ public class SelectDatabaseController implements Initializable
 		}
 
 		StorageManager.loadDatabase( getSelectedName( ) )
-				.thenApply( r -> {
+				.thenApply( result -> {
 
-					Platform.runLater( ( ) -> {
-						UiBaseContainer container = ( UiBaseContainer ) loadButton.getScene( ).getRoot( );
-						{
-							container.setCenter( "TEAMSETUP", TeamSetupController.RESOURCE_ID );
-							//container.<MainViewController> getController( ).setMatchManager( result );
-						}
+					if( /*result.isEmptyStorage()*/ true )
+					{
+						Platform.runLater( ( ) -> {
+							UiBaseContainer container = ( UiBaseContainer ) loadButton.getScene( ).getRoot( );
+							{
+								container.setCenter( "TEAMSETUP", TeamSetupController.RESOURCE_ID );
+								container.<TeamSetupController> getController( ).setMatchManager( result );
+							}
+						} );
 
+						return null;
+					}
 
-					} );
-
-
-					return r;
+					return result;
 				} )
-				/*.thenApply( result -> {
-					Platform.runLater( ( ) -> {
-						UiBaseContainer container = ( UiBaseContainer ) loadButton.getScene( ).getRoot( );
-						{
-							container.setCenter( "OVERVIEW", MainViewController.RESOURCE_ID );
-							container.<MainViewController> getController( ).setMatchManager( result );
-						}
-					} );
+				.thenApply( result -> {
+
+					if( result != null )
+					{
+						Platform.runLater( ( ) -> {
+							UiBaseContainer container = ( UiBaseContainer ) loadButton.getScene( ).getRoot( );
+							{
+								container.setCenter( "OVERVIEW", ResultViewController.RESOURCE_ID );
+								container.<ResultViewController> getController( ).setMatchManager( result );
+							}
+						} );
+					}
 
 					return null;
-				} )*/
+				} )
 				.exceptionally( e -> {
 					Platform.runLater( ( ) -> {
 						UiAlert msgBox = new UiAlert( Alert.AlertType.ERROR );
@@ -145,7 +151,6 @@ public class SelectDatabaseController implements Initializable
 			StorageManager.deleteDatabase( name )
 					.thenApply( r -> {
 						Platform.runLater( ( ) -> fileList.remove( name ) );
-
 						return null;
 					} )
 					.exceptionally( e -> {
