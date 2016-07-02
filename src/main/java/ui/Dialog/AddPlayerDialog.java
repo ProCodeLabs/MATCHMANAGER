@@ -18,9 +18,11 @@ public class AddPlayerDialog extends UiDialog<Player>
 
 	private Player player;
 
+	private String teamName;
 
-	public AddPlayerDialog( )
+	public AddPlayerDialog( String teamName )
 	{
+		this.teamName = teamName;
 	}
 
 	public AddPlayerDialog( Player player )
@@ -41,7 +43,10 @@ public class AddPlayerDialog extends UiDialog<Player>
 
 			setDialogTitle( "EDIT PLAYER" );
 		}
-
+		else
+		{
+			setDialogTitle( "ADD PLAYER( " + teamName + " )" );
+		}
 
 		addButtonEventHandler( ButtonType.OK, e -> {
 			if( forenameText.getText( ).isEmpty( ) )
@@ -58,6 +63,7 @@ public class AddPlayerDialog extends UiDialog<Player>
 					new Player( 0, forenameText.getText( ), surnameText.getText( ) )
 			);
 		} );
+
 	}
 
 	@Override

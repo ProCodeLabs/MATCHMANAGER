@@ -1,8 +1,9 @@
 package Core.Database.Storage.Helper;
 
 import Common.GlobalInstance;
-import Common.ParamFunction;
 import Common.Util;
+import Common.UtilLogger.ILogger;
+import Common.UtilLogger.LoggerFactory;
 import org.tmatesoft.sqljet.core.SqlJetException;
 import org.tmatesoft.sqljet.core.SqlJetTransactionMode;
 import org.tmatesoft.sqljet.core.table.ISqlJetCursor;
@@ -15,6 +16,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class DbStorage
 {
+	private final ILogger logger = LoggerFactory.createLogger( getClass() );
 	private SqlJetDb db;
 
 	public DbStorage( SqlJetDb db )
@@ -27,25 +29,31 @@ public abstract class DbStorage
 
 	protected abstract String getResourceName( );
 
+	protected /*virtual*/ void onSetupTable() throws SqlJetException
+	{
+	}
 
 
 	public void createTable( ) throws IOException, SqlJetException
 	{
+		logger.info( "initializing table " + getTableName() );
+
 		InputStream stream = GlobalInstance.getAppClass( ).getResourceAsStream( getResourceName( ) );
 
 		String query = Util.drainInputStream( stream );
 		{
 			getDb( ).createTable( query );
 		}
+		onSetupTable();
 	}
 
-	private void fetchRows( ParamFunction<ISqlJetCursor> callback ) throws SqlJetException
+	protected void fetchRows( String indexName, ThrowableParamFunction<ISqlJetCursor> callback ) throws SqlJetException
 	{
 		getDb( ).beginTransaction( SqlJetTransactionMode.READ_ONLY );
 
 		try
 		{
-			ISqlJetCursor cursor = getTable( ).order( getTable( ).getPrimaryKeyIndexName( ) );
+			ISqlJetCursor cursor = getTable( ).order( indexName );
 
 			if( !cursor.eof( ) )
 			{
@@ -99,7 +107,7 @@ public abstract class DbStorage
 	{
 		AtomicInteger count = new AtomicInteger( 0 );
 
-		fetchRows( cursor -> count.incrementAndGet( ) );
+		fetchRows( null, cursor -> count.incrementAndGet( ) );
 
 		return count.get( );
 	}

@@ -2,10 +2,10 @@ package Core.Data;
 
 public class Team
 {
-	private int id;
+	private long id;
 	private String teamName;
 
-	public Team( int id, String teamName )
+	public Team( long id, String teamName )
 	{
 		this.id = id;
 		this.teamName = teamName;
@@ -22,5 +22,9 @@ public class Team
 		return teamName;
 	}
 
+	public long getId( )
+	{
+		return id;
+	}
 
 }

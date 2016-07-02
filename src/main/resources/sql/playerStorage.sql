@@ -1,7 +1,7 @@
 CREATE TABLE user_storage (
-      id INTEGER NOT NULL PRIMARY KEY,
+      id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
       teamId INTEGER,
 
-      first_name TEXT NOT NULL,
-      second_name TEXT NOT NULL PRIMARY KEY
+      forename TEXT NOT NULL,
+      surname TEXT NOT NULL
 );

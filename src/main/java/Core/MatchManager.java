@@ -81,20 +81,7 @@ public class MatchManager implements IStorageImpl
 	@Override
 	public CompletableFuture<Player> addPlayer( String teamName, Player player )
 	{
-		return supplyAsync( ( ) -> {
-			Player r;
-
-			try
-			{
-				r = playerStorage.addPlayer( teamName, player );
-			}
-			catch( SqlJetException e )
-			{
-				throw new CompletionException( e );
-			}
-
-			return r;
-		} );
+		return getTeam( teamName ).thenApply( r -> playerStorage.addPlayer( r.getId( ), player ) );
 	}
 
 	@Override
@@ -112,20 +99,13 @@ public class MatchManager implements IStorageImpl
 	@Override
 	public CompletableFuture<List<Player>> getAllTeamPlayers( String teamName )
 	{
-		return null;
+		return getTeam( teamName ).thenApply( r -> playerStorage.getAllTeamPlayers( r.getId( ) ) );
 	}
 
 	@Override
 	public CompletableFuture<Team> addTeam( String teamName )
 	{
-		return getTeam( teamName ).thenApply( r -> {
-			if( r != null )
-			{
-				throw new CompletionException( new StorageException( "Team with the name " + teamName + " already exists!" ) );
-			}
-
-			return teamStorage.createTeam( teamName );
-		} );
+		return getTeam( teamName ).thenApply( r -> teamStorage.createTeam( teamName ) );
 	}
 
 	@Override
@@ -204,6 +184,12 @@ public class MatchManager implements IStorageImpl
 	public String getFileName( )
 	{
 		return db.getFile( ).getName( );
+	}
+
+
+	private void throwTeamNotFoundException( String teamName ) throws CompletionException
+	{
+		throw new CompletionException( new StorageException( "Team with the name " + teamName + " already exists!" ) );
 	}
 
 }

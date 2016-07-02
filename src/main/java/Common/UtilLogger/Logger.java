@@ -36,6 +36,12 @@ public class Logger implements ILogger
 	}
 
 	@Override
+	public void error( String msg )
+	{
+		log( LogLevel.ERROR, msg );
+	}
+
+	@Override
 	public void critical( String msg )
 	{
 		log( LogLevel.CRITICAL, msg );
@@ -46,10 +52,10 @@ public class Logger implements ILogger
 	{
 		LogRecord record = new LogRecord( level, msg );
 		{
-			record.setSourceClassName( targetClass.getName() );
+			record.setSourceClassName( targetClass.getName( ) );
 
 			GlobalInstance.fireGlobalEvent( new UiEvent( UiEvent.LOG_ITEM, record ) );
 		}
-		System.out.println( record.getMessage() );
+		System.out.println( record.getMessage( ) );
 	}
 }

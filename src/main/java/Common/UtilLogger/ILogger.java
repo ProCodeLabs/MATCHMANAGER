@@ -10,6 +10,8 @@ public interface ILogger
 
 	void success( String msg );
 
+	void error( String msg );
+
 	void critical( String msg );
 
 	void log( Level l, String msg );
