@@ -1,6 +1,8 @@
 package Core.Database.Storage.Helper;
 
 import Common.GlobalInstance;
+import Common.LambdaExt.ReflectFunction;
+import Common.LambdaExt.ThrowableParamFunction;
 import Common.Util;
 import Common.UtilLogger.ILogger;
 import Common.UtilLogger.LoggerFactory;
@@ -12,11 +14,12 @@ import org.tmatesoft.sqljet.core.table.SqlJetDb;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.concurrent.CompletionException;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class DbStorage
 {
-	private final ILogger logger = LoggerFactory.createLogger( getClass() );
+	private final ILogger logger = LoggerFactory.createLogger( getClass( ) );
 	private SqlJetDb db;
 
 	public DbStorage( SqlJetDb db )
@@ -29,14 +32,14 @@ public abstract class DbStorage
 
 	protected abstract String getResourceName( );
 
-	protected /*virtual*/ void onSetupTable() throws SqlJetException
+	protected /*virtual*/ void onSetupTable( ) throws SqlJetException
 	{
 	}
 
 
 	public void createTable( ) throws IOException, SqlJetException
 	{
-		logger.info( "initializing table " + getTableName() );
+		logger.info( "initializing table " + getTableName( ) );
 
 		InputStream stream = GlobalInstance.getAppClass( ).getResourceAsStream( getResourceName( ) );
 
@@ -44,15 +47,12 @@ public abstract class DbStorage
 		{
 			getDb( ).createTable( query );
 		}
-		onSetupTable();
+		onSetupTable( );
 	}
 
 	protected void fetchRows( String indexName, ThrowableParamFunction<ISqlJetCursor> callback ) throws SqlJetException
 	{
-		getDb( ).beginTransaction( SqlJetTransactionMode.READ_ONLY );
-
-		try
-		{
+		transactionCommit( SqlJetTransactionMode.READ_ONLY, ( ) -> {
 			ISqlJetCursor cursor = getTable( ).order( indexName );
 
 			if( !cursor.eof( ) )
@@ -62,11 +62,9 @@ public abstract class DbStorage
 					callback.apply( cursor );
 				} while( cursor.next( ) );
 			}
-		}
-		finally
-		{
-			getDb( ).commit( );
-		}
+
+			return null;
+		} );
 	}
 
 	public boolean tableExists( )
@@ -81,11 +79,39 @@ public abstract class DbStorage
 		}
 	}
 
+	//helper to turn sql exceptions into completion exceptions
+	protected <T> T reflectException( ReflectFunction<T> func ) throws CompletionException
+	{
+		try
+		{
+			return func.apply( );
+		}
+		catch( SqlJetException e )
+		{
+			throw new CompletionException( e );
+		}
+	}
+
+	protected <T> T transactionCommit( SqlJetTransactionMode mode, ReflectFunction<T> f )
+	{
+		return reflectException( ( ) -> {
+			getDb( ).beginTransaction( mode );
+			try
+			{
+				return f.apply( );
+			}
+			finally
+			{
+				getDb( ).commit( );
+			}
+		} );
+	}
+
 	public boolean isTableEmpty( )
 	{
 		try
 		{
-			return getRowCount() <= 0;
+			return getRowCount( ) <= 0;
 		}
 		catch( SqlJetException e )
 		{
@@ -110,6 +136,13 @@ public abstract class DbStorage
 		fetchRows( null, cursor -> count.incrementAndGet( ) );
 
 		return count.get( );
+	}
+
+
+	@Override
+	public String toString( )
+	{
+		return getTableName( ) + " " + getResourceName( );
 	}
 }
 

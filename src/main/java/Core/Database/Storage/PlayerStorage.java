@@ -6,15 +6,18 @@ import Core.Data.Player;
 import Core.Database.Storage.Helper.DbStorage;
 import org.tmatesoft.sqljet.core.SqlJetException;
 import org.tmatesoft.sqljet.core.SqlJetTransactionMode;
+import org.tmatesoft.sqljet.core.table.ISqlJetCursor;
 import org.tmatesoft.sqljet.core.table.SqlJetDb;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CompletionException;
 
 public class PlayerStorage extends DbStorage
 {
+	private static final String TEAMID_INDEX = "teamid_index";
+
 	private final ILogger logger = LoggerFactory.createLogger( getClass( ) );
+
 
 	public PlayerStorage( SqlJetDb db )
 	{
@@ -23,49 +26,78 @@ public class PlayerStorage extends DbStorage
 
 	public Player addPlayer( long teamId, Player player )
 	{
-		try
-		{
-			getDb( ).beginTransaction( SqlJetTransactionMode.WRITE );
+		return transactionCommit( SqlJetTransactionMode.WRITE, ( ) -> {
+			long rowId = getTable( ).insert( teamId, player.getForename( ), player.getSurname( ) );
 
-			try
+			logger.success( "added new player( " + player.getFullName( ) + " )to team " + teamId );
+
+			return new Player( rowId, player );
+		} );
+	}
+
+	public Player getPlayer( long id )
+	{
+		return transactionCommit( SqlJetTransactionMode.READ_ONLY, ( ) -> {
+			ISqlJetCursor cursor = getTable( ).lookup( getTable( ).getPrimaryKeyIndexName( ) );
+
+			if( cursor.eof( ) )
 			{
-				long rowId = getTable( ).insert( teamId, player.getForename( ), player.getSurname( ) );
-
-				logger.success( "added new player( " + player.getFullName( ) + " )to team " + teamId );
-
-				return new Player( rowId, player );
+				logger.error( "Player " + id + " not found!" );
+				return null;
 			}
-			finally
-			{
-				getDb( ).commit( );
-			}
-		}
-		catch( SqlJetException e )
-		{
-			throw new CompletionException( e );
-		}
+
+			return serializePlayer( cursor );
+		} );
+	}
+
+	public Void removePlayer( long id )
+	{
+
+		return null;
+	}
+
+	public Void updatePlayer( Player player, Player newPlayer )
+	{
+		return null;
 	}
 
 	public List<Player> getAllTeamPlayers( long teamId )
 	{
-		try
-		{
+		return reflectException( ( ) -> {
 			ArrayList<Player> playerList = new ArrayList<>( );
 			{
-				fetchRows( "teamid_index", r -> {
-					if( r.getInteger( 1 ) == teamId )
+				fetchRows( TEAMID_INDEX, c -> {
+					if( c.getInteger( 1 ) == teamId )
 					{
-						playerList.add( new Player( r.getRowId( ), r.getString( 2 ), r.getString( 3 ) ) );
+						playerList.add( serializePlayer( c ) );
 					}
 				} );
 			}
 
 			return playerList;
-		}
-		catch( SqlJetException e )
-		{
-			throw new CompletionException( e );
-		}
+		} );
+	}
+
+	public List<Player> getAllPlayers( )
+	{
+		return reflectException( ( ) -> {
+			ArrayList<Player> playerList = new ArrayList<>( );
+			{
+				fetchRows( TEAMID_INDEX, c -> playerList.add( serializePlayer( c ) ) );
+			}
+			return playerList;
+		} );
+	}
+
+	private Player serializePlayer( ISqlJetCursor cursor ) throws SqlJetException
+	{
+		long id = cursor.getRowId( );
+		long teamId = cursor.getInteger( 1 );
+
+		String forename = cursor.getString( 2 );
+		String surname = cursor.getString( 3 );
+
+		return new Player( id, teamId, forename, surname );
 	}
 
 	@Override

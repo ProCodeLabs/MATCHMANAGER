@@ -11,6 +11,8 @@ import org.tmatesoft.sqljet.core.schema.ISqlJetIndexDef;
 import org.tmatesoft.sqljet.core.table.ISqlJetCursor;
 import org.tmatesoft.sqljet.core.table.SqlJetDb;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CompletionException;
 
 public class TeamStorage extends DbStorage
@@ -19,64 +21,70 @@ public class TeamStorage extends DbStorage
 
 	private ISqlJetIndexDef nameIndex;
 
+
 	public TeamStorage( SqlJetDb db )
 	{
 		super( db );
 	}
 
+
 	public Team createTeam( String teamName ) throws CompletionException
 	{
-		try
-		{
-			getDb( ).beginTransaction( SqlJetTransactionMode.WRITE );
-			try
+		return transactionCommit( SqlJetTransactionMode.WRITE, ( ) -> {
+			long rowId = getTable( ).insert( teamName );
 			{
-				long rowId = getTable( ).insert( teamName );
-				{
-					logger.success( "Added new team " + teamName + " id: " + rowId );
+				logger.success( "Added new team " + teamName + " id: " + rowId );
 
-					return new Team( rowId, teamName );
-				}
+				return new Team( rowId, teamName );
 			}
-			finally
-			{
-				getDb( ).commit( );
-			}
-		}
-		catch( SqlJetException e )
-		{
-			throw new CompletionException( e );
-		}
+		} );
 	}
 
 	public Team getTeam( String teamName ) throws CompletionException
 	{
-		try
-		{
-			getDb( ).beginTransaction( SqlJetTransactionMode.READ_ONLY );
-			try
-			{
-				ISqlJetCursor cursor = getTable( ).lookup( "name_index", teamName );
+		return transactionCommit( SqlJetTransactionMode.READ_ONLY, ( ) -> {
+			ISqlJetCursor cursor = getTable( ).lookup( "name_index", teamName );
 
-				if( cursor.eof( ) )
-				{
-					logger.error( "team not found!: " + teamName );
-					//#broken
-					return null;
-				}
-
-				logger.success( "found team: " + teamName + " with id: " + cursor.getRowId( ) );
-				return new Team( cursor.getRowId( ), cursor.getString( 1 ) );
-			}
-			finally
+			if( cursor.eof( ) )
 			{
-				getDb( ).commit( );
+				logger.error( "team not found!: " + teamName );
+				return null;
 			}
-		}
-		catch( SqlJetException e )
-		{
-			throw new CompletionException( e );
-		}
+
+			logger.success( "found team: " + teamName + " with id: " + cursor.getRowId( ) );
+			return new Team( cursor.getRowId( ), cursor.getString( 1 ) );
+		} );
+	}
+
+	public Void removeTeam( String teamName )
+	{
+
+		return null;
+	}
+
+	public Void updateTeam( Team targetTeam, Team newTeam )
+	{
+		return null;
+	}
+
+	public List<Team> getAllTeams( ) throws CompletionException
+	{
+		return transactionCommit( SqlJetTransactionMode.READ_ONLY, ( ) -> {
+			ArrayList<Team> teamList = new ArrayList<>( );
+			{
+				fetchRows( null, c -> teamList.add( serializeTeam( c ) ) );
+			}
+			return teamList;
+		} );
+	}
+
+
+	private Team serializeTeam( ISqlJetCursor cursor ) throws SqlJetException
+	{
+		long id = cursor.getRowId();
+		String name = cursor.getString( 1 );
+
+		return new Team( id, name );
 	}
 
 	@Override

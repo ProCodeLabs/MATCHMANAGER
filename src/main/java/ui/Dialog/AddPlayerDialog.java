@@ -60,7 +60,7 @@ public class AddPlayerDialog extends UiDialog<Player>
 			}
 
 			resultCallback.apply(
-					new Player( 0, forenameText.getText( ), surnameText.getText( ) )
+					new Player( forenameText.getText( ), surnameText.getText( ) )
 			);
 		} );
 

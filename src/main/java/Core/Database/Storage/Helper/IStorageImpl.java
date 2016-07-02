@@ -11,29 +11,31 @@ public interface IStorageImpl
 {
 	CompletableFuture<Player> addPlayer( String teamName, Player player );
 
-	CompletableFuture<Void> updatePlayer( int id, Player newPlayer );
+	CompletableFuture<Void> updatePlayer( long id, Player newPlayer );
 
-	CompletableFuture<Player> getPlayer( int id );
+	CompletableFuture<Void> removePlayer( long id );
+
+	CompletableFuture<Player> getPlayer( long id );
 
 	CompletableFuture<List<Player>> getAllTeamPlayers( String teamName );
 
 
 	CompletableFuture<Team> addTeam( String teamName );
 
-	CompletableFuture<Void> addPlayerToTeam( Match match, Player user );
-
 	CompletableFuture<Team> getTeam( String teamName );
 
-	CompletableFuture<Void> updateTeam( Team targetTeam, Team newTeam );
+	CompletableFuture<Void> removeTeam( String teamName );
+
+	CompletableFuture<Void> updateTeam( String teamName, Team team );
 
 
 	CompletableFuture<Match> addMatch( Team teamA, Team teamB );
 
-	CompletableFuture<Void> endMatch( Team winner );
+	CompletableFuture<Void> endMatch( Match match, Team winner );
 
 	CompletableFuture<Void> updateMatch( Match match );
 
-	CompletableFuture<Match> getMatch( int id );
+	CompletableFuture<Match> getMatch( long id );
 
 
 	CompletableFuture<List<Player>> getAllPlayers();

@@ -27,7 +27,7 @@ public class TeamSetupController implements Initializable
 
 
 	private ObservableList<String> teamList = FXCollections.observableArrayList( );
-	private ObservableList<String> playerList = FXCollections.observableArrayList( );
+	private ObservableList<Player> playerList = FXCollections.observableArrayList( );
 
 
 	@FXML
@@ -37,7 +37,7 @@ public class TeamSetupController implements Initializable
 	public ListView<String> teamListView;
 
 	@FXML
-	public ListView<String> playerListView;
+	public ListView<Player> playerListView;
 
 	@FXML
 	public Label labelInfo;
@@ -48,7 +48,10 @@ public class TeamSetupController implements Initializable
 	{
 		container.setCenter( CONTAINER_TITLE, RESOURCE_ID );
 		{
-			container.<TeamSetupController> getController( ).setMatchManager( manager );
+			TeamSetupController controller = container.<TeamSetupController> getController( );
+
+			controller.setMatchManager( manager );
+			controller.initializeController( );
 		}
 	}
 
@@ -73,7 +76,7 @@ public class TeamSetupController implements Initializable
 					manager.getAllTeamPlayers( teamName )
 							.thenApply( r -> {
 								r.forEach(
-										i -> Platform.runLater( ( ) -> playerList.add( i.getFullName( ) ) )
+										i -> Platform.runLater( ( ) -> playerList.add( i ) )
 								);
 								return null;
 							} )
@@ -85,10 +88,14 @@ public class TeamSetupController implements Initializable
 				}
 			}
 		} );
+	}
 
-
-		//teamListView.setDisable( true );
-		//playerListView.setDisable( true );
+	public void initializeController( )
+	{
+		manager.getAllTeams( ).thenApply( r -> {
+			r.forEach( i -> Platform.runLater( ( ) -> teamList.add( i.getTeamName( ) ) ) );
+			return null;
+		} );
 	}
 
 	@FXML
@@ -135,7 +142,7 @@ public class TeamSetupController implements Initializable
 			{
 				dlg.setResultCallback( result -> manager.addPlayer( teamName, result )
 						.thenApply( r -> {
-							Platform.runLater( ( ) -> playerList.add( r.getFullName( ) ) );
+							Platform.runLater( ( ) -> playerList.add( r ) );
 							return null;
 						} )
 						.exceptionally( e -> {
@@ -151,13 +158,13 @@ public class TeamSetupController implements Initializable
 	@FXML
 	public void onEditPlayerButtonClicked( )
 	{
-		if( getSelectedPlayerName( ) == null || getSelectedTeamName( ) == null )
+		if( getSelectedPlayerItem( ) == null || getSelectedTeamName( ) == null )
 		{
 			setInfoText( "You need to select your target team and player first!" );
 		}
 		else
 		{
-			AddPlayerDialog dlg = new AddPlayerDialog( new Player( "asdf", "aasdasd22" ) );
+			AddPlayerDialog dlg = new AddPlayerDialog( getSelectedPlayerItem( ) );
 			{
 				dlg.showDialog( );
 			}
@@ -167,7 +174,7 @@ public class TeamSetupController implements Initializable
 	@FXML
 	public void onRemovePlayerClicked( )
 	{
-		if( getSelectedPlayerName( ) == null || getSelectedTeamName( ) == null )
+		if( getSelectedPlayerItem( ) == null || getSelectedTeamName( ) == null )
 		{
 			setInfoText( "You need to select your target team and player first!" );
 		}
@@ -183,7 +190,7 @@ public class TeamSetupController implements Initializable
 		return teamListView.getSelectionModel( ).getSelectedItem( );
 	}
 
-	private String getSelectedPlayerName( )
+	private Player getSelectedPlayerItem( )
 	{
 		return playerListView.getSelectionModel( ).getSelectedItem( );
 	}

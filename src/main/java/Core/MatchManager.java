@@ -71,6 +71,8 @@ public class MatchManager implements IStorageImpl
 	{
 		for( DbStorage i : activeStorage )
 		{
+			logger.info( "Initializing table " + i.toString( ) );
+
 			if( !i.tableExists( ) )
 			{
 				i.createTable( );
@@ -81,38 +83,48 @@ public class MatchManager implements IStorageImpl
 	@Override
 	public CompletableFuture<Player> addPlayer( String teamName, Player player )
 	{
-		return getTeam( teamName ).thenApply( r -> playerStorage.addPlayer( r.getId( ), player ) );
+		return getTeamExc( teamName ).thenApply( r -> playerStorage.addPlayer( r.getId( ), player ) );
 	}
 
 	@Override
-	public CompletableFuture<Void> updatePlayer( int id, Player newPlayer )
+	public CompletableFuture<Void> updatePlayer( long id, Player newPlayer )
 	{
-		return null;
+		return getPlayer( id ).thenApply( r -> playerStorage.updatePlayer( r, newPlayer ) );
 	}
 
 	@Override
-	public CompletableFuture<Player> getPlayer( int id )
+	public CompletableFuture<Void> removePlayer( long id )
 	{
-		return null;
+		return supplyAsync( ( ) -> playerStorage.removePlayer( id ) );
+	}
+
+	@Override
+	public CompletableFuture<Player> getPlayer( long id )
+	{
+		return supplyAsync( ( ) -> playerStorage.getPlayer( id ) );
 	}
 
 	@Override
 	public CompletableFuture<List<Player>> getAllTeamPlayers( String teamName )
 	{
-		return getTeam( teamName ).thenApply( r -> playerStorage.getAllTeamPlayers( r.getId( ) ) );
+		return getTeamExc( teamName ).thenApply( r -> playerStorage.getAllTeamPlayers( r.getId( ) ) );
 	}
 
 	@Override
 	public CompletableFuture<Team> addTeam( String teamName )
 	{
-		return getTeam( teamName ).thenApply( r -> teamStorage.createTeam( teamName ) );
+		return getTeam( teamName )
+				.thenApply( team -> {
+					if( team != null )
+					{
+						throw new CompletionException( new StorageException( "Team " + teamName + " already exists!" ) );
+					}
+
+					return team;
+				} )
+				.thenApply( r -> teamStorage.createTeam( teamName ) );
 	}
 
-	@Override
-	public CompletableFuture<Void> addPlayerToTeam( Match match, Player user )
-	{
-		return null;
-	}
 
 	@Override
 	public CompletableFuture<Team> getTeam( String teamName )
@@ -121,9 +133,15 @@ public class MatchManager implements IStorageImpl
 	}
 
 	@Override
-	public CompletableFuture<Void> updateTeam( Team targetTeam, Team newTeam )
+	public CompletableFuture<Void> removeTeam( String teamName )
 	{
-		return null;
+		return supplyAsync( ( ) -> teamStorage.removeTeam( teamName ) );
+	}
+
+	@Override
+	public CompletableFuture<Void> updateTeam( String teamName, Team team )
+	{
+		return getTeamExc( teamName ).thenApply( r -> teamStorage.updateTeam( r, team ) );
 	}
 
 	@Override
@@ -133,7 +151,7 @@ public class MatchManager implements IStorageImpl
 	}
 
 	@Override
-	public CompletableFuture<Void> endMatch( Team winner )
+	public CompletableFuture<Void> endMatch( Match match, Team winner )
 	{
 		return null;
 	}
@@ -145,7 +163,7 @@ public class MatchManager implements IStorageImpl
 	}
 
 	@Override
-	public CompletableFuture<Match> getMatch( int id )
+	public CompletableFuture<Match> getMatch( long id )
 	{
 		return null;
 	}
@@ -153,13 +171,13 @@ public class MatchManager implements IStorageImpl
 	@Override
 	public CompletableFuture<List<Player>> getAllPlayers( )
 	{
-		return null;
+		return supplyAsync( ( ) -> playerStorage.getAllPlayers( ) );
 	}
 
 	@Override
 	public CompletableFuture<List<Team>> getAllTeams( )
 	{
-		return null;
+		return supplyAsync( ( ) -> teamStorage.getAllTeams( ) );
 	}
 
 	@Override
@@ -168,18 +186,32 @@ public class MatchManager implements IStorageImpl
 		return null;
 	}
 
-	public boolean isDatabaseEmpty( )
+
+	public boolean isDatabaseInitialized( )
 	{
 		for( DbStorage i : activeStorage )
 		{
-			if( i.tableExists( ) && !i.isTableEmpty( ) )
+			if( !i.tableExists( ) )
 			{
 				return false;
 			}
 		}
-
 		return true;
 	}
+
+	public boolean isDatabaseEmpty( )
+	{
+		for( DbStorage i : activeStorage )
+		{
+			if( i.isTableEmpty( ) )
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 
 	public String getFileName( )
 	{
@@ -187,9 +219,17 @@ public class MatchManager implements IStorageImpl
 	}
 
 
-	private void throwTeamNotFoundException( String teamName ) throws CompletionException
+	private CompletableFuture<Team> getTeamExc( String teamName ) throws CompletionException
 	{
-		throw new CompletionException( new StorageException( "Team with the name " + teamName + " already exists!" ) );
+		return getTeam( teamName )
+				.thenApply( r -> {
+					if( r == null )
+					{
+						throw new CompletionException( new StorageException( "Team " + teamName + " not found!" ) );
+					}
+
+					return r;
+				} );
 	}
 
 }

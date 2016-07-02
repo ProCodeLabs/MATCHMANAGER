@@ -1,7 +1,7 @@
 package ui.Dialog.Helper;
 
 import Common.GlobalInstance;
-import Common.ParamFunction;
+import Common.LambdaExt.ParamFunction;
 import javafx.fxml.FXMLLoader;
 import ui.Container.UiBaseDialog;
 
