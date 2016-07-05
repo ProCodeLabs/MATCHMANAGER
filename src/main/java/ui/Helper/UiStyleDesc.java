@@ -30,17 +30,15 @@ public class UiStyleDesc
 	private Pane targetPane;
 
 
-	//////////////////////////////////////////////////////////////////////////////////////////////////////
-
-	public UiStyleDesc( Pane target, boolean isContainer )
+	public UiStyleDesc( Pane targetPane, boolean isContainer )
 	{
 		titleLabel.setPadding( new Insets( 10 ) );
 		titleLabel.getStyleClass( ).add( "h1" );
 		this.isContainer = isContainer;
-		targetPane = target;
+		this.targetPane = targetPane;
 
 		initializeTitleButtons( );
-		initializeEventFilter( target );
+		initializeEventFilter( targetPane );
 	}
 
 	private void initializeTitleButtons( )
@@ -59,9 +57,7 @@ public class UiStyleDesc
 				btnMinimize.setStyle( "-fx-font-family: FontAwesome" );
 				btnMinimize.getStyleClass( ).add( "button-icon" );
 				btnMinimize.setText( FontAwesome.ICON_MINUS );
-				btnMinimize.setOnAction( e ->
-					targetPane.fireEvent( new Event( UiEvent.MINIMIZE_WINDOW ) )
-				);
+				btnMinimize.setOnAction( e -> targetPane.fireEvent( new Event( UiEvent.MINIMIZE_WINDOW ) ) );
 			}
 			titleBar.getChildren( ).add( btnMinimize );
 		}
@@ -73,9 +69,7 @@ public class UiStyleDesc
 			btnClose.setStyle( "-fx-font-family: FontAwesome;" );
 			btnClose.getStyleClass( ).add( "button-icon" );
 
-			btnClose.setOnAction( e ->
-				targetPane.fireEvent( new Event( UiEvent.CLOSE_WINDOW ) )
-			 );
+			btnClose.setOnAction( e -> targetPane.fireEvent( new Event( UiEvent.CLOSE_WINDOW ) ) );
 
 			btnClose.setText( FontAwesome.ICON_REMOVE );
 		}
@@ -106,6 +100,8 @@ public class UiStyleDesc
 				yOffset = parent.getHeight( ) - e.getY( );
 				isDragged = false;
 				isResizing = true;
+
+				target.fireEvent( new Event( UiEvent.BEGIN_RESIZE ) );
 			}
 		} );
 
@@ -145,10 +141,6 @@ public class UiStyleDesc
 		} );
 	}
 
-
-	//////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
 	public HBox getTitleBar( )
 	{
 		return titleBar;
@@ -158,6 +150,5 @@ public class UiStyleDesc
 	{
 		titleLabel.setText( title );
 	}
-
 
 }

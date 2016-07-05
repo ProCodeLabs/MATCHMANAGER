@@ -5,6 +5,7 @@ import javafx.event.EventType;
 
 public class UiEvent
 {
+	public static final EventType<Event> BEGIN_RESIZE = new EventType<>( Event.ANY, "BEGIN_RESIZE" );
 	public static final EventType<Event> FINISH_RESIZE = new EventType<>( Event.ANY, "FINISH_RESIZE" );
 
 	public static final EventType<Event> SHUTDOWN_CORE_WINDOW = new EventType<>( Event.ANY, "SHUTDOWN_CORE_WINDOW"  );
