@@ -21,7 +21,7 @@ public class DebugLogViewStage extends UiStage
 	@Override
 	public void showWindow( )
 	{
-		if( createStage( "LOG", RESOURCE_ID, 600, 300 ) )
+		if( createStage( "LOG", 600, 300 ) )
 		{
 			tableView = ( TableView ) getContainer( ).getUiHelper( ).getElementById( "logTableView" );
 
@@ -37,6 +37,12 @@ public class DebugLogViewStage extends UiStage
 
 			tableView.setItems( logList );
 		}
+	}
+
+	@Override
+	public String getResourceId( )
+	{
+		return RESOURCE_ID;
 	}
 
 	@Override

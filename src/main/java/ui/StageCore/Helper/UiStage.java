@@ -13,15 +13,16 @@ import java.util.ArrayList;
 
 public abstract class UiStage
 {
-	private static final ArrayList<String> activeContents = new ArrayList<>( );
+	private static final ArrayList<UiStage> activeContents = new ArrayList<>( );
 
 	private final ILogger logger = LoggerFactory.createLogger( getClass( ) );
 	protected Stage stage;
 	protected UiWindowContainer container;
 
 
-	public abstract void showWindow();
+	public abstract void showWindow( );
 
+	public abstract String getResourceId( );
 
 	public /*virtual*/ void onSetPosition( )
 	{
@@ -31,9 +32,10 @@ public abstract class UiStage
 	{
 	}
 
-	public boolean createStage( String title, String resourceId, long width, long height )
+
+	public boolean createStage( String title, double width, double height )
 	{
-		if( checkActiveResource( resourceId ) )
+		if( !checkActiveResource( ) )
 		{
 			return false;
 		}
@@ -44,22 +46,22 @@ public abstract class UiStage
 
 			container = new UiWindowContainer( );
 			{
-				container.setCenter( title, resourceId );
+				container.setCenter( title, getResourceId( ) );
 			}
 			stage.setScene( container.createScene( width, height ) );
 		}
 
 		stage.addEventFilter( WindowEvent.WINDOW_HIDING, e ->
 		{
-			logger.info( "Pane " + resourceId + " closed" );
+			logger.info( "Pane " + getResourceId( ) + " closed" );
 
 			onCloseStage( );
 			{
-				activeContents.remove( resourceId );
+				activeContents.remove( this );
 			}
 		} );
 
-		showStage();
+		showStage( );
 
 		return true;
 	}
@@ -70,26 +72,46 @@ public abstract class UiStage
 		onSetPosition( );
 	}
 
-	private boolean checkActiveResource( String resourceId )
+	private boolean checkActiveResource( )
 	{
-		if( activeContents.contains( resourceId ) )
+		if( getUiStage( getResourceId( ) ) != null )
 		{
-			logger.warning( "Pane " + resourceId + " is already active!" );
-			return true;
+			logger.warning( "Pane " + getResourceId( ) + " is already active!" );
+			return false;
 		}
 
-		logger.info( "Open pane" + resourceId );
+		logger.info( "Open pane" + getResourceId( ) );
 
-		activeContents.add( resourceId );
-
-		return false;
+		return activeContents.add( this );
 	}
 
-	public Pair<Double, Double> getPrimaryWindowPos( )
+
+	public static UiStage getUiStage( String resourceName )
+	{
+		for( UiStage i : activeContents )
+		{
+			if( i.getResourceId( ).equals( resourceName ) )
+			{
+				return i;
+			}
+		}
+		return null;
+	}
+
+
+	protected Pair<Double, Double> getPrimaryWindowPos( )
 	{
 		return new Pair<>(
 				GlobalInstance.getPrimaryStage( ).getX( ),
 				GlobalInstance.getPrimaryStage( ).getY( )
+		);
+	}
+
+	protected Pair<Double, Double> getPrimaryWindowSize( )
+	{
+		return new Pair<>(
+				GlobalInstance.getPrimaryStage( ).getWidth( ),
+				GlobalInstance.getPrimaryStage( ).getHeight( )
 		);
 	}
 
@@ -101,5 +123,15 @@ public abstract class UiStage
 	public UiWindowContainer getContainer( )
 	{
 		return container;
+	}
+
+
+	public static void closeActiveDialog( String resourceId )
+	{
+		UiStage stage = getUiStage( resourceId );
+		if( stage != null )
+		{
+			stage.getStage( ).close( );
+		}
 	}
 }

@@ -1,15 +1,21 @@
 package ui.StageCore.DialogStages;
 
+import Common.GlobalInstance;
 import Core.MatchManager;
 import javafx.application.Platform;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.layout.VBox;
+import javafx.stage.Screen;
+import javafx.stage.Stage;
+import javafx.util.Pair;
 import ui.Helper.UiEvent;
 import ui.StageCore.DialogStages.Helper.MatchResultCanvas;
 import ui.StageCore.Helper.UiStage;
 
 public class MatchResultView extends UiStage
 {
-	private static final String RESOURCE_ID = "fxml/centerContent/matchResultView.fxml";
+	public static final String RESOURCE_ID = "fxml/centerContent/matchResultView.fxml";
+	private static final double HEIGHT_THRESHOLD = 20;
 
 	private MatchManager manager;
 	private MatchResultCanvas canvas;
@@ -22,7 +28,9 @@ public class MatchResultView extends UiStage
 	@Override
 	public void showWindow( )
 	{
-		if( createStage( "RESULTS", RESOURCE_ID, 400, 300 ) )
+		Stage primaryStage = GlobalInstance.getPrimaryStage( );
+
+		if( createStage( "RESULTS", primaryStage.getWidth( ), 400 ) )
 		{
 			VBox vboxCanvas = ( VBox ) getContainer( ).getUiHelper( ).getElementById( "vboxCanvas" );
 			{
@@ -50,4 +58,29 @@ public class MatchResultView extends UiStage
 			Platform.runLater( ( ) -> canvas.redraw( ) );
 		}
 	}
+
+	@Override
+	public String getResourceId( )
+	{
+		return RESOURCE_ID;
+	}
+
+	@Override
+	public void onSetPosition( )
+	{
+		Pair<Double, Double> pos = getPrimaryWindowPos( );
+		Pair<Double, Double> size = getPrimaryWindowSize( );
+
+		Rectangle2D primaryScreenBounds = Screen.getPrimary( ).getVisualBounds( );
+
+		double y = pos.getValue( ) + size.getValue( ) + HEIGHT_THRESHOLD;
+
+		if( y <= primaryScreenBounds.getMaxY( ) )
+		{
+			getStage( ).setY( y );
+		}
+
+		getStage( ).setX( pos.getKey( ) );
+	}
+
 }
