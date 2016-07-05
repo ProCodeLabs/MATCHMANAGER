@@ -1,6 +1,5 @@
 package Core;
 
-import Common.GlobalInstance;
 import Common.UtilLogger.ILogger;
 import Common.UtilLogger.LoggerFactory;
 import Core.Data.Match;
@@ -14,7 +13,6 @@ import Core.Database.Storage.TeamStorage;
 import Core.Helper.StorageException;
 import org.tmatesoft.sqljet.core.SqlJetException;
 import org.tmatesoft.sqljet.core.table.SqlJetDb;
-import ui.Helper.UiEvent;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -63,7 +61,7 @@ public class MatchManager implements IStorageImpl
 		}
 		catch( SqlJetException e )
 		{
-			GlobalInstance.fireGlobalEvent( new UiEvent( UiEvent.CORE_EXCEPTION, e ) );
+			//CoreEventDispatcher.getInstance().fireEvent( CoreEvent.CORE_EXCEPTION, e );
 		}
 	}
 

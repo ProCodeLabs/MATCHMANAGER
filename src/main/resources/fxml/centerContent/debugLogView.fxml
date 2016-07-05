@@ -10,6 +10,7 @@
     <TableView fx:id="logTableView" prefWidth="500.0" VBox.vgrow="ALWAYS">
         <columns>
             <TableColumn editable="false" prefWidth="75.0" text="date" />
+            <TableColumn editable="false" prefWidth="75.0" text="class" />
             <TableColumn editable="false" prefWidth="75.0" text="type" />
             <TableColumn editable="false" prefWidth="350.0" sortable="false" text="message" />
         </columns>

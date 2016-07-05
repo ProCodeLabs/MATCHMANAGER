@@ -10,21 +10,40 @@ public class AddTeamDialog extends UiDialog<String>
 	public static final String RESOURCE_ID = "fxml/dialogs/addTeamDialog.fxml";
 
 	@FXML
-	TextField teamName;
+	public TextField teamNameField;
+
+	private String teamName;
+
+
+
+	public AddTeamDialog( )
+	{
+	}
+
+	public AddTeamDialog( String teamName )
+	{
+		this.teamName = teamName;
+	}
 
 	@Override
 	protected void onPrepareDialog( )
 	{
 		setContent( RESOURCE_ID );
 
+		if( teamName != null )
+		{
+			teamNameField.setText( teamName );
+			setDialogTitle( "EDIT TEAM" );
+		}
+
 		addButtonEventHandler( ButtonType.OK, e -> {
-			if( teamName.getText( ).length( ) <= 0 )
+			if( teamNameField.getText( ).length( ) <= 0 )
 			{
 				e.consume( );
 				return;
 			}
 
-			resultCallback.apply( teamName.getText( ) );
+			resultCallback.apply( teamNameField.getText( ) );
 		} );
 	}
 

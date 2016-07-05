@@ -1,6 +1,7 @@
 package ui.Controller;
 
 import Core.Data.Player;
+import Core.Data.Team;
 import Core.MatchManager;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -9,7 +10,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import ui.Container.UiBaseContainer;
@@ -18,7 +19,9 @@ import ui.Dialog.AddTeamDialog;
 import ui.Dialog.ModalEx.UiAlert;
 
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class TeamSetupController implements Initializable
 {
@@ -31,9 +34,6 @@ public class TeamSetupController implements Initializable
 
 
 	@FXML
-	public Button applyButton;
-
-	@FXML
 	public ListView<String> teamListView;
 
 	@FXML
@@ -43,6 +43,7 @@ public class TeamSetupController implements Initializable
 	public Label labelInfo;
 
 	private MatchManager manager;
+
 
 	public static void updateContainerStage( UiBaseContainer container, MatchManager manager )
 	{
@@ -54,7 +55,6 @@ public class TeamSetupController implements Initializable
 			controller.initializeController( );
 		}
 	}
-
 
 	@Override
 	public void initialize( URL location, ResourceBundle resources )
@@ -90,7 +90,7 @@ public class TeamSetupController implements Initializable
 		} );
 	}
 
-	public void initializeController( )
+	private void initializeController( )
 	{
 		manager.getAllTeams( ).thenApply( r -> {
 			r.forEach( i -> Platform.runLater( ( ) -> teamList.add( i.getTeamName( ) ) ) );
@@ -118,13 +118,49 @@ public class TeamSetupController implements Initializable
 	@FXML
 	public void onEditTeamButtonClicked( )
 	{
+		if( !checkSelectedTeam( ) )
+		{
+			return;
+		}
 
+		String teamName = getSelectedTeamName( );
+
+		AddTeamDialog dlg = new AddTeamDialog( teamName );
+		{
+			dlg.setResultCallback( r -> manager.updateTeam( teamName, new Team( r ) )
+					.thenApply( t -> {
+						teamList.remove( teamName );
+						teamList.add( r );
+						return null;
+					} ) );
+		}
+		dlg.showDialog( );
 	}
 
 	@FXML
 	public void onRemoveTeamButtonClicked( )
 	{
+		if( !checkSelectedTeam( ) )
+		{
+			return;
+		}
 
+		String teamName = getSelectedTeamName( );
+
+		UiAlert alert = new UiAlert( Alert.AlertType.CONFIRMATION );
+		{
+			alert.setTitle( "Delete" );
+			alert.setHeaderText( "Delete" );
+			alert.setContentText( "Are you sure you want to delete " + getSelectedTeamName( ) + "? (This cannot be undone!)" );
+		}
+
+		Optional<ButtonType> result = alert.showAndWait( );
+		if( result.get( ) == ButtonType.OK )
+		{
+			manager.removeTeam( teamName )
+					.thenApply( r -> teamList.remove( teamName ) )
+					.exceptionally( e -> showDatabaseExceptionDlg( e ) );
+		}
 	}
 
 	@FXML
@@ -135,24 +171,23 @@ public class TeamSetupController implements Initializable
 		if( teamName == null )
 		{
 			setInfoText( "You need to select your target team first!" );
+			return;
 		}
-		else
+
+		AddPlayerDialog dlg = new AddPlayerDialog( teamName );
 		{
-			AddPlayerDialog dlg = new AddPlayerDialog( teamName );
-			{
-				dlg.setResultCallback( result -> manager.addPlayer( teamName, result )
-						.thenApply( r -> {
-							Platform.runLater( ( ) -> playerList.add( r ) );
-							return null;
-						} )
-						.exceptionally( e -> {
-							Platform.runLater( ( ) -> showDatabaseExceptionDlg( e ) );
-							return null;
-						} )
-				);
-			}
-			dlg.showDialog( );
+			dlg.setResultCallback( result -> manager.addPlayer( teamName, result )
+					.thenApply( r -> {
+						Platform.runLater( ( ) -> playerList.add( r ) );
+						return null;
+					} )
+					.exceptionally( e -> {
+						Platform.runLater( ( ) -> showDatabaseExceptionDlg( e ) );
+						return null;
+					} )
+			);
 		}
+		dlg.showDialog( );
 	}
 
 	@FXML
@@ -184,6 +219,19 @@ public class TeamSetupController implements Initializable
 		}
 	}
 
+	@FXML
+	public void onApplyButtonClick( )
+	{
+		AtomicInteger count = new AtomicInteger( );
+
+		teamList.forEach( e -> count.incrementAndGet( ) );
+
+		if( count.get() > 0 )
+		{
+			ResultViewController.updateContainerStage( ( UiBaseContainer ) labelInfo.getScene( ).getRoot( ), manager );
+		}
+	}
+
 
 	private String getSelectedTeamName( )
 	{
@@ -201,12 +249,24 @@ public class TeamSetupController implements Initializable
 	}
 
 
-	public void setMatchManager( MatchManager manager )
+	private void setMatchManager( MatchManager manager )
 	{
 		this.manager = manager;
 	}
 
-	private void showTeamAlreadyExistsDlg( Throwable e )
+	private boolean checkSelectedTeam( )
+	{
+		if( getSelectedTeamName( ) == null )
+		{
+			setInfoText( "You need to select your target team first!" );
+			return false;
+		}
+
+		return true;
+	}
+
+
+	private static boolean showTeamAlreadyExistsDlg( Throwable e )
 	{
 		UiAlert msgBox = new UiAlert( Alert.AlertType.ERROR );
 		{
@@ -215,9 +275,11 @@ public class TeamSetupController implements Initializable
 		}
 
 		msgBox.showAndWait( );
+
+		return true;
 	}
 
-	private void showDatabaseExceptionDlg( Throwable e )
+	private static boolean showDatabaseExceptionDlg( Throwable e )
 	{
 		UiAlert msgBox = new UiAlert( Alert.AlertType.ERROR );
 		{
@@ -226,5 +288,7 @@ public class TeamSetupController implements Initializable
 		}
 
 		msgBox.showAndWait( );
+
+		return true;
 	}
 }

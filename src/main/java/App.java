@@ -1,7 +1,8 @@
-import Common.Files;
+import Common.Constants;
 import Common.GlobalInstance;
 import Common.UtilLogger.ILogger;
 import Common.UtilLogger.LoggerFactory;
+import Core.Event.Manager.EventRegistrar;
 import javafx.application.Application;
 import javafx.scene.control.Alert;
 import javafx.scene.text.Font;
@@ -10,14 +11,14 @@ import javafx.stage.StageStyle;
 import ui.Container.UiCoreWindow;
 import ui.Controller.SelectDatabaseController;
 import ui.Dialog.ModalEx.UiAlert;
-import ui.StageCore.Helper.UiEventRegistrar;
 
 public class App extends Application
 {
 	private static final String APP_TITLE = "Matchmanager v0.1";
+	private static final EventRegistrar registrar = new EventRegistrar( );
 
 	private final ILogger logger = LoggerFactory.createLogger( getClass( ) );
-	private final UiEventRegistrar registrar = new UiEventRegistrar();
+
 
 	public App( )
 	{
@@ -35,14 +36,14 @@ public class App extends Application
 	{
 		GlobalInstance.setPrimaryStage( primaryStage );
 		{
-			registrar.registerEvents( primaryStage );
+			registrar.registerEvents( );
 		}
 		primaryStage.initStyle( StageStyle.UNDECORATED );
 		primaryStage.setTitle( APP_TITLE );
 
 		try
 		{
-			if( Font.loadFont( GlobalInstance.getResourceUrl( Files.PATH_FONT_RESOURCE ), 12 ) == null )
+			if( Font.loadFont( GlobalInstance.getResourceUrl( Constants.PATH_FONT_RESOURCE ), 12 ) == null )
 			{
 				throw new Exception( "Failed to load font!" );
 			}

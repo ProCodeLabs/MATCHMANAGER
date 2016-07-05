@@ -113,7 +113,7 @@ public class StorageManager
 
 			try
 			{
-				manager.initializeDatabase();
+				manager.initializeDatabase( );
 			}
 			catch( IOException | SqlJetException e )
 			{

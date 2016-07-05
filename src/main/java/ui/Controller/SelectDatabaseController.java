@@ -1,7 +1,8 @@
 package ui.Controller;
 
-import Common.GlobalInstance;
 import Core.Database.StorageManager;
+import Core.Event.Manager.CoreEvent;
+import Core.Event.Manager.CoreEventDispatcher;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,7 +15,6 @@ import javafx.scene.control.ListView;
 import ui.Container.UiBaseContainer;
 import ui.Dialog.CreateDatabaseDialog;
 import ui.Dialog.ModalEx.UiAlert;
-import ui.Helper.UiEvent;
 
 import java.net.URL;
 import java.util.Optional;
@@ -52,7 +52,7 @@ public class SelectDatabaseController implements Initializable
 					return null;
 				} )
 				.exceptionally( e -> {
-					GlobalInstance.fireGlobalEvent( new UiEvent( UiEvent.CORE_EXCEPTION, e ) );
+					CoreEventDispatcher.fireEvent( CoreEvent.CORE_EXCEPTION, e );
 					return null;
 				} );
 

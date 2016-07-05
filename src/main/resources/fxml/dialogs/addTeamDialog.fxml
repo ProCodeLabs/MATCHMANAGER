@@ -9,7 +9,7 @@
    <content>
       <VBox>
          <children>
-            <TextField fx:id="teamName" promptText="TEAM NAME" />
+            <TextField fx:id="teamNameField" promptText="TEAM NAME" />
          </children>
       </VBox>
    </content>

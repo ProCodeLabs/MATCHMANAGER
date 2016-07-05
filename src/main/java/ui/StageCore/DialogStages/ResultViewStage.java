@@ -1,4 +1,4 @@
-package ui.StageCore;
+package ui.StageCore.DialogStages;
 
 public class ResultViewStage
 {

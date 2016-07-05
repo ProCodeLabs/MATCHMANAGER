@@ -1,14 +1,15 @@
 package ui.Container;
 
-import Common.Files;
+import Common.Constants;
 import Common.GlobalInstance;
 import Common.UtilLogger.ILogger;
 import Common.UtilLogger.LoggerFactory;
+import Core.Event.Manager.CoreEvent;
+import Core.Event.Manager.CoreEventDispatcher;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import ui.Helper.UiEvent;
 import ui.Helper.UiStyleDesc;
 
 import java.io.IOException;
@@ -16,7 +17,7 @@ import java.io.IOException;
 
 public class UiBaseContainer extends BorderPane
 {
-	private final ILogger logger = LoggerFactory.createLogger( getClass() );
+	private final ILogger logger = LoggerFactory.createLogger( getClass( ) );
 	private UiContainerHelper uiHelper = new UiContainerHelper( this );
 
 	protected UiStyleDesc desc = new UiStyleDesc( this, true );
@@ -46,7 +47,7 @@ public class UiBaseContainer extends BorderPane
 		}
 		catch( IOException e )
 		{
-			GlobalInstance.fireGlobalEvent( new UiEvent( UiEvent.CORE_EXCEPTION, e ) );
+			CoreEventDispatcher.fireEvent( CoreEvent.CORE_EXCEPTION, e );
 		}
 	}
 
@@ -55,7 +56,7 @@ public class UiBaseContainer extends BorderPane
 		Scene scene = new Scene( this, width, height );
 		{
 			scene.getStylesheets( ).clear( );
-			scene.getStylesheets( ).add( GlobalInstance.getResourceUrl( Files.PATH_STYLE_RESOURCE ) );
+			scene.getStylesheets( ).add( GlobalInstance.getResourceUrl( Constants.PATH_STYLE_RESOURCE ) );
 		}
 		return scene;
 	}

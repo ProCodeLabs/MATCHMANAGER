@@ -16,7 +16,9 @@ public class ResultViewController
 	{
 		container.setCenter( CONTAINER_TITLE, RESOURCE_ID );
 		{
-			container.<ResultViewController> getController( ).setMatchManager( manager );
+			ResultViewController controller = container.<ResultViewController> getController( );
+
+			controller.setMatchManager( manager );
 		}
 	}
 

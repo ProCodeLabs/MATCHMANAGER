@@ -16,7 +16,7 @@
                     <children>
                         <HBox VBox.vgrow="NEVER">
                             <children>
-                                <Button fx:id="addTeamButton" mnemonicParsing="false" onMouseClicked="#onAddTeamButtonClicked" text="ADD TEAM">
+                                <Button mnemonicParsing="false" onMouseClicked="#onAddTeamButtonClicked" text="ADD TEAM">
                                     <opaqueInsets>
                                         <Insets />
                                     </opaqueInsets>
@@ -96,7 +96,7 @@
                </HBox.margin>
             </Label>
             <Region HBox.hgrow="ALWAYS" />
-            <Button fx:id="applyButton" defaultButton="true" disable="true" mnemonicParsing="false" prefWidth="100.0" text="APPLY">
+            <Button defaultButton="true" mnemonicParsing="false" prefWidth="100.0" text="APPLY" onMouseClicked="#onApplyButtonClick">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>

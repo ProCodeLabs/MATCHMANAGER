@@ -2,6 +2,7 @@ package ui.Container;
 
 
 import Common.GlobalInstance;
+import Core.Event.Manager.CoreEventDispatcher;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -10,7 +11,7 @@ import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
 import javafx.stage.Modality;
 import javafx.stage.StageStyle;
-import ui.Helper.UiEvent;
+import Core.Event.Manager.CoreEvent;
 import ui.Helper.UiStyleDesc;
 
 import java.io.IOException;
@@ -85,7 +86,7 @@ public class UiBaseDialog<R> extends Dialog<R>
 		}
 		catch( IOException e )
 		{
-			GlobalInstance.fireGlobalEvent( new UiEvent( UiEvent.CORE_EXCEPTION, e ) );
+			CoreEventDispatcher.fireEvent( CoreEvent.CORE_EXCEPTION, e );
 		}
 	}
 

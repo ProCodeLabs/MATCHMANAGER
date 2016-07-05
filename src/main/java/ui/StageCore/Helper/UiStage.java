@@ -11,13 +11,16 @@ import ui.Container.UiWindowContainer;
 
 import java.util.ArrayList;
 
-public abstract class UiStage implements IUiStage
+public abstract class UiStage
 {
 	private static final ArrayList<String> activeContents = new ArrayList<>( );
 
 	private final ILogger logger = LoggerFactory.createLogger( getClass( ) );
 	protected Stage stage;
 	protected UiWindowContainer container;
+
+
+	public abstract void showWindow();
 
 
 	public /*virtual*/ void onSetPosition( )

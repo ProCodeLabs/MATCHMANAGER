@@ -1,9 +1,9 @@
 package Common.UtilLogger;
 
 
-import Common.GlobalInstance;
 import Common.LogLevel;
-import ui.Helper.UiEvent;
+import Core.Event.Manager.CoreEvent;
+import Core.Event.Manager.CoreEventDispatcher;
 
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
@@ -11,6 +11,7 @@ import java.util.logging.LogRecord;
 public class Logger implements ILogger
 {
 	private Class targetClass;
+
 
 	public Logger( Class targetClass )
 	{
@@ -50,12 +51,10 @@ public class Logger implements ILogger
 	@Override
 	public void log( Level level, String msg )
 	{
-		LogRecord record = new LogRecord( level, msg );
+		final LogRecord record = new LogRecord( level, msg );
 		{
 			record.setSourceClassName( targetClass.getName( ) );
-
-			GlobalInstance.fireGlobalEvent( new UiEvent( UiEvent.LOG_ITEM, record ) );
 		}
-		System.out.println( record.getMessage( ) );
+		CoreEventDispatcher.fireEvent( CoreEvent.LOG_ITEM, record );
 	}
 }
