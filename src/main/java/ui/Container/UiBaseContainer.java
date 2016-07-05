@@ -10,6 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import ui.Helper.UiEvent;
 import ui.Helper.UiStyleDesc;
 
 import java.io.IOException;
@@ -26,7 +27,7 @@ public class UiBaseContainer extends BorderPane
 
 	protected UiBaseContainer( )
 	{
-		desc.setOnMinimizeButton( ( ) -> ( ( Stage ) getScene( ).getWindow( ) ).setIconified( true ) );
+		addEventHandler( UiEvent.MINIMIZE_WINDOW, e ->  ( ( Stage ) getScene( ).getWindow( ) ).setIconified( true ));
 
 		setTop( desc.getTitleBar( ) );
 	}

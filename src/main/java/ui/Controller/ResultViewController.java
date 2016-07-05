@@ -4,6 +4,7 @@ import Core.MatchManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import ui.Container.UiBaseContainer;
+import ui.StageCore.DialogStages.MatchResultView;
 import ui.StageCore.DialogStages.MatchStatStage;
 
 public class ResultViewController
@@ -37,9 +38,14 @@ public class ResultViewController
 
 	private void initializeController( )
 	{
-		MatchStatStage s = new MatchStatStage();
+		MatchStatStage s = new MatchStatStage( );
 		{
-			s.showWindow();
+			s.showWindow( );
+		}
+
+		MatchResultView b = new MatchResultView( manager );
+		{
+			b.showWindow( );
 		}
 	}
 

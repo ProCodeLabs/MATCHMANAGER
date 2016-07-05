@@ -1,5 +1,6 @@
 package ui.Helper;
 
+import javafx.event.Event;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -9,7 +10,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.stage.Stage;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 
 public class UiStyleDesc
@@ -17,47 +17,41 @@ public class UiStyleDesc
 	private static final int RESIZE_RECT_SIZE = 18;
 	private static final int RESIZE_RECT_MIN_SIZE = 50;
 
-	private boolean _isContainer = false;
-	private boolean _isDragged = false;
-	private boolean _isResizing = false;
+	private boolean isContainer = false;
+	private boolean isDragged = false;
+	private boolean isResizing = false;
 
-	private double _xOffset = 0;
-	private double _yOffset = 0;
+	private double xOffset = 0;
+	private double yOffset = 0;
 
 
-	private HBox _titleBar = new HBox( );
-	private Label _titleLabel = new Label( );
-
-	private Runnable _onCloseButton = ( ) -> {
-		throw new NotImplementedException( );
-	};
-	private Runnable _onMinimizeButton = ( ) -> {
-		throw new NotImplementedException( );
-	};
-
+	private HBox titleBar = new HBox( );
+	private Label titleLabel = new Label( );
+	private Pane targetPane;
 
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	public UiStyleDesc( Pane target, boolean isContainer )
 	{
-		_titleLabel.setPadding( new Insets( 10 ) );
-		_titleLabel.getStyleClass( ).add( "h1" );
-		_isContainer = isContainer;
+		titleLabel.setPadding( new Insets( 10 ) );
+		titleLabel.getStyleClass( ).add( "h1" );
+		this.isContainer = isContainer;
+		targetPane = target;
 
 		initializeTitleButtons( );
 		initializeEventFilter( target );
 	}
 
-	private void initializeTitleButtons(  )
+	private void initializeTitleButtons( )
 	{
 		Region region = new Region( );
 		{
 			HBox.setHgrow( region, Priority.ALWAYS );
 		}
-		_titleBar.getChildren().addAll( _titleLabel, region );
+		titleBar.getChildren( ).addAll( titleLabel, region );
 
-		if(_isContainer )
+		if( isContainer )
 		{
 			Button btnMinimize = new Button( );
 			{
@@ -65,9 +59,11 @@ public class UiStyleDesc
 				btnMinimize.setStyle( "-fx-font-family: FontAwesome" );
 				btnMinimize.getStyleClass( ).add( "button-icon" );
 				btnMinimize.setText( FontAwesome.ICON_MINUS );
-				btnMinimize.setOnAction( e -> _onMinimizeButton.run( ) );
+				btnMinimize.setOnAction( e ->
+					targetPane.fireEvent( new Event( UiEvent.MINIMIZE_WINDOW ) )
+				);
 			}
-			_titleBar.getChildren().add( btnMinimize );
+			titleBar.getChildren( ).add( btnMinimize );
 		}
 
 		Button btnClose = new Button( );
@@ -77,10 +73,13 @@ public class UiStyleDesc
 			btnClose.setStyle( "-fx-font-family: FontAwesome;" );
 			btnClose.getStyleClass( ).add( "button-icon" );
 
-			btnClose.setOnAction( e -> _onCloseButton.run( ) );
+			btnClose.setOnAction( e ->
+				targetPane.fireEvent( new Event( UiEvent.CLOSE_WINDOW ) )
+			 );
+
 			btnClose.setText( FontAwesome.ICON_REMOVE );
 		}
-		_titleBar.getChildren().add( btnClose );
+		titleBar.getChildren( ).add( btnClose );
 	}
 
 	private void initializeEventFilter( Pane target )
@@ -89,54 +88,56 @@ public class UiStyleDesc
 
 			Stage parent = ( Stage ) target.getScene( ).getWindow( );
 
-			if( e.getSceneY( ) <= _titleBar.getHeight( ) )
+			if( e.getSceneY( ) <= titleBar.getHeight( ) )
 			{
-				_xOffset = e.getSceneX( );
-				_yOffset = e.getSceneY( );
-				_isDragged = true;
-				_isResizing = false;
+				xOffset = e.getSceneX( );
+				yOffset = e.getSceneY( );
+				isDragged = true;
+				isResizing = false;
 			}
 			else if( e.getSceneX( ) >= parent.getWidth( ) - RESIZE_RECT_SIZE &&
 					e.getSceneY( ) >= parent.getHeight( ) - RESIZE_RECT_SIZE &&
 					e.getSceneX( ) <= parent.getWidth( ) &&
 					e.getSceneY( ) <= parent.getHeight( ) &&
-					_isContainer
+					isContainer
 					)
 			{
-				_xOffset = parent.getWidth( ) - e.getX( );
-				_yOffset = parent.getHeight( ) - e.getY( );
-				_isDragged = false;
-				_isResizing = true;
+				xOffset = parent.getWidth( ) - e.getX( );
+				yOffset = parent.getHeight( ) - e.getY( );
+				isDragged = false;
+				isResizing = true;
 			}
 		} );
 
 
 		target.addEventFilter( MouseEvent.MOUSE_RELEASED, ( MouseEvent e ) -> {
-			_isDragged = false;
-			_isResizing = false;
+			isDragged = false;
+			isResizing = false;
+
+			target.fireEvent( new Event( UiEvent.FINISH_RESIZE ) );
 		} );
 
 		target.addEventFilter( MouseEvent.MOUSE_DRAGGED, ( MouseEvent e ) -> {
 
 			Stage parent = ( Stage ) target.getScene( ).getWindow( );
 
-			if( _isDragged )
+			if( isDragged )
 			{
-				parent.setX( e.getScreenX( ) - _xOffset );
-				parent.setY( e.getScreenY( ) - _yOffset );
+				parent.setX( e.getScreenX( ) - xOffset );
+				parent.setY( e.getScreenY( ) - yOffset );
 
 				e.consume( );
 			}
-			else if( _isResizing )
+			else if( isResizing )
 			{
-				if( e.getX( ) + _xOffset >= RESIZE_RECT_MIN_SIZE )
+				if( e.getX( ) + xOffset >= RESIZE_RECT_MIN_SIZE )
 				{
-					parent.setWidth( e.getX( ) + _xOffset );
+					parent.setWidth( e.getX( ) + xOffset );
 				}
 
-				if( e.getY( ) + _yOffset >= RESIZE_RECT_MIN_SIZE )
+				if( e.getY( ) + yOffset >= RESIZE_RECT_MIN_SIZE )
 				{
-					parent.setHeight( e.getY( ) + _yOffset );
+					parent.setHeight( e.getY( ) + yOffset );
 				}
 
 				e.consume( );
@@ -150,23 +151,12 @@ public class UiStyleDesc
 
 	public HBox getTitleBar( )
 	{
-		return _titleBar;
+		return titleBar;
 	}
 
 	public void setTitle( String title )
 	{
-		_titleLabel.setText( title );
-	}
-
-
-	public void setOnCloseButton( Runnable cb )
-	{
-		_onCloseButton = cb;
-	}
-
-	public void setOnMinimizeButton( Runnable cb )
-	{
-		_onMinimizeButton = cb;
+		titleLabel.setText( title );
 	}
 
 

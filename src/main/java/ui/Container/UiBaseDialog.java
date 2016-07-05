@@ -2,6 +2,7 @@ package ui.Container;
 
 
 import Common.GlobalInstance;
+import Core.Event.Manager.CoreEvent;
 import Core.Event.Manager.CoreEventDispatcher;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -11,7 +12,7 @@ import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
 import javafx.stage.Modality;
 import javafx.stage.StageStyle;
-import Core.Event.Manager.CoreEvent;
+import ui.Helper.UiEvent;
 import ui.Helper.UiStyleDesc;
 
 import java.io.IOException;
@@ -26,7 +27,6 @@ public class UiBaseDialog<R> extends Dialog<R>
 	private UiStyleDesc desc;
 
 
-
 	public UiBaseDialog( )
 	{
 		super( );
@@ -35,9 +35,9 @@ public class UiBaseDialog<R> extends Dialog<R>
 
 		desc = new UiStyleDesc( getDialogPane( ), false );
 		{
-			desc.setOnCloseButton( ( ) -> close( ) );
+			getDialogPane( ).addEventHandler( UiEvent.CLOSE_WINDOW, e -> close( ) );
 		}
-		uiHelper = new UiContainerHelper( getDialogPane() );
+		uiHelper = new UiContainerHelper( getDialogPane( ) );
 
 		getDialogPane( ).setHeader( desc.getTitleBar( ) );
 	}
@@ -91,7 +91,7 @@ public class UiBaseDialog<R> extends Dialog<R>
 	}
 
 
-	public UiContainerHelper getHelper()
+	public UiContainerHelper getHelper( )
 	{
 		return uiHelper;
 	}
