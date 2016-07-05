@@ -1,9 +1,12 @@
 package ui.Controller;
 
+import Core.Data.Player;
+import Core.Data.Team;
 import Core.MatchManager;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ListView;
 import ui.Container.UiBaseContainer;
 import ui.StageCore.DialogStages.MatchResultView;
 import ui.StageCore.DialogStages.MatchStatStage;
@@ -15,13 +18,20 @@ public class ResultViewController
 	private static final String RESOURCE_ID = "fxml/centerContent/resultView.fxml";
 
 	@FXML
-	private ChoiceBox<String> selectTeamA;
+	private ChoiceBox<Team> selectTeamA;
 
 	@FXML
-	private ChoiceBox<String> selectTeamB;
+	private ChoiceBox<Team> selectTeamB;
 
 	@FXML
-	private ChoiceBox<String> selectResultTeam;
+	private ListView<Player> teamMemberViewA;
+
+	@FXML
+	private ListView<Player> teamMemberViewB;
+
+
+	@FXML
+	private ChoiceBox<Team> selectResultTeam;
 
 	private MatchManager manager;
 
@@ -40,15 +50,20 @@ public class ResultViewController
 
 	private void initializeController( )
 	{
-		MatchStatStage s = new MatchStatStage( );
-		{
-			s.showWindow( );
-		}
 
-		MatchResultView b = new MatchResultView( manager );
-		{
-			b.showWindow( );
-		}
+		Platform.runLater( ( ) -> {
+			MatchStatStage s = new MatchStatStage( );
+			{
+				s.showWindow( );
+			}
+		} );
+
+		Platform.runLater( ( ) -> {
+			MatchResultView b = new MatchResultView( manager );
+			{
+				b.showWindow( );
+			}
+		} );
 	}
 
 

@@ -27,4 +27,10 @@ public class Team
 		return id;
 	}
 
+
+	@Override
+	public String toString( )
+	{
+		return teamName;
+	}
 }

@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
@@ -26,22 +27,54 @@
             <Insets bottom="10.0" />
          </VBox.margin>
       </Separator>
-      <HBox VBox.vgrow="ALWAYS">
+      <HBox prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
          <children>
             <Region HBox.hgrow="ALWAYS" />
-            <ChoiceBox fx:id="selectTeamA" prefWidth="200.0" />
+            <VBox HBox.hgrow="ALWAYS">
+               <children>
+                  <HBox>
+                     <children>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <ChoiceBox fx:id="selectTeamA" HBox.hgrow="ALWAYS" />
+                        <Region HBox.hgrow="ALWAYS" />
+                     </children>
+                  </HBox>
+                  <HBox VBox.vgrow="ALWAYS">
+                     <children>
+                        <ListView fx:id="teamMemberViewA" HBox.hgrow="ALWAYS" />
+                     </children>
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin>
+                  </HBox>
+               </children>
+            </VBox>
             <Region HBox.hgrow="ALWAYS" />
-            <Label text="VS" textAlignment="CENTER">
-               <HBox.margin>
-                  <Insets top="4.0" />
-               </HBox.margin>
-            </Label>
-            <Region layoutX="306.0" layoutY="10.0" HBox.hgrow="ALWAYS" />
-            <ChoiceBox fx:id="selectTeamB" prefWidth="200.0" />
-            <Region layoutX="382.0" layoutY="10.0" HBox.hgrow="ALWAYS" />
+            <Label text="VS" textAlignment="CENTER" />
+            <Region HBox.hgrow="ALWAYS" />
+            <VBox layoutX="10.0" layoutY="10.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <HBox>
+                     <children>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <ChoiceBox fx:id="selectTeamB" />
+                        <Region layoutX="10.0" layoutY="10.0" HBox.hgrow="ALWAYS" />
+                     </children>
+                  </HBox>
+                  <HBox VBox.vgrow="ALWAYS">
+                     <children>
+                        <ListView fx:id="teamMemberViewB" HBox.hgrow="ALWAYS" />
+                     </children>
+                     <padding>
+                        <Insets top="5.0" />
+                     </padding>
+                  </HBox>
+               </children>
+            </VBox>
+            <Region layoutX="10.0" layoutY="10.0" HBox.hgrow="ALWAYS" />
          </children>
       </HBox>
-      <HBox layoutX="10.0" layoutY="235.0" VBox.vgrow="ALWAYS">
+      <HBox layoutX="10.0" layoutY="235.0">
          <children>
             <Region HBox.hgrow="ALWAYS" />
             <Label text="RESULT" />

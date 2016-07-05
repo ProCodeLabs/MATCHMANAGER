@@ -20,6 +20,7 @@ public class MatchResultView extends UiStage
 	private MatchManager manager;
 	private MatchResultCanvas canvas;
 
+
 	public MatchResultView( MatchManager manager )
 	{
 		this.manager = manager;
