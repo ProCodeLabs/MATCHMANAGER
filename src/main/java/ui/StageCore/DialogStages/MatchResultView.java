@@ -1,9 +1,13 @@
 package ui.StageCore.DialogStages;
 
 import Common.GlobalInstance;
+import Common.UtilLogger.ILogger;
+import Common.UtilLogger.LoggerFactory;
 import Core.MatchManager;
 import javafx.application.Platform;
+import javafx.event.Event;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.VBox;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -16,10 +20,12 @@ public class MatchResultView extends UiStage
 {
 	public static final String RESOURCE_ID = "fxml/centerContent/matchResultView.fxml";
 	private static final double HEIGHT_THRESHOLD = 20;
+	private static final double BORDER_PADDING = 18;
 
+	private final ILogger logger = LoggerFactory.createLogger( getClass( ) );
 	private MatchManager manager;
 	private MatchResultCanvas canvas;
-
+	private Canvas viewCanvas;
 
 	public MatchResultView( MatchManager manager )
 	{
@@ -33,31 +39,38 @@ public class MatchResultView extends UiStage
 
 		if( createStage( "RESULTS", primaryStage.getWidth( ), 400 ) )
 		{
-			VBox vboxCanvas = ( VBox ) getContainer( ).getUiHelper( ).getElementById( "vboxCanvas" );
+			viewCanvas = ( Canvas ) getContainer( ).getUiHelper( ).getElementById( "matchViewCanvas" );
 			{
-				canvas = new MatchResultCanvas( vboxCanvas.getWidth( ), vboxCanvas.getHeight( ) );
+				canvas = new MatchResultCanvas( viewCanvas );
 			}
-			vboxCanvas.getChildren( ).add( canvas );
 
 			getContainer( ).addEventHandler( UiEvent.BEGIN_RESIZE, e -> canvas.fillInvalidate( ) );
 			getContainer( ).addEventHandler( UiEvent.FINISH_RESIZE, e -> {
-				canvas.setWidth( vboxCanvas.getWidth( ) );
-				canvas.setHeight( vboxCanvas.getHeight( ) );
-				canvas.redraw( );
+				double dWidth = getStage( ).getWidth( ) - BORDER_PADDING;
+				double dHeight = getStage( ).getHeight( ) - 55 - BORDER_PADDING;
+
+				viewCanvas.setWidth( dWidth < 0.0 ? 0 : dWidth );
+				viewCanvas.setHeight( dHeight < 0.0 ? 0 : dHeight );
+				{
+					redrawCanvas( );
+				}
 			} );
 
-			//canvas.widthProperty( ).bind( vboxCanvas.widthProperty( ) );
-			//canvas.heightProperty( ).bind( vboxCanvas.heightProperty( ) );
-
-
-			manager.getAllTeams( )
-					.thenApply( t -> {
-						Platform.runLater( ( ) -> canvas.addTeams( t ) );
-						return null;
-					} );
-
-			Platform.runLater( ( ) -> canvas.redraw( ) );
+			Platform.runLater( ( ) -> getContainer( ).fireEvent( new Event( UiEvent.FINISH_RESIZE ) ) );
 		}
+	}
+
+
+	private void redrawCanvas( )
+	{
+		manager.getAllTeams( )
+				.thenAcceptBoth( manager.getAllMatches( ), ( teams, matches ) ->
+						Platform.runLater( ( ) -> canvas.redraw( teams, matches ) )
+				)
+				.exceptionally( e -> {
+					logger.error( "render failed to fetch data " + e.getMessage( ) );
+					return null;
+				} );
 	}
 
 	@Override
@@ -82,6 +95,11 @@ public class MatchResultView extends UiStage
 		}
 
 		getStage( ).setX( pos.getKey( ) );
+	}
+
+	private VBox getParent( )
+	{
+		return ( VBox ) viewCanvas.getParent( );
 	}
 
 }

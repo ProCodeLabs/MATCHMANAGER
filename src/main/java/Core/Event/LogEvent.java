@@ -78,6 +78,6 @@ public class LogEvent implements IEventHandlerImpl
 
 	private static String formatLogs( LogRecord record )
 	{
-		return record.getMillis( ) + " : " + record.getClass( ).toGenericString( ) + " " + record.getMessage( );
+		return record.getMillis( ) + " : " + record.getSourceClassName( ) + " " + record.getMessage( );
 	}
 }

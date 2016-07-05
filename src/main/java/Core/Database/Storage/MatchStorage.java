@@ -12,7 +12,6 @@ import org.tmatesoft.sqljet.core.table.SqlJetDb;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class MatchStorage extends DbStorage
 {
@@ -42,7 +41,7 @@ public class MatchStorage extends DbStorage
 		return reflectException( ( ) -> {
 			ArrayList<Match> matchList = new ArrayList<>( );
 			{
-				fetchRows( getTable( ).getPrimaryKeyIndexName( ), c -> matchList.add( serializeMatch( c ) ) );
+				fetchRows( null, c -> matchList.add( serializeMatch( c ) ) );
 			}
 			return matchList;
 		} );
@@ -50,13 +49,7 @@ public class MatchStorage extends DbStorage
 
 	public int getMatchCount( )
 	{
-		return reflectException( ( ) -> {
-			AtomicInteger i = new AtomicInteger( );
-			{
-				fetchRows( getTable( ).getPrimaryKeyIndexName( ), c -> i.incrementAndGet( ) );
-			}
-			return i.get( );
-		} );
+		return reflectException( ( ) -> getRowCount( ) );
 	}
 
 	private Match serializeMatch( ISqlJetCursor cursor ) throws SqlJetException

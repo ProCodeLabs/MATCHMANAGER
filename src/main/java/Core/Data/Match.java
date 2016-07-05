@@ -25,6 +25,11 @@ public class Match
 		this.resultTeam = resultTeam;
 	}
 
+	public long getId()
+	{
+		return id;
+	}
+
 	public long getTeamAId( )
 	{
 		return teamAId;

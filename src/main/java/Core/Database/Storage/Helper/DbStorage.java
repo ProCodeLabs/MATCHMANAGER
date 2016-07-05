@@ -16,11 +16,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.ReentrantLock;
 
 public abstract class DbStorage
 {
 	private final ILogger logger = LoggerFactory.createLogger( getClass( ) );
 	private SqlJetDb db;
+
+	//> database sync bug in transaction?
+	private static final ReentrantLock lock = new ReentrantLock();
 
 	public DbStorage( SqlJetDb db )
 	{
@@ -95,6 +99,7 @@ public abstract class DbStorage
 	protected <T> T transactionCommit( SqlJetTransactionMode mode, ReflectFunction<T> f )
 	{
 		return reflectException( ( ) -> {
+			lock.lock();
 			getDb( ).beginTransaction( mode );
 			try
 			{
@@ -103,6 +108,7 @@ public abstract class DbStorage
 			finally
 			{
 				getDb( ).commit( );
+				lock.unlock();
 			}
 		} );
 	}
@@ -129,12 +135,12 @@ public abstract class DbStorage
 		return db;
 	}
 
-	private int getRowCount( ) throws SqlJetException
+	protected int getRowCount( ) throws SqlJetException
 	{
 		AtomicInteger count = new AtomicInteger( 0 );
-
-		fetchRows( null, cursor -> count.incrementAndGet( ) );
-
+		{
+			fetchRows( null, cursor -> count.incrementAndGet( ) );
+		}
 		return count.get( );
 	}
 

@@ -85,12 +85,13 @@ public class TeamStorage extends DbStorage
 
 	public List<Team> getAllTeams( ) throws CompletionException
 	{
-		return transactionCommit( SqlJetTransactionMode.READ_ONLY, ( ) -> {
+		return reflectException( ( ) -> {
 			ArrayList<Team> teamList = new ArrayList<>( );
 			{
-				fetchRows( null, c -> teamList.add( serializeTeam( c ) ) );
+				fetchRows( getTable().getPrimaryKeyIndexName(), c -> teamList.add( serializeTeam( c ) ) );
 			}
 			return teamList;
+
 		} );
 	}
 

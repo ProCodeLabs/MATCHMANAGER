@@ -183,6 +183,12 @@ public class MatchManager implements IStorageImpl
 		return null;
 	}
 
+	@Override
+	public CompletableFuture<Integer> getMatchCount( )
+	{
+		return supplyAsync( ( ) -> matchStorage.getMatchCount( ) );
+	}
+
 
 	@Override
 	public CompletableFuture<List<Match>> getAllMatches( )
@@ -239,6 +245,11 @@ public class MatchManager implements IStorageImpl
 		assert teamCount >= 0;
 
 		return teamCount == 0 ? 0 : ( teamCount - 1 );
+	}
+
+	public static int calculateRowDisplayCount( int teamCount )
+	{
+		return calculateMatchCount( teamCount );
 	}
 
 

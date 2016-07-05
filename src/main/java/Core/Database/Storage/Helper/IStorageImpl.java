@@ -41,5 +41,7 @@ public interface IStorageImpl
 
 	CompletableFuture<Match> getMatch( long id );
 
+	CompletableFuture<Integer> getMatchCount();
+
 	CompletableFuture<List<Match>> getAllMatches();
 }
