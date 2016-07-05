@@ -50,7 +50,7 @@ public class App extends Application
 
 			UiCoreWindow container = new UiCoreWindow( );
 			{
-				container.setCenter( "Select Database", SelectDatabaseController.RESOURCE_ID );
+				SelectDatabaseController.updateContainerStage( container );
 			}
 			primaryStage.setScene( container.createScene( 800, 400 ) );
 			primaryStage.show( );

@@ -23,8 +23,6 @@ public class DebugLogViewStage extends UiStage
 	{
 		if( createStage( "LOG", RESOURCE_ID, 600, 300 ) )
 		{
-			showStage( );
-
 			tableView = ( TableView ) getContainer( ).getUiHelper( ).getElementById( "logTableView" );
 
 			TableColumn columnDate = ( TableColumn ) tableView.getColumns( ).get( 0 );

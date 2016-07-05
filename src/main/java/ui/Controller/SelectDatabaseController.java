@@ -22,7 +22,7 @@ import java.util.ResourceBundle;
 
 public class SelectDatabaseController implements Initializable
 {
-	public static final String RESOURCE_ID = "fxml/centerContent/selectDatabase.fxml";
+	private static final String RESOURCE_ID = "fxml/centerContent/selectDatabase.fxml";
 
 	private ObservableList<String> fileList = FXCollections.observableArrayList( );
 
@@ -37,6 +37,11 @@ public class SelectDatabaseController implements Initializable
 
 	@FXML
 	public ListView<String> dataList;
+
+	public static void updateContainerStage( UiBaseContainer container )
+	{
+		container.setCenter( "Select Database", SelectDatabaseController.RESOURCE_ID );
+	}
 
 
 	public SelectDatabaseController( )

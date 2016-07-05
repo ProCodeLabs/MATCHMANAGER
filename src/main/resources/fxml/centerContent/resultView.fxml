@@ -9,13 +9,13 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox stylesheets="@../../styles/style.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
+<VBox stylesheets="@../../styles/style.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.Controller.ResultViewController">
    <children>
       <HBox>
          <children>
-            <Button mnemonicParsing="false" text="CLOSE DATABASE" />
+            <Button mnemonicParsing="false" onAction="#onCloseDatabaseButtonClick" text="CLOSE DATABASE" />
             <Region HBox.hgrow="ALWAYS" />
-            <Button mnemonicParsing="false" text="EDIT TEAMS" />
+            <Button mnemonicParsing="false" onAction="#onEditTeamsButtonClick" text="EDIT TEAMS" />
          </children>
          <VBox.margin>
             <Insets bottom="10.0" />
@@ -29,7 +29,7 @@
       <HBox VBox.vgrow="ALWAYS">
          <children>
             <Region HBox.hgrow="ALWAYS" />
-            <ChoiceBox prefWidth="200.0" />
+            <ChoiceBox fx:id="selectTeamA" prefWidth="200.0" />
             <Region HBox.hgrow="ALWAYS" />
             <Label text="VS" textAlignment="CENTER">
                <HBox.margin>
@@ -37,7 +37,7 @@
                </HBox.margin>
             </Label>
             <Region layoutX="306.0" layoutY="10.0" HBox.hgrow="ALWAYS" />
-            <ChoiceBox prefWidth="200.0" />
+            <ChoiceBox fx:id="selectTeamB" prefWidth="200.0" />
             <Region layoutX="382.0" layoutY="10.0" HBox.hgrow="ALWAYS" />
          </children>
       </HBox>
@@ -54,13 +54,13 @@
       <HBox VBox.vgrow="ALWAYS">
          <children>
             <Region HBox.hgrow="ALWAYS" />
-            <ChoiceBox prefWidth="150.0" />
+            <ChoiceBox fx:id="selectResultTeam" prefWidth="150.0" />
             <Region layoutX="10.0" layoutY="10.0" HBox.hgrow="ALWAYS" />
          </children>
       </HBox>
       <HBox>
          <children>
-            <Button disable="true" mnemonicParsing="false" prefWidth="100.0" text="LAST" />
+            <Button disable="true" mnemonicParsing="false" onAction="#onLeftButtonClick" prefWidth="100.0" text="LAST" />
             <Region HBox.hgrow="ALWAYS" />
             <Button disable="true" mnemonicParsing="false" prefWidth="100.0" text="NEXT" />
             <Button disable="true" mnemonicParsing="false" prefWidth="100.0" text="FINISH">
@@ -74,4 +74,7 @@
          </padding>
       </HBox>
    </children>
+   <padding>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+   </padding>
 </VBox>

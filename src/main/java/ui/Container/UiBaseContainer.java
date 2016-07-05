@@ -63,8 +63,6 @@ public class UiBaseContainer extends BorderPane
 
 	public final <T> T getController( )
 	{
-		assert controller != null;
-
 		return ( T ) controller;
 	}
 

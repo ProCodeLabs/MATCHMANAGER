@@ -59,6 +59,8 @@ public abstract class UiStage
 			}
 		} );
 
+		showStage();
+
 		return true;
 	}
 

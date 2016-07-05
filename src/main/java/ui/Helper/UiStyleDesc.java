@@ -14,24 +14,24 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class UiStyleDesc
 {
-	static final int RESIZE_RECT_SIZE = 18;
-	static final int RESIZE_RECT_MIN_SIZE = 50;
+	private static final int RESIZE_RECT_SIZE = 18;
+	private static final int RESIZE_RECT_MIN_SIZE = 50;
 
-	boolean _isContainer = false;
-	boolean _isDragged = false;
-	boolean _isResizing = false;
+	private boolean _isContainer = false;
+	private boolean _isDragged = false;
+	private boolean _isResizing = false;
 
-	double _xOffset = 0;
-	double _yOffset = 0;
+	private double _xOffset = 0;
+	private double _yOffset = 0;
 
 
-	HBox _titleBar = new HBox( );
-	Label _titleLabel = new Label( );
+	private HBox _titleBar = new HBox( );
+	private Label _titleLabel = new Label( );
 
-	Runnable _onCloseButton = ( ) -> {
+	private Runnable _onCloseButton = ( ) -> {
 		throw new NotImplementedException( );
 	};
-	Runnable _onMinimizeButton = ( ) -> {
+	private Runnable _onMinimizeButton = ( ) -> {
 		throw new NotImplementedException( );
 	};
 
@@ -49,11 +49,11 @@ public class UiStyleDesc
 		initializeEventFilter( target );
 	}
 
-	void initializeTitleButtons(  )
+	private void initializeTitleButtons(  )
 	{
 		Region region = new Region( );
 		{
-			_titleBar.setHgrow( region, Priority.ALWAYS );
+			HBox.setHgrow( region, Priority.ALWAYS );
 		}
 		_titleBar.getChildren().addAll( _titleLabel, region );
 
@@ -83,7 +83,7 @@ public class UiStyleDesc
 		_titleBar.getChildren().add( btnClose );
 	}
 
-	void initializeEventFilter( Pane target )
+	private void initializeEventFilter( Pane target )
 	{
 		target.addEventFilter( MouseEvent.MOUSE_PRESSED, ( MouseEvent e ) -> {
 

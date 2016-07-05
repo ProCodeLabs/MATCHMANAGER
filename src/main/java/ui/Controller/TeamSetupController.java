@@ -226,7 +226,7 @@ public class TeamSetupController implements Initializable
 
 		teamList.forEach( e -> count.incrementAndGet( ) );
 
-		if( count.get() > 0 )
+		if( count.get( ) > 1 )
 		{
 			ResultViewController.updateContainerStage( ( UiBaseContainer ) labelInfo.getScene( ).getRoot( ), manager );
 		}
