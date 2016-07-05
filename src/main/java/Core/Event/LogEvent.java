@@ -15,6 +15,7 @@ import java.util.logging.LogRecord;
 
 public class LogEvent implements IEventHandlerImpl
 {
+
 	private final ILogger logger = LoggerFactory.createLogger( getClass( ) );
 
 	@Override
@@ -22,20 +23,38 @@ public class LogEvent implements IEventHandlerImpl
 	{
 		CoreEventDispatcher.addEventHandler( CoreEvent.LOG_ITEM, l -> System.out.println( formatLogs( l ) ) );
 
-		openLogFile( ).thenApply( t -> {
+		openLogFile( )
+				.thenApply( stream -> {
+					CoreEventDispatcher.addEventHandler( CoreEvent.LOG_ITEM, l -> {
+						try
+						{
+							stream.write( formatLogs( l ) + Constants.LINE_SPEREATOR );
+							stream.flush( );
+						}
+						catch( IOException e )
+						{
+							logger.error( "Failed to write log to file " + e.getMessage( ) );
+						}
+					} );
 
-			CoreEventDispatcher.addEventHandler( CoreEvent.LOG_ITEM, l -> {
+					CoreEventDispatcher.addEventHandler( CoreEvent.SHUTDOWN_APP, r -> {
+						try
+						{
+							stream.close( );
+						}
+						catch( IOException e )
+						{
+							logger.error( "failed to close writer stream " + e.getMessage( ) );
+						}
+					} );
 
+					return null;
+				} )
+				.exceptionally( e -> {
+					logger.warning( "failed to add logfile " + e.getMessage( ) );
 
-			} );
-
-			return null;
-		} ).exceptionally( e -> {
-			logger.warning( "failed to add logfile " + e.getMessage( ) );
-
-			return null;
-		} );
-
+					return null;
+				} );
 	}
 
 	private CompletableFuture<Writer> openLogFile( )

@@ -10,6 +10,8 @@ import Core.Database.Storage.Helper.IStorageImpl;
 import Core.Database.Storage.MatchStorage;
 import Core.Database.Storage.PlayerStorage;
 import Core.Database.Storage.TeamStorage;
+import Core.Event.Manager.CoreEvent;
+import Core.Event.Manager.CoreEventDispatcher;
 import Core.Helper.StorageException;
 import org.tmatesoft.sqljet.core.SqlJetException;
 import org.tmatesoft.sqljet.core.table.SqlJetDb;
@@ -25,7 +27,7 @@ import static java.util.concurrent.CompletableFuture.supplyAsync;
 
 public class MatchManager implements IStorageImpl
 {
-	final ILogger logger = LoggerFactory.createLogger( getClass( ) );
+	private final ILogger logger = LoggerFactory.createLogger( getClass( ) );
 
 	private SqlJetDb db;
 
@@ -61,7 +63,7 @@ public class MatchManager implements IStorageImpl
 		}
 		catch( SqlJetException e )
 		{
-			//CoreEventDispatcher.getInstance().fireEvent( CoreEvent.CORE_EXCEPTION, e );
+			CoreEventDispatcher.fireEvent( CoreEvent.CORE_EXCEPTION, e );
 		}
 	}
 
@@ -109,6 +111,13 @@ public class MatchManager implements IStorageImpl
 	}
 
 	@Override
+	public CompletableFuture<List<Player>> getAllPlayers( )
+	{
+		return supplyAsync( ( ) -> playerStorage.getAllPlayers( ) );
+	}
+
+
+	@Override
 	public CompletableFuture<Team> addTeam( String teamName )
 	{
 		return getTeam( teamName )
@@ -118,7 +127,7 @@ public class MatchManager implements IStorageImpl
 						throw new CompletionException( new StorageException( "Team " + teamName + " already exists!" ) );
 					}
 
-					return team;
+					return null;
 				} )
 				.thenApply( r -> teamStorage.createTeam( teamName ) );
 	}
@@ -128,6 +137,12 @@ public class MatchManager implements IStorageImpl
 	public CompletableFuture<Team> getTeam( String teamName )
 	{
 		return supplyAsync( ( ) -> teamStorage.getTeam( teamName ) );
+	}
+
+	@Override
+	public CompletableFuture<Team> getTeam( long id )
+	{
+		return supplyAsync( ( ) -> teamStorage.getTeam( id ) );
 	}
 
 	@Override
@@ -143,16 +158,18 @@ public class MatchManager implements IStorageImpl
 	}
 
 	@Override
-	public CompletableFuture<Match> addMatch( Team teamA, Team teamB )
+	public CompletableFuture<List<Team>> getAllTeams( )
 	{
-		return null;
+		return supplyAsync( ( ) -> teamStorage.getAllTeams( ) );
 	}
 
+
 	@Override
-	public CompletableFuture<Void> endMatch( Match match, Team winner )
+	public CompletableFuture<Match> addMatch( Team teamA, Team teamB, Team resultTeam )
 	{
-		return null;
+		return supplyAsync( ( ) -> matchStorage.addMatch( teamA, teamB, resultTeam ) );
 	}
+
 
 	@Override
 	public CompletableFuture<Void> updateMatch( Match match )
@@ -166,22 +183,11 @@ public class MatchManager implements IStorageImpl
 		return null;
 	}
 
-	@Override
-	public CompletableFuture<List<Player>> getAllPlayers( )
-	{
-		return supplyAsync( ( ) -> playerStorage.getAllPlayers( ) );
-	}
-
-	@Override
-	public CompletableFuture<List<Team>> getAllTeams( )
-	{
-		return supplyAsync( ( ) -> teamStorage.getAllTeams( ) );
-	}
 
 	@Override
 	public CompletableFuture<List<Match>> getAllMatches( )
 	{
-		return null;
+		return supplyAsync( ( ) -> matchStorage.getAllMatches( ) );
 	}
 
 
@@ -210,13 +216,6 @@ public class MatchManager implements IStorageImpl
 		return false;
 	}
 
-
-	public String getFileName( )
-	{
-		return db.getFile( ).getName( );
-	}
-
-
 	private CompletableFuture<Team> getTeamExc( String teamName ) throws CompletionException
 	{
 		return getTeam( teamName )
@@ -229,5 +228,24 @@ public class MatchManager implements IStorageImpl
 					return r;
 				} );
 	}
+
+	public CompletableFuture<Integer> calculateMaxMatchNumber( )
+	{
+		return getAllTeams( ).thenApply( r -> calculateMatchCount( r.size( ) ) );
+	}
+
+	public static int calculateMatchCount( int teamCount )
+	{
+		assert teamCount >= 0;
+
+		return teamCount == 0 ? 0 : ( teamCount - 1 );
+	}
+
+
+	public String getFileName( )
+	{
+		return db.getFile( ).getName( );
+	}
+
 
 }

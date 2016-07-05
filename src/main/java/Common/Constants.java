@@ -4,6 +4,8 @@ import java.io.File;
 
 public class Constants
 {
+	public static final String LINE_SPEREATOR = System.getProperty("line.separator");
+
 	public static final String STORAGE_FOLDER = System.getProperty( "user.home" ) + File.separator + "Matchmanager";
 	public static final String FILE_EXT = ".sqlite";
 

@@ -1,113 +1,107 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ChoiceBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.Separator?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
-<?import javafx.scene.layout.VBox?>
-
-<VBox stylesheets="@../../styles/style.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.Controller.ResultViewController">
-   <children>
-      <HBox>
-         <children>
-            <Button mnemonicParsing="false" onAction="#onCloseDatabaseButtonClick" text="CLOSE DATABASE" />
-            <Region HBox.hgrow="ALWAYS" />
-            <Button mnemonicParsing="false" onAction="#onEditTeamsButtonClick" text="EDIT TEAMS" />
-         </children>
-         <VBox.margin>
-            <Insets bottom="10.0" />
-         </VBox.margin>
-      </HBox>
-      <Separator prefWidth="200.0">
-         <VBox.margin>
-            <Insets bottom="10.0" />
-         </VBox.margin>
-      </Separator>
-      <HBox prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
-         <children>
-            <Region HBox.hgrow="ALWAYS" />
-            <VBox HBox.hgrow="ALWAYS">
-               <children>
-                  <HBox>
-                     <children>
-                        <Region HBox.hgrow="ALWAYS" />
-                        <ChoiceBox fx:id="selectTeamA" HBox.hgrow="ALWAYS" />
-                        <Region HBox.hgrow="ALWAYS" />
-                     </children>
-                  </HBox>
-                  <HBox VBox.vgrow="ALWAYS">
-                     <children>
-                        <ListView fx:id="teamMemberViewA" HBox.hgrow="ALWAYS" />
-                     </children>
-                     <VBox.margin>
-                        <Insets top="5.0" />
-                     </VBox.margin>
-                  </HBox>
-               </children>
-            </VBox>
-            <Region HBox.hgrow="ALWAYS" />
-            <Label text="VS" textAlignment="CENTER" />
-            <Region HBox.hgrow="ALWAYS" />
-            <VBox layoutX="10.0" layoutY="10.0" HBox.hgrow="ALWAYS">
-               <children>
-                  <HBox>
-                     <children>
-                        <Region HBox.hgrow="ALWAYS" />
-                        <ChoiceBox fx:id="selectTeamB" />
-                        <Region layoutX="10.0" layoutY="10.0" HBox.hgrow="ALWAYS" />
-                     </children>
-                  </HBox>
-                  <HBox VBox.vgrow="ALWAYS">
-                     <children>
-                        <ListView fx:id="teamMemberViewB" HBox.hgrow="ALWAYS" />
-                     </children>
-                     <padding>
-                        <Insets top="5.0" />
-                     </padding>
-                  </HBox>
-               </children>
-            </VBox>
-            <Region layoutX="10.0" layoutY="10.0" HBox.hgrow="ALWAYS" />
-         </children>
-      </HBox>
-      <HBox layoutX="10.0" layoutY="235.0">
-         <children>
-            <Region HBox.hgrow="ALWAYS" />
-            <Label text="RESULT" />
-            <Region layoutX="10.0" layoutY="10.0" HBox.hgrow="ALWAYS" />
-         </children>
-         <VBox.margin>
-            <Insets top="25.0" />
-         </VBox.margin>
-      </HBox>
-      <HBox VBox.vgrow="ALWAYS">
-         <children>
-            <Region HBox.hgrow="ALWAYS" />
-            <ChoiceBox fx:id="selectResultTeam" prefWidth="150.0" />
-            <Region layoutX="10.0" layoutY="10.0" HBox.hgrow="ALWAYS" />
-         </children>
-      </HBox>
-      <HBox>
-         <children>
-            <Button disable="true" mnemonicParsing="false" onAction="#onLeftButtonClick" prefWidth="100.0" text="LAST" />
-            <Region HBox.hgrow="ALWAYS" />
-            <Button disable="true" mnemonicParsing="false" prefWidth="100.0" text="NEXT" />
-            <Button disable="true" mnemonicParsing="false" prefWidth="100.0" text="FINISH">
-               <HBox.margin>
-                  <Insets left="5.0" />
-               </HBox.margin>
-            </Button>
-         </children>
-         <padding>
-            <Insets top="10.0" />
-         </padding>
-      </HBox>
-   </children>
-   <padding>
-      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-   </padding>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<VBox stylesheets="@../../styles/style.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="ui.Controller.ResultViewController">
+    <children>
+        <HBox>
+            <children>
+                <Button mnemonicParsing="false" onAction="#onCloseDatabaseButtonClick" text="CLOSE DATABASE"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Button mnemonicParsing="false" onAction="#onEditTeamsButtonClick" text="EDIT TEAMS"/>
+            </children>
+            <VBox.margin>
+                <Insets bottom="10.0"/>
+            </VBox.margin>
+        </HBox>
+        <Separator prefWidth="200.0">
+            <VBox.margin>
+                <Insets bottom="10.0"/>
+            </VBox.margin>
+        </Separator>
+        <HBox prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+            <children>
+                <Region HBox.hgrow="ALWAYS"/>
+                <VBox HBox.hgrow="ALWAYS">
+                    <children>
+                        <HBox>
+                            <children>
+                                <Region HBox.hgrow="ALWAYS"/>
+                                <ChoiceBox fx:id="selectTeamA" prefWidth="150.0" HBox.hgrow="ALWAYS"/>
+                                <Region HBox.hgrow="ALWAYS"/>
+                            </children>
+                        </HBox>
+                        <HBox VBox.vgrow="ALWAYS">
+                            <children>
+                                <ListView fx:id="teamMemberViewA" HBox.hgrow="ALWAYS"/>
+                            </children>
+                            <VBox.margin>
+                                <Insets top="5.0"/>
+                            </VBox.margin>
+                        </HBox>
+                    </children>
+                </VBox>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Label text="VS" textAlignment="CENTER"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <VBox layoutX="10.0" layoutY="10.0" HBox.hgrow="ALWAYS">
+                    <children>
+                        <HBox>
+                            <children>
+                                <Region HBox.hgrow="ALWAYS"/>
+                                <ChoiceBox fx:id="selectTeamB" prefWidth="150.0"/>
+                                <Region layoutX="10.0" layoutY="10.0" HBox.hgrow="ALWAYS"/>
+                            </children>
+                        </HBox>
+                        <HBox VBox.vgrow="ALWAYS">
+                            <children>
+                                <ListView fx:id="teamMemberViewB" HBox.hgrow="ALWAYS"/>
+                            </children>
+                            <padding>
+                                <Insets top="5.0"/>
+                            </padding>
+                        </HBox>
+                    </children>
+                </VBox>
+                <Region layoutX="10.0" layoutY="10.0" HBox.hgrow="ALWAYS"/>
+            </children>
+        </HBox>
+        <HBox layoutX="10.0" layoutY="235.0">
+            <children>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Label text="RESULT"/>
+                <Region layoutX="10.0" layoutY="10.0" HBox.hgrow="ALWAYS"/>
+            </children>
+            <VBox.margin>
+                <Insets top="25.0"/>
+            </VBox.margin>
+        </HBox>
+        <HBox VBox.vgrow="ALWAYS">
+            <children>
+                <Region HBox.hgrow="ALWAYS"/>
+                <ChoiceBox fx:id="selectResultTeam" prefWidth="150.0"/>
+                <Region layoutX="10.0" layoutY="10.0" HBox.hgrow="ALWAYS"/>
+            </children>
+        </HBox>
+        <HBox>
+            <children>
+                <Button fx:id="buttonLeft" disable="true" mnemonicParsing="false" onAction="#onButtonLeftClick"
+                        prefWidth="100.0" text="LAST"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Button fx:id="buttonNext" disable="true" mnemonicParsing="false" prefWidth="100.0" text="NEXT" onAction="#onButtonNextClick">
+                    <HBox.margin>
+                        <Insets left="5.0"/>
+                    </HBox.margin>
+                </Button>
+            </children>
+            <padding>
+                <Insets top="10.0"/>
+            </padding>
+        </HBox>
+    </children>
+    <padding>
+        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+    </padding>
 </VBox>

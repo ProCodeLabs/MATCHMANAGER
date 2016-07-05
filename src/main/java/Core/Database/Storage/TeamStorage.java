@@ -56,6 +56,22 @@ public class TeamStorage extends DbStorage
 		} );
 	}
 
+	public Team getTeam( long id ) throws CompletionException
+	{
+		return transactionCommit( SqlJetTransactionMode.READ_ONLY, ( ) -> {
+			ISqlJetCursor cursor = getTable( ).lookup( getTable( ).getPrimaryKeyIndexName( ), id );
+
+			if( cursor.eof( ) )
+			{
+				logger.error( "team not found!: " + id );
+				return null;
+			}
+
+			logger.success( "found team: " + id );
+			return new Team( cursor.getRowId( ), cursor.getString( 1 ) );
+		} );
+	}
+
 	public Void removeTeam( String teamName )
 	{
 
@@ -81,7 +97,7 @@ public class TeamStorage extends DbStorage
 
 	private Team serializeTeam( ISqlJetCursor cursor ) throws SqlJetException
 	{
-		long id = cursor.getRowId();
+		long id = cursor.getRowId( );
 		String name = cursor.getString( 1 );
 
 		return new Team( id, name );
