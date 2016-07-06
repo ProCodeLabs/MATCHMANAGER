@@ -59,6 +59,8 @@ public class TeamSetupController implements Initializable
 	@Override
 	public void initialize( URL location, ResourceBundle resources )
 	{
+		FXCollections.sort( teamList );
+
 		teamListView.setItems( teamList );
 		playerListView.setItems( playerList );
 
