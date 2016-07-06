@@ -375,3 +375,8 @@ TextField {
     -fx-background-radius: 1.4, 0, 0;
     -fx-padding: 1; /* 0.083333em; */
 }
+
+/**********************************************/
+.error {
+    -fx-background-image: url("images/sad_pepe_2.jpg");
+}
