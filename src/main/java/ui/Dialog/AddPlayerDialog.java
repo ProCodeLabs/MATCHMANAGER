@@ -36,6 +36,7 @@ public class AddPlayerDialog extends UiDialog<Player>
 	{
 		setContent( RESOURCE_ID );
 
+
 		if( player != null )
 		{
 			forenameText.setText( player.getForename( ) );

@@ -45,7 +45,5 @@ public class MatchStatStage extends UiStage
 			getStage( ).setX( x );
 		}
 		getStage( ).setY( pos.getValue( ) );
-
-
 	}
 }

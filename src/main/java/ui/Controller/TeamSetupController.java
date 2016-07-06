@@ -62,32 +62,29 @@ public class TeamSetupController implements Initializable
 		teamListView.setItems( teamList );
 		playerListView.setItems( playerList );
 
-		teamListView.getSelectionModel( ).getSelectedItems( ).addListener( new ListChangeListener<String>( )
-		{
-			@Override
-			public void onChanged( Change<? extends String> c )
-			{
-				playerList.clear( );
+		teamListView.getSelectionModel( )
+				.getSelectedItems( )
+				.addListener( ( ListChangeListener.Change<? extends String> c ) -> {
+					playerList.clear( );
 
-				String teamName = getSelectedTeamName( );
+					String teamName = getSelectedTeamName( );
 
-				if( teamName != null )
-				{
-					manager.getAllTeamPlayers( teamName )
-							.thenApply( r -> {
-								r.forEach(
-										i -> Platform.runLater( ( ) -> playerList.add( i ) )
-								);
-								return null;
-							} )
-							.exceptionally( e -> {
-								showDatabaseExceptionDlg( e );
-								return null;
-							} );
+					if( teamName != null )
+					{
+						manager.getAllTeamPlayers( teamName )
+								.thenApply( r -> {
+									r.forEach(
+											i -> Platform.runLater( ( ) -> playerList.add( i ) )
+									);
+									return null;
+								} )
+								.exceptionally( e -> {
+									showDatabaseExceptionDlg( e );
+									return null;
+								} );
 
-				}
-			}
-		} );
+					}
+				} );
 	}
 
 	private void initializeController( )
