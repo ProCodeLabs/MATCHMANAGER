@@ -11,17 +11,11 @@ public class IoTests extends TestCase
 		assertTrue( true );
 	}
 
-	@Test(expected = IOException.class)
-	public void testMatchManagerInvalidPath() throws Exception
+	@Test( expected = IOException.class )
+	public void testMatchManagerInvalidPath( ) throws Exception
 	{
-
 		assertTrue( true );
 	}
-
-
-
-
-
 
 
 
