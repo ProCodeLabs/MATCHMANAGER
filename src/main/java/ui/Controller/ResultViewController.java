@@ -56,6 +56,7 @@ public class ResultViewController
 	private ObservableList<Team> teamListA = FXCollections.observableArrayList( );
 	private ObservableList<Team> teamlistB = FXCollections.observableArrayList( );
 
+	private int numberOfGames=0;
 
 	private MatchManager manager;
 
@@ -86,16 +87,22 @@ public class ResultViewController
 		selectTeamA.setItems( teamListA );
 		selectTeamB.setItems( teamlistB );
 
+
+
+
 		//
 		//
 
 		manager.getAllTeams( ).thenApply( l -> {
 			l.forEach( i -> Platform.runLater( ( ) -> {
+				numberOfGames++;
 				selectTeamA.getItems( ).add( i );
 				selectTeamB.getItems( ).add( i );
 			} ) );
 			return null;
 		} );
+
+
 
 		registerTeamSelector( selectTeamA, teamMemberViewA );
 		registerTeamSelector( selectTeamB, teamMemberViewB );
@@ -250,7 +257,7 @@ public class ResultViewController
 								setTournamentFinish( );
 							}
 
-							container.setTitle( CONTAINER_TITLE + " (" + count + "/" + max + ")" );
+							container.setTitle( CONTAINER_TITLE + " (" + count + "/" + (numberOfGames-1) + ")" );
 						} )
 				);
 			} );
