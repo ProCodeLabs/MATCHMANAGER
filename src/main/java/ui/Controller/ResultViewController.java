@@ -12,7 +12,7 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import ui.Container.UiBaseContainer;
 import ui.StageCore.DialogStages.MatchResultView;
@@ -27,10 +27,10 @@ public class ResultViewController
 	private final ILogger logger = LoggerFactory.createLogger( getClass( ) );
 
 	@FXML
-	private ChoiceBox<Team> selectTeamA;
+	private ComboBox<Team> selectTeamA;
 
 	@FXML
-	private ChoiceBox<Team> selectTeamB;
+	private ComboBox<Team> selectTeamB;
 
 	@FXML
 	private ListView<Player> teamMemberViewA;
@@ -39,13 +39,19 @@ public class ResultViewController
 	private ListView<Player> teamMemberViewB;
 
 	@FXML
-	private ChoiceBox<Team> selectResultTeam;
+	private ComboBox<Team> selectResultTeam;
 
 	@FXML
 	private Button buttonLeft;
 
 	@FXML
 	private Button buttonNext;
+
+	@FXML
+	Button showTree;
+
+	@FXML
+	Button showStats;
 
 	private ObservableList<Team> teamListA = FXCollections.observableArrayList( );
 	private ObservableList<Team> teamlistB = FXCollections.observableArrayList( );
@@ -80,9 +86,8 @@ public class ResultViewController
 		selectTeamA.setItems( teamListA );
 		selectTeamB.setItems( teamlistB );
 
-
-		Platform.runLater( ( ) -> matchStatStage.showWindow( ) );
-		Platform.runLater( ( ) -> matchResultView.showWindow( ) );
+		//
+		//
 
 		manager.getAllTeams( ).thenApply( l -> {
 			l.forEach( i -> Platform.runLater( ( ) -> {
@@ -126,7 +131,17 @@ public class ResultViewController
 		updateTitle( );
 	}
 
-	private void registerTeamSelector( ChoiceBox<Team> select, ListView<Player> view )
+
+	public void onShowStatsButtonClicked()
+	{
+		Platform.runLater( ( ) -> matchResultView.showWindow( ) );
+	}
+	public void onShowTreeButtonClicked()
+	{
+		Platform.runLater( ( ) -> matchStatStage.showWindow( ) );
+	}
+
+	private void registerTeamSelector( ComboBox<Team> select, ListView<Player> view )
 	{
 		select.getSelectionModel( ).selectedItemProperty( )
 				.addListener( ( ObservableValue<? extends Team> observable, Team oldValue, Team newValue ) -> {
@@ -164,7 +179,7 @@ public class ResultViewController
 				} );
 	}
 
-	private void registerTeamChanger( ChoiceBox<Team> selectA, ChoiceBox<Team> selectB )
+	private void registerTeamChanger( ComboBox<Team> selectA, ComboBox<Team> selectB )
 	{
 		selectA.getSelectionModel( ).selectedItemProperty( ).addListener(
 				( ObservableValue<? extends Team> observable, Team oldValue, Team newValue ) -> {

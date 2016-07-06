@@ -8,6 +8,7 @@ import ui.Dialog.Helper.UiDialog;
 public class AddTeamDialog extends UiDialog<String>
 {
 	public static final String RESOURCE_ID = "fxml/dialogs/addTeamDialog.fxml";
+	private static final String CSS_ERROR_CLS = "textfield-error";
 
 	@FXML
 	public TextField teamNameField;
@@ -37,13 +38,15 @@ public class AddTeamDialog extends UiDialog<String>
 		}
 
 		addButtonEventHandler( ButtonType.OK, e -> {
-			if( teamNameField.getText( ).length( ) <= 0 )
+			if( teamNameField.getText( ).isEmpty() )
 			{
+				teamNameField.getStyleClass( ).add( CSS_ERROR_CLS );
 				e.consume( );
 				return;
+			} else {
+				resultCallback.apply( teamNameField.getText( ) );
 			}
 
-			resultCallback.apply( teamNameField.getText( ) );
 		} );
 	}
 

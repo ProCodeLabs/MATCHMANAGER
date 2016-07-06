@@ -2,7 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Separator?>
@@ -15,6 +15,14 @@
         <HBox>
             <children>
                 <Button mnemonicParsing="false" onAction="#onCloseDatabaseButtonClick" text="CLOSE DATABASE" />
+            <Button fx:id="showTree" mnemonicParsing="false" onAction="#onShowStatsButtonClicked" text="SHOW TREE">
+               <HBox.margin>
+                  <Insets left="5.0" right="5.0" />
+               </HBox.margin></Button>
+            <Button fx:id="showStats" mnemonicParsing="false" onAction="#onShowTreeButtonClicked" text="SHOW STATS">
+               <HBox.margin>
+                  <Insets right="5.0" />
+               </HBox.margin></Button>
                 <Region HBox.hgrow="ALWAYS" />
                 <Button mnemonicParsing="false" onAction="#onEditTeamsButtonClick" text="EDIT TEAMS" />
             </children>
@@ -35,13 +43,19 @@
                         <HBox>
                             <children>
                                 <Region HBox.hgrow="ALWAYS" />
-                                <ChoiceBox fx:id="selectTeamA" prefWidth="150.0" HBox.hgrow="ALWAYS" />
+                                <ComboBox fx:id="selectTeamA" prefWidth="150.0" promptText="Team A" HBox.hgrow="ALWAYS" />
                                 <Region HBox.hgrow="ALWAYS" />
                             </children>
                         </HBox>
                         <HBox VBox.vgrow="ALWAYS">
                             <children>
-                                <ListView fx:id="teamMemberViewA" HBox.hgrow="ALWAYS" />
+                                <ListView fx:id="teamMemberViewA" HBox.hgrow="ALWAYS">
+                           <padding>
+                              <Insets top="10.0" />
+                           </padding>
+                           <HBox.margin>
+                              <Insets top="10.0" />
+                           </HBox.margin></ListView>
                             </children>
                             <VBox.margin>
                                 <Insets top="5.0" />
@@ -57,13 +71,19 @@
                         <HBox>
                             <children>
                                 <Region HBox.hgrow="ALWAYS" />
-                                <ChoiceBox fx:id="selectTeamB" prefWidth="150.0" />
+                                <ComboBox fx:id="selectTeamB" prefWidth="150.0" promptText="Team B" />
                                 <Region layoutX="10.0" layoutY="10.0" HBox.hgrow="ALWAYS" />
                             </children>
                         </HBox>
                         <HBox VBox.vgrow="ALWAYS">
                             <children>
-                                <ListView fx:id="teamMemberViewB" HBox.hgrow="ALWAYS" />
+                                <ListView fx:id="teamMemberViewB" HBox.hgrow="ALWAYS">
+                           <padding>
+                              <Insets top="10.0" />
+                           </padding>
+                           <HBox.margin>
+                              <Insets top="10.0" />
+                           </HBox.margin></ListView>
                             </children>
                             <padding>
                                 <Insets top="5.0" />
@@ -87,7 +107,7 @@
         <HBox VBox.vgrow="ALWAYS">
             <children>
                 <Region HBox.hgrow="ALWAYS" />
-                <ChoiceBox fx:id="selectResultTeam" disable="true" prefWidth="150.0" />
+                <ComboBox fx:id="selectResultTeam" disable="true" prefWidth="150.0" promptText="Winner" />
                 <Region layoutX="10.0" layoutY="10.0" HBox.hgrow="ALWAYS" />
             </children>
         </HBox>

@@ -7,6 +7,7 @@ import Core.Data.Team;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import Common.CustomColor;
 
 import java.util.List;
 
@@ -50,10 +51,10 @@ public class MatchResultCanvas
 
 		for( int i = 0; i < teamCount; i++ )
 		{
-			gc.setStroke( Color.GREEN );
+			gc.setStroke( CustomColor.PRIMARY);
 			gc.strokeRect( dX, dY, rectWidth, rectHeight );
 
-			gc.setStroke( Color.CYAN );
+			gc.setStroke( CustomColor.SECONDARY );
 			gc.strokeLine( dX + rectWidth, dY + ( rectHeight / 2 ), dX + rectWidth + 50, dY + ( rectHeight / 2 ) );
 
 			dY += rectHeight + 20;
