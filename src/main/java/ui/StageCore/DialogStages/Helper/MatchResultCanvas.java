@@ -9,16 +9,18 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.util.Pair;
 import ui.StageCore.DialogStages.Helper.ResultCanvasHelper.GraphConnection;
+import ui.StageCore.DialogStages.Helper.ResultCanvasHelper.GraphNode;
+import ui.StageCore.DialogStages.Helper.ResultCanvasHelper.MatchListHelper;
 
 import java.awt.geom.Point2D;
 import java.util.List;
 
 public class MatchResultCanvas
 {
-	private static final double RECT_PERF_SPACING_WIDTH = 50;
-	private static final double RECT_PERF_SPACING_HEIGHT = 25;
-	private static final double RECT_PERF_WIDTH = 100;
-	private static final double RECT_PERF_HEIGHT = RECT_PERF_WIDTH / 2.0;
+	private static final double RECT_PREF_SPACING_WIDTH = 50;
+	private static final double RECT_PREF_SPACING_HEIGHT = 25;
+	private static final double RECT_PREF_WIDTH = 100;
+	private static final double RECT_PREF_HEIGHT = RECT_PREF_WIDTH / 2.0;
 
 	private final ILogger logger = LoggerFactory.createLogger( getClass( ) );
 
@@ -28,6 +30,8 @@ public class MatchResultCanvas
 	private Pair<Double, Double> rectSize;
 	private double spacingWidth;
 	private double spacingHeight;
+	//private List<GraphNode> nodes = new ArrayList<GraphNode>( );
+	private MatchListHelper helper;
 
 
 	public MatchResultCanvas( Canvas canvas )
@@ -60,16 +64,18 @@ public class MatchResultCanvas
 			matchList.add( new Match( 3, 1, 3, 1 ) );
 		}
 
-		drawConnections( gc, teamList, matchList );
 
-		drawTeams( gc, teamList );
-		drawMatches( gc, matchList );
+		helper = new MatchListHelper( matchList );
 
-		if( teamList.size( ) == ( matchList.size( ) - 1 ) )
-		{
-			drawWinningTeam( gc, teamList.get( teamList.size( ) - 1 ), matchList.get( matchList.size( ) - 1 ) );
-		}
+		GraphNode root = helper.createBinaryTree( );
+
+		drawTree( gc, root, 0, canvas.getWidth( ), canvas.getHeight( ) / 2 );
+
+
+		//drawConnections( gc, teamList, matchList );
+
 	}
+
 
 	private void drawTeams( GraphicsContext gc, List<Team> teamList )
 	{
@@ -84,16 +90,42 @@ public class MatchResultCanvas
 
 	}
 
+	private void drawTree( GraphicsContext gc, GraphNode root, int it, double dWidth, double dHeight )
+	{
+		double dX = dWidth + ( it * spacingWidth ) - rectSize.getKey( );
+
+		System.out.println( dWidth + " " + dHeight );
+
+		gc.setLineWidth( 1.0 );
+		gc.setStroke( Color.GREEN );
+		gc.strokeRect( dX, dHeight, rectSize.getKey( ), rectSize.getValue( ) );
+
+		if( root.left != null )
+		{
+			drawTree( gc, root.left, it + 1, dWidth - dX, dHeight + rectSize.getValue( ) + spacingHeight );
+		}
+
+		if( root.right != null )
+		{
+			drawTree( gc, root.right, it + 1, dWidth - dX, dHeight - rectSize.getValue( ) - spacingHeight );
+		}
+	}
+
 	private void drawConnections( GraphicsContext gc, List<Team> teamList, List<Match> matchList )
 	{
-		GraphConnection con = new GraphConnection( 50.0, 50.0,  0.0, 200.0, 150.0, 140.0   );
+		GraphConnection con = new GraphConnection( new Point2D.Double( 50.0, 50.0 ), new Point2D.Double( 0.0, 200.0 ), new Point2D.Double( 150.0, 75.0 ) );
 		{
 			con.drawConnection( gc );
 		}
 
-		GraphConnection con2 = new GraphConnection( 200 + 200.0, 50.0, 200 + 400, 200.0, 200 + 150.0, 140.0   );
+		GraphConnection con2 = new GraphConnection( new Point2D.Double( 300, 100.0 ), new Point2D.Double( 350, 200 ), new Point2D.Double( 400, 150 ) );
 		{
 			con2.drawConnection( gc );
+		}
+
+		GraphConnection con3 = new GraphConnection( new Point2D.Double( 300, 300 ), new Point2D.Double( 300, 350 ), new Point2D.Double( 400, 325 ) );
+		{
+			con3.drawConnection( gc );
 		}
 
 
@@ -101,11 +133,6 @@ public class MatchResultCanvas
 		{
 
 		}
-	}
-
-	private void drawWinningTeam( GraphicsContext gc, Team team, Match match )
-	{
-
 	}
 
 
@@ -124,22 +151,6 @@ public class MatchResultCanvas
 	}
 
 	/*
-		pos = position from left to right
-		it = iterator index ->
-	 */
-	Point2D.Double getRectangleCoords( double pos, double it )
-	{
-
-		/*Double itPosH = ((pos * rectSize.getValue() )+ ((pos/2)*spacingWidth))/2;
-
-		return new Point2D.Double(
-				getRenderStartPos().getKey() + (pos * spacingWidth) + (pos)
-		);*/
-
-		return null;
-	}
-
-	/*
 		width: 100
 		height: width/2
 
@@ -151,19 +162,19 @@ public class MatchResultCanvas
 		double canvasWidth = canvas.getWidth( );
 		double canvasHeight = canvas.getHeight( );
 
-		double dWidthNormal = ( calculateNodeCount( teamCount ) * RECT_PERF_WIDTH ) + ( calculateNodeCount( teamCount ) * RECT_PERF_SPACING_WIDTH );
-		double dHeightNormal = ( teamCount * RECT_PERF_HEIGHT ) + ( teamCount * RECT_PERF_SPACING_HEIGHT );
+		double dWidthNormal = ( calculateNodeCount( teamCount ) * RECT_PREF_WIDTH ) + ( calculateNodeCount( teamCount ) * RECT_PREF_SPACING_WIDTH );
+		double dHeightNormal = ( teamCount * RECT_PREF_HEIGHT ) + ( teamCount * RECT_PREF_SPACING_HEIGHT );
 
 		double dScaleWidth = canvasWidth / dWidthNormal;
 		double dScaleHeight = canvasHeight / dHeightNormal;
 
 		rectSize = new Pair<>(
-				RECT_PERF_WIDTH * dScaleWidth,
-				RECT_PERF_HEIGHT * dScaleHeight
+				RECT_PREF_WIDTH * dScaleWidth,
+				RECT_PREF_HEIGHT * dScaleHeight
 		);
 
-		spacingWidth = RECT_PERF_SPACING_WIDTH * dScaleWidth;
-		spacingHeight = RECT_PERF_SPACING_HEIGHT * dScaleHeight;
+		spacingWidth = RECT_PREF_SPACING_WIDTH * dScaleWidth;
+		spacingHeight = RECT_PREF_SPACING_HEIGHT * dScaleHeight;
 
 
 		double dWidthPos = ( canvasWidth - dWidthNormal ) / 2.0;
@@ -216,20 +227,3 @@ public class MatchResultCanvas
 		return teamCount;
 	}
 }
-
-	/*int teamCount = teamList.size( );
-
-		//Stream<Match> sorted = matchList.stream().filter( m -> m.getId() <= teamCount );
-
-		double dX = getRenderStartPos( ).getKey( );
-		double dY = getRenderStartPos( ).getValue( );
-		double rectWidth = rectSize.getKey( );
-		double rectHeight = rectSize.getValue( );
-
-		for( int i = 0; i < teamCount; i++ )
-		{
-			gc.setStroke( Color.GREEN );
-			gc.strokeRect( dX, dY, rectWidth, rectHeight );
-
-			dY += rectHeight + spacingHeight;
-		}*/
