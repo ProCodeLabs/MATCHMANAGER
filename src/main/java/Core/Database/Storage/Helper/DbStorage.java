@@ -2,7 +2,6 @@ package Core.Database.Storage.Helper;
 
 import Common.GlobalInstance;
 import Common.LambdaExt.ReflectFunction;
-import Common.LambdaExt.ThrowableParamFunction;
 import Common.Util;
 import Common.UtilLogger.ILogger;
 import Common.UtilLogger.LoggerFactory;
@@ -24,7 +23,7 @@ public abstract class DbStorage
 	private SqlJetDb db;
 
 	//> database sync bug in transaction?
-	private static final ReentrantLock lock = new ReentrantLock();
+	private static final ReentrantLock lock = new ReentrantLock( );
 
 	public DbStorage( SqlJetDb db )
 	{
@@ -54,7 +53,7 @@ public abstract class DbStorage
 		onSetupTable( );
 	}
 
-	protected void fetchRows( String indexName, ThrowableParamFunction<ISqlJetCursor> callback ) throws SqlJetException
+	protected void fetchRows( String indexName, ThrowableParamFunction<ISqlJetCursor> callback )
 	{
 		transactionCommit( SqlJetTransactionMode.READ_ONLY, ( ) -> {
 			ISqlJetCursor cursor = getTable( ).order( indexName );
@@ -70,6 +69,17 @@ public abstract class DbStorage
 			return null;
 		} );
 	}
+
+	protected void fetchRowEx( ThrowableResultFunction<ISqlJetCursor, Boolean> comp, ThrowableParamFunction<ISqlJetCursor> updateFunction )
+	{
+		fetchRows( reflectException( ( ) -> getTable( ).getPrimaryKeyIndexName( ) ), c -> {
+			if( comp.apply( c ) )
+			{
+				updateFunction.apply( c );
+			}
+		} );
+	}
+
 
 	public boolean tableExists( )
 	{
@@ -99,7 +109,7 @@ public abstract class DbStorage
 	protected <T> T transactionCommit( SqlJetTransactionMode mode, ReflectFunction<T> f )
 	{
 		return reflectException( ( ) -> {
-			lock.lock();
+			lock.lock( );
 			getDb( ).beginTransaction( mode );
 			try
 			{
@@ -108,10 +118,34 @@ public abstract class DbStorage
 			finally
 			{
 				getDb( ).commit( );
-				lock.unlock();
+				lock.unlock( );
 			}
 		} );
 	}
+
+	protected void getCursorById( long id, ThrowableParamFunction<ISqlJetCursor> cursorFunction )
+	{
+		getCursorEx( reflectException( ( ) -> getTable( ).getPrimaryKeyIndexName( ) ), new Object[]{ id }, cursorFunction );
+	}
+
+	protected void getCursorEx( String indexName, Object[] firstKey, ThrowableParamFunction<ISqlJetCursor> cursorFunction )
+	{
+		transactionCommit( SqlJetTransactionMode.WRITE, ( ) -> {
+			ISqlJetCursor cursor = getTable( ).scope( indexName, firstKey, null );
+
+			if( !cursor.eof( ) )
+			{
+				cursorFunction.apply( cursor );
+			}
+			else
+			{
+				throw new SqlJetException( getTableName() + " Cannot scope cursor: " + indexName + firstKey.toString( ) );
+			}
+
+			return null;
+		} );
+	}
+
 
 	public boolean isTableEmpty( )
 	{

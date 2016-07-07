@@ -30,7 +30,7 @@ public interface IStorageImpl
 
 	CompletableFuture<Void> removeTeam( String teamName );
 
-	CompletableFuture<Void> updateTeam( String teamName, Team team );
+	CompletableFuture<Void> updateTeam( String teamName, Team newTeam );
 
 	CompletableFuture<List<Team>> getAllTeams();
 

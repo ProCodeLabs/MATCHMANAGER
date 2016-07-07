@@ -27,9 +27,7 @@ public class DeleteDatabaseDialog extends UiDialog<Void>
 		setContent( RESOURCE_ID );
 		databaseNameLabel.setText(String.format( "Are you sure that you want to Delete\n%s ?",databaseName ));
 
-		addButtonEventHandler( ButtonType.YES, e -> {
-			resultCallback.apply(null);
-		} );
+		addButtonEventHandler( ButtonType.YES, e -> resultCallback.apply(null) );
 
 	}
 

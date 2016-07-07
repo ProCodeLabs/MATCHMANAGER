@@ -21,7 +21,6 @@ import ui.Dialog.ModalEx.UiAlert;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class TeamSetupController implements Initializable
 {
@@ -80,10 +79,7 @@ public class TeamSetupController implements Initializable
 									);
 									return null;
 								} )
-								.exceptionally( e -> {
-									showDatabaseExceptionDlg( e );
-									return null;
-								} );
+								.exceptionally( TeamSetupController::showDatabaseExceptionDlg );
 
 					}
 				} );
@@ -126,6 +122,7 @@ public class TeamSetupController implements Initializable
 
 		AddTeamDialog dlg = new AddTeamDialog( teamName );
 		{
+			Platform.runLater( ( ) -> teamListView.getSelectionModel( ).clearSelection( ) );
 			dlg.setResultCallback( r -> manager.updateTeam( teamName, new Team( r ) )
 					.thenApply( t -> {
 						Platform.runLater( ( ) -> teamList.remove( teamName ) );
@@ -146,19 +143,31 @@ public class TeamSetupController implements Initializable
 
 		String teamName = getSelectedTeamName( );
 
-		DeleteTeamDialog dlg = new DeleteTeamDialog( teamName );
-		{
-			dlg.setResultCallback( result -> {
+		manager.getMatchCount( ).thenApply( r -> {
+			if( r > 0 )
+			{
+				Platform.runLater( ( ) -> setInfoText( "You cannot remove a team while a match is running!" ) );
+			}
+			else
+			{
+				Platform.runLater( ( ) -> {
+					DeleteTeamDialog dlg = new DeleteTeamDialog( teamName );
+					{
+						Platform.runLater( ( ) -> teamListView.getSelectionModel( ).clearSelection( ) );
 
-				manager.removeTeam( teamName )
-						.thenApply( r -> {
-							Platform.runLater( ( ) -> teamList.remove( teamName ) );
-							return null;
-						} ).exceptionally( e -> showDatabaseExceptionDlg( e ) );
-				return;
-			} );
-		}
-		dlg.showDialog();
+						dlg.setResultCallback( result -> manager.removeTeam( teamName )
+								.thenApply( res -> {
+									Platform.runLater( ( ) -> teamList.remove( teamName ) );
+									return null;
+								} )
+								.exceptionally( TeamSetupController::showDatabaseExceptionDlg )
+						);
+					}
+					dlg.showDialog( );
+				} );
+			}
+			return null;
+		} );
 	}
 
 	@FXML
@@ -179,10 +188,7 @@ public class TeamSetupController implements Initializable
 						Platform.runLater( ( ) -> playerList.add( r ) );
 						return null;
 					} )
-					.exceptionally( e -> {
-						Platform.runLater( ( ) -> showDatabaseExceptionDlg( e ) );
-						return null;
-					} )
+					.exceptionally( TeamSetupController::showDatabaseExceptionDlg )
 			);
 		}
 		dlg.showDialog( );
@@ -197,10 +203,22 @@ public class TeamSetupController implements Initializable
 		}
 		else
 		{
-			AddPlayerDialog dlg = new AddPlayerDialog( getSelectedPlayerItem( ) );
+			Player selectedPlayer = getSelectedPlayerItem( );
+
+			AddPlayerDialog dlg = new AddPlayerDialog( selectedPlayer );
 			{
-				dlg.showDialog( );
+				dlg.setResultCallback( player -> manager.updatePlayer( selectedPlayer.getId( ), player )
+						.thenApply( r -> {
+							Platform.runLater( ( ) -> {
+								playerList.remove( selectedPlayer );
+								playerList.add( player );
+							} );
+							return null;
+						} )
+						.exceptionally( TeamSetupController::showDatabaseExceptionDlg )
+				);
 			}
+			dlg.showDialog( );
 		}
 	}
 
@@ -215,13 +233,16 @@ public class TeamSetupController implements Initializable
 		{
 			long currentPlayerID = getSelectedPlayerItem( ).getId( );
 			Player pl = getSelectedPlayerItem( );
+
 			DeletePlayerDialog dlg = new DeletePlayerDialog( getSelectedPlayerItem( ).getFullName( ) );
 			{
-				dlg.setResultCallback( result -> {
-					Platform.runLater( ( ) -> manager.removePlayer( currentPlayerID ) );
-					Platform.runLater( ( ) -> playerList.remove( pl ) );
-					return;
-				} );
+				dlg.setResultCallback( result -> manager.removePlayer( currentPlayerID )
+						.thenApply( r -> {
+							Platform.runLater( ( ) -> playerList.remove( pl ) );
+							return null;
+						} )
+						.exceptionally( TeamSetupController::showDatabaseExceptionDlg )
+				);
 			}
 			dlg.showDialog( );
 		}
@@ -230,16 +251,20 @@ public class TeamSetupController implements Initializable
 	@FXML
 	public void onApplyButtonClick( )
 	{
-		AtomicInteger count = new AtomicInteger( );
+		manager.getAllTeams( ).thenApply( r -> {
+			if( r.size( ) >= 2 )
+			{
+				Platform.runLater( ( ) -> ResultViewController.updateContainerStage( ( UiBaseContainer ) labelInfo.getScene( )
+						.getRoot( ), manager )
+				);
+			}
+			else
+			{
+				Platform.runLater( ( ) -> setInfoText( "You have to add at least TWO teams!" ) );
+			}
 
-		teamList.forEach( e -> count.incrementAndGet( ) );
-
-		if( count.get( ) > 1 )
-		{
-			ResultViewController.updateContainerStage( ( UiBaseContainer ) labelInfo.getScene( ).getRoot( ), manager );
-		} else {
-			setInfoText( "You have to add at least TWO teams!" );
-		}
+			return null;
+		} );
 	}
 
 
@@ -289,16 +314,17 @@ public class TeamSetupController implements Initializable
 		return true;
 	}
 
-	private static boolean showDatabaseExceptionDlg( Throwable e )
+	private static Void showDatabaseExceptionDlg( Throwable e )
 	{
-		UiAlert msgBox = new UiAlert( Alert.AlertType.ERROR );
-		{
-			msgBox.setHeaderText( "Database Exception" );
-			msgBox.setContentText( e.getMessage( ) );
-		}
+		Platform.runLater( ( ) -> {
+			UiAlert msgBox = new UiAlert( Alert.AlertType.ERROR );
+			{
+				msgBox.setHeaderText( "Database Exception" );
+				msgBox.setContentText( e.getMessage( ) );
+			}
+			msgBox.showAndWait( );
+		} );
 
-		msgBox.showAndWait( );
-
-		return true;
+		return null;
 	}
 }

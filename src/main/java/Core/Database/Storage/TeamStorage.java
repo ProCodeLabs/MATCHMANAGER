@@ -17,6 +17,7 @@ import java.util.concurrent.CompletionException;
 
 public class TeamStorage extends DbStorage
 {
+	private static final String NAME_INDEX = "name_index";
 	private final ILogger logger = LoggerFactory.createLogger( getClass( ) );
 
 	private ISqlJetIndexDef nameIndex;
@@ -43,7 +44,7 @@ public class TeamStorage extends DbStorage
 	public Team getTeam( String teamName ) throws CompletionException
 	{
 		return transactionCommit( SqlJetTransactionMode.READ_ONLY, ( ) -> {
-			ISqlJetCursor cursor = getTable( ).lookup( "name_index", teamName );
+			ISqlJetCursor cursor = getTable( ).lookup( NAME_INDEX, teamName );
 
 			if( cursor.eof( ) )
 			{
@@ -74,12 +75,13 @@ public class TeamStorage extends DbStorage
 
 	public Void removeTeam( String teamName )
 	{
-
+		getCursorEx( NAME_INDEX, new Object[]{ teamName }, c -> c.delete( ) );
 		return null;
 	}
 
-	public Void updateTeam( Team targetTeam, Team newTeam )
+	public Void updateTeam( String teamName, Team newTeam )
 	{
+		getCursorEx( NAME_INDEX, new Object[]{ teamName }, c -> c.update( c.getRowId( ), newTeam.getTeamName( ) ) );
 		return null;
 	}
 
@@ -88,7 +90,7 @@ public class TeamStorage extends DbStorage
 		return reflectException( ( ) -> {
 			ArrayList<Team> teamList = new ArrayList<>( );
 			{
-				fetchRows( getTable().getPrimaryKeyIndexName(), c -> teamList.add( serializeTeam( c ) ) );
+				fetchRows( getTable( ).getPrimaryKeyIndexName( ), c -> teamList.add( serializeTeam( c ) ) );
 			}
 			return teamList;
 

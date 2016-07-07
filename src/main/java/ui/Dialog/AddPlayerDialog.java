@@ -5,11 +5,11 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 import ui.Dialog.Helper.UiDialog;
+import ui.Helper.UiHelper;
 
 public class AddPlayerDialog extends UiDialog<Player>
 {
 	public static final String RESOURCE_ID = "fxml/dialogs/addPlayerDialog.fxml";
-	private static final String CSS_ERROR_CLS = "textfield-error";
 
 
 	@FXML
@@ -38,10 +38,8 @@ public class AddPlayerDialog extends UiDialog<Player>
 	{
 		setContent( RESOURCE_ID );
 
-
 		if( player != null )
 		{
-
 			forenameText.setText( player.getForename( ) );
 			surnameText.setText( player.getSurname( ) );
 
@@ -52,28 +50,27 @@ public class AddPlayerDialog extends UiDialog<Player>
 			setDialogTitle( "ADD PLAYER( " + teamName + " )" );
 		}
 
+		UiHelper.attachInvalidTextHandler( forenameText );
+		UiHelper.attachInvalidTextHandler( surnameText );
+
+
 		addButtonEventHandler( ButtonType.OK, e -> {
-
-
-			if( forenameText.getText( ).equals( "" ) || surnameText.getText( ).equals( "" ) )
+			if( forenameText.getText( ).isEmpty( ) )
 			{
-				if( forenameText.getText( ).isEmpty( ) )
-				{
-					forenameText.getStyleClass( ).add( CSS_ERROR_CLS );
-					e.consume( );
-				}
-
-				if( surnameText.getText( ).isEmpty( ) )
-				{
-					surnameText.getStyleClass( ).add( CSS_ERROR_CLS );
-					e.consume( );
-				}
-			} else {
+				UiHelper.addInvalidTextClass( forenameText );
+				e.consume( );
+			}
+			else if( surnameText.getText( ).isEmpty( ) )
+			{
+				UiHelper.addInvalidTextClass( surnameText );
+				e.consume( );
+			}
+			else
+			{
 				resultCallback.apply(
 						new Player( forenameText.getText( ), surnameText.getText( ) )
 				);
 			}
-
 		} );
 
 	}

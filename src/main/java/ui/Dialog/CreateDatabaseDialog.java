@@ -8,12 +8,12 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 import ui.Dialog.Helper.UiDialog;
 import ui.Dialog.ModalEx.UiAlert;
+import ui.Helper.UiHelper;
 
 
 public class CreateDatabaseDialog extends UiDialog<String>
 {
 	public static final String RESOURCE_ID = "fxml/dialogs/createDatabaseDialog.fxml";
-	private static final String CSS_ERROR_CLS = "textfield-error";
 
 
 	@FXML
@@ -25,19 +25,15 @@ public class CreateDatabaseDialog extends UiDialog<String>
 	{
 		setContent( RESOURCE_ID );
 
-		databaseName.textProperty().addListener( e -> {
-			if( databaseName.getStyleClass( ).contains( CSS_ERROR_CLS ) )
-			{
-				databaseName.getStyleClass( ).remove( CSS_ERROR_CLS );
-			}
-		} );
+		UiHelper.attachInvalidTextHandler( databaseName );
+
 
 		addButtonEventHandler( ButtonType.OK, e -> {
 			String name = databaseName.getText( );
 
-			if( databaseName.getText( ).length( ) <= 0 )
+			if( databaseName.getText( ).isEmpty() )
 			{
-				databaseName.getStyleClass( ).add( CSS_ERROR_CLS );
+				UiHelper.addInvalidTextClass( databaseName );
 				e.consume( );
 				return;
 			}
@@ -67,6 +63,9 @@ public class CreateDatabaseDialog extends UiDialog<String>
 	}
 
 	@Override
-	protected Object getThisPtr( ) { return this; }
+	protected Object getThisPtr( )
+	{
+		return this;
+	}
 
 }

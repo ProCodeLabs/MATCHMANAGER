@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
+import java.util.concurrent.ExecutionException;
 
 import static java.util.concurrent.CompletableFuture.supplyAsync;
 
@@ -89,7 +90,7 @@ public class MatchManager implements IStorageImpl
 	@Override
 	public CompletableFuture<Void> updatePlayer( long id, Player newPlayer )
 	{
-		return getPlayer( id ).thenApply( r -> playerStorage.updatePlayer( r, newPlayer ) );
+		return supplyAsync( ( ) -> playerStorage.updatePlayer( id, newPlayer ) );
 	}
 
 	@Override
@@ -148,13 +149,27 @@ public class MatchManager implements IStorageImpl
 	@Override
 	public CompletableFuture<Void> removeTeam( String teamName )
 	{
-		return supplyAsync( ( ) -> teamStorage.removeTeam( teamName ) );
+		return getAllTeamPlayers( teamName ).thenApply( players -> {
+			for( Player i : players )
+			{
+				try
+				{
+					removePlayer( i.getId( ) ).get( );
+				}
+				catch( InterruptedException | ExecutionException e )
+				{
+					throw new CompletionException( e );
+				}
+			}
+
+			return null;
+		} ).thenApply( r -> teamStorage.removeTeam( teamName ) );
 	}
 
 	@Override
-	public CompletableFuture<Void> updateTeam( String teamName, Team team )
+	public CompletableFuture<Void> updateTeam( String teamName, Team newTeam )
 	{
-		return getTeamExc( teamName ).thenApply( r -> teamStorage.updateTeam( r, team ) );
+		return supplyAsync( ( ) -> teamStorage.updateTeam( teamName, newTeam ) );
 	}
 
 	@Override
@@ -245,11 +260,6 @@ public class MatchManager implements IStorageImpl
 		assert teamCount >= 0;
 
 		return teamCount == 0 ? 0 : ( teamCount - 1 );
-	}
-
-	public static int calculateRowDisplayCount( int teamCount )
-	{
-		return calculateMatchCount( teamCount );
 	}
 
 

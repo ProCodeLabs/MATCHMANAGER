@@ -56,7 +56,7 @@ public class ResultViewController
 	private ObservableList<Team> teamListA = FXCollections.observableArrayList( );
 	private ObservableList<Team> teamlistB = FXCollections.observableArrayList( );
 
-	private int numberOfGames=0;
+	private int numberOfGames = 0;
 
 	private MatchManager manager;
 
@@ -88,11 +88,6 @@ public class ResultViewController
 		selectTeamB.setItems( teamlistB );
 
 
-
-
-		//
-		//
-
 		manager.getAllTeams( ).thenApply( l -> {
 			l.forEach( i -> Platform.runLater( ( ) -> {
 				numberOfGames++;
@@ -101,7 +96,6 @@ public class ResultViewController
 			} ) );
 			return null;
 		} );
-
 
 
 		registerTeamSelector( selectTeamA, teamMemberViewA );
@@ -139,13 +133,14 @@ public class ResultViewController
 	}
 
 
-	public void onShowStatsButtonClicked()
-	{
-		Platform.runLater( ( ) -> matchResultView.showWindow( ) );
-	}
-	public void onShowTreeButtonClicked()
+	public void onShowStatsButtonClicked( )
 	{
 		Platform.runLater( ( ) -> matchStatStage.showWindow( ) );
+	}
+
+	public void onShowTreeButtonClicked( )
+	{
+		//Platform.runLater( ( ) -> matchResultView.showWindow( ) );
 	}
 
 	private void registerTeamSelector( ComboBox<Team> select, ListView<Player> view )
@@ -257,7 +252,7 @@ public class ResultViewController
 								setTournamentFinish( );
 							}
 
-							container.setTitle( CONTAINER_TITLE + " (" + count + "/" + (numberOfGames-1) + ")" );
+							container.setTitle( CONTAINER_TITLE + " (" + count + "/" + ( numberOfGames - 1 ) + ")" );
 						} )
 				);
 			} );

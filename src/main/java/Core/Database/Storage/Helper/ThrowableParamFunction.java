@@ -1,4 +1,4 @@
-package Common.LambdaExt;
+package Core.Database.Storage.Helper;
 
 import org.tmatesoft.sqljet.core.SqlJetException;
 

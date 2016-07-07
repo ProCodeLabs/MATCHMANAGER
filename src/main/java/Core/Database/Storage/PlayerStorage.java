@@ -52,12 +52,13 @@ public class PlayerStorage extends DbStorage
 
 	public Void removePlayer( long id )
 	{
-
+		getCursorById( id, c -> c.delete( ) );
 		return null;
 	}
 
-	public Void updatePlayer( Player player, Player newPlayer )
+	public Void updatePlayer( long id, Player newPlayer )
 	{
+		getCursorById( id, c -> c.update( c.getRowId( ), c.getInteger( 1 ), newPlayer.getForename( ), newPlayer.getSurname( ) ) );
 		return null;
 	}
 

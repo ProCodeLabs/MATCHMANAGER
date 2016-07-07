@@ -15,14 +15,17 @@
         <HBox>
             <children>
                 <Button mnemonicParsing="false" onAction="#onCloseDatabaseButtonClick" text="CLOSE DATABASE" />
-            <Button fx:id="showTree" mnemonicParsing="false" onAction="#onShowStatsButtonClicked" text="SHOW TREE">
+
+            <Button fx:id="showStats" mnemonicParsing="false" onAction="#onShowStatsButtonClicked" text="SHOW STATS">
                <HBox.margin>
-                  <Insets left="5.0" right="5.0" />
-               </HBox.margin></Button>
-            <Button fx:id="showStats" mnemonicParsing="false" onAction="#onShowTreeButtonClicked" text="SHOW STATS">
-               <HBox.margin>
-                  <Insets right="5.0" />
-               </HBox.margin></Button>
+                  <Insets left="5.0" />
+               </HBox.margin>
+            </Button>
+                <Button fx:id="showTree" mnemonicParsing="false" onAction="#onShowTreeButtonClicked" text="SHOW TREE" visible="false">
+                    <HBox.margin>
+                        <Insets right="5.0" />
+                    </HBox.margin>
+                </Button>
                 <Region HBox.hgrow="ALWAYS" />
                 <Button mnemonicParsing="false" onAction="#onEditTeamsButtonClick" text="EDIT TEAMS" />
             </children>
@@ -113,7 +116,7 @@
         </HBox>
         <HBox>
             <children>
-                <Button fx:id="buttonLeft" disable="true" mnemonicParsing="false" onAction="#onButtonLeftClick" prefWidth="100.0" text="LAST" />
+                <Button fx:id="buttonLeft" disable="true" mnemonicParsing="false" onAction="#onButtonLeftClick" prefWidth="100.0" text="LAST" visible="false"/>
                 <Region HBox.hgrow="ALWAYS" />
                 <Button fx:id="buttonNext" disable="true" mnemonicParsing="false" onAction="#onButtonNextClick" prefWidth="100.0" text="NEXT">
                     <HBox.margin>

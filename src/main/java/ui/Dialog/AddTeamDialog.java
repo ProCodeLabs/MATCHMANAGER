@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 import ui.Dialog.Helper.UiDialog;
+import ui.Helper.UiHelper;
 
 public class AddTeamDialog extends UiDialog<String>
 {
@@ -14,7 +15,6 @@ public class AddTeamDialog extends UiDialog<String>
 	public TextField teamNameField;
 
 	private String teamName;
-
 
 
 	public AddTeamDialog( )
@@ -37,16 +37,18 @@ public class AddTeamDialog extends UiDialog<String>
 			setDialogTitle( "EDIT TEAM" );
 		}
 
+		UiHelper.attachInvalidTextHandler( teamNameField );
+
 		addButtonEventHandler( ButtonType.OK, e -> {
-			if( teamNameField.getText( ).isEmpty() )
+			if( teamNameField.getText( ).isEmpty( ) )
 			{
-				teamNameField.getStyleClass( ).add( CSS_ERROR_CLS );
+				UiHelper.addInvalidTextClass( teamNameField );
 				e.consume( );
-				return;
-			} else {
+			}
+			else
+			{
 				resultCallback.apply( teamNameField.getText( ) );
 			}
-
 		} );
 	}
 

@@ -10,26 +10,24 @@ public class DeleteTeamDialog extends UiDialog<Void>
 {
 	public static final String RESOURCE_ID = "fxml/dialogs/deleteTeamDialog.fxml";
 
-	private String teamrname;
+	private String teamName;
 
 	@FXML
 	Label teamNameLabel;
 
 
-	public DeleteTeamDialog( String teamname )
+	public DeleteTeamDialog( String teamName )
 	{
-		this.teamrname = teamname;
+		this.teamName = teamName;
 	}
 
 	@Override
 	protected void onPrepareDialog( )
 	{
 		setContent( RESOURCE_ID );
-		teamNameLabel.setText(String.format( "Are you sure that you want to Delete\n%s ?",teamrname ));
+		teamNameLabel.setText( String.format( "Are you sure that you want to Delete\n%s ?", teamName ) );
 
-		addButtonEventHandler( ButtonType.YES, e -> {
-			resultCallback.apply(null);
-		} );
+		addButtonEventHandler( ButtonType.YES, e -> resultCallback.apply( null ) );
 
 	}
 

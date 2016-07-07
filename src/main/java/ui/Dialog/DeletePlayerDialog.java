@@ -10,26 +10,24 @@ public class DeletePlayerDialog extends UiDialog<Void>
 {
 	public static final String RESOURCE_ID = "fxml/dialogs/deletePlayerDialog.fxml";
 
-	private String playername;
+	private String playerName;
 
 	@FXML
 	Label playerNameLabel;
 
 
-	public DeletePlayerDialog( String playername )
+	public DeletePlayerDialog( String playerName )
 	{
-		this.playername = playername;
+		this.playerName = playerName;
 	}
 
 	@Override
 	protected void onPrepareDialog( )
 	{
 		setContent( RESOURCE_ID );
-		playerNameLabel.setText(String.format( "Are you sure that you want to Delete\n%s ?",playername ));
+		playerNameLabel.setText( String.format( "Are you sure that you want to Delete\n%s ?", playerName ) );
 
-		addButtonEventHandler( ButtonType.YES, e -> {
-			resultCallback.apply(null);
-		} );
+		addButtonEventHandler( ButtonType.YES, e -> resultCallback.apply( null ) );
 
 	}
 

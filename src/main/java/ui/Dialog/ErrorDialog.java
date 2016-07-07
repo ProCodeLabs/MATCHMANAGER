@@ -10,7 +10,7 @@ public class ErrorDialog extends UiDialog<Void>
 {
 	public static final String RESOURCE_ID = "fxml/dialogs/errorDialog.fxml";
 
-	private String errormsg;
+	private String errorMsg;
 
 	@FXML
 	Label errorLabel;
@@ -18,18 +18,16 @@ public class ErrorDialog extends UiDialog<Void>
 
 	public ErrorDialog( String error )
 	{
-		this.errormsg = error;
+		this.errorMsg = error;
 	}
 
 	@Override
 	protected void onPrepareDialog( )
 	{
 		setContent( RESOURCE_ID );
-		errorLabel.setText(errormsg);
+		errorLabel.setText( errorMsg );
 
-		addButtonEventHandler( ButtonType.CLOSE, e -> {
-			resultCallback.apply(null);
-		} );
+		addButtonEventHandler( ButtonType.CLOSE, e -> resultCallback.apply( null ) );
 
 	}
 
