@@ -10,16 +10,16 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import ui.Container.UiBaseContainer;
 import ui.Dialog.AddPlayerDialog;
 import ui.Dialog.AddTeamDialog;
+import ui.Dialog.DeletePlayerDialog;
+import ui.Dialog.DeleteTeamDialog;
 import ui.Dialog.ModalEx.UiAlert;
 
 import java.net.URL;
-import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -59,6 +59,8 @@ public class TeamSetupController implements Initializable
 	@Override
 	public void initialize( URL location, ResourceBundle resources )
 	{
+		FXCollections.sort( teamList );
+
 		teamListView.setItems( teamList );
 		playerListView.setItems( playerList );
 
@@ -126,8 +128,8 @@ public class TeamSetupController implements Initializable
 		{
 			dlg.setResultCallback( r -> manager.updateTeam( teamName, new Team( r ) )
 					.thenApply( t -> {
-						teamList.remove( teamName );
-						teamList.add( r );
+						Platform.runLater( ( ) -> teamList.remove( teamName ) );
+						Platform.runLater( ( ) -> teamList.add( r ) );
 						return null;
 					} ) );
 		}
@@ -144,20 +146,19 @@ public class TeamSetupController implements Initializable
 
 		String teamName = getSelectedTeamName( );
 
-		UiAlert alert = new UiAlert( Alert.AlertType.CONFIRMATION );
+		DeleteTeamDialog dlg = new DeleteTeamDialog( teamName );
 		{
-			alert.setTitle( "Delete" );
-			alert.setHeaderText( "Delete" );
-			alert.setContentText( "Are you sure you want to delete " + getSelectedTeamName( ) + "? (This cannot be undone!)" );
-		}
+			dlg.setResultCallback( result -> {
 
-		Optional<ButtonType> result = alert.showAndWait( );
-		if( result.get( ) == ButtonType.OK )
-		{
-			manager.removeTeam( teamName )
-					.thenApply( r -> teamList.remove( teamName ) )
-					.exceptionally( e -> showDatabaseExceptionDlg( e ) );
+				manager.removeTeam( teamName )
+						.thenApply( r -> {
+							Platform.runLater( ( ) -> teamList.remove( teamName ) );
+							return null;
+						} ).exceptionally( e -> showDatabaseExceptionDlg( e ) );
+				return;
+			} );
 		}
+		dlg.showDialog();
 	}
 
 	@FXML
@@ -212,7 +213,17 @@ public class TeamSetupController implements Initializable
 		}
 		else
 		{
-
+			long currentPlayerID = getSelectedPlayerItem( ).getId( );
+			Player pl = getSelectedPlayerItem( );
+			DeletePlayerDialog dlg = new DeletePlayerDialog( getSelectedPlayerItem( ).getFullName( ) );
+			{
+				dlg.setResultCallback( result -> {
+					Platform.runLater( ( ) -> manager.removePlayer( currentPlayerID ) );
+					Platform.runLater( ( ) -> playerList.remove( pl ) );
+					return;
+				} );
+			}
+			dlg.showDialog( );
 		}
 	}
 
@@ -226,6 +237,8 @@ public class TeamSetupController implements Initializable
 		if( count.get( ) > 1 )
 		{
 			ResultViewController.updateContainerStage( ( UiBaseContainer ) labelInfo.getScene( ).getRoot( ), manager );
+		} else {
+			setInfoText( "You have to add at least TWO teams!" );
 		}
 	}
 

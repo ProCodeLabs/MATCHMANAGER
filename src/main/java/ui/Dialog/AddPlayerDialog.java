@@ -9,6 +9,8 @@ import ui.Dialog.Helper.UiDialog;
 public class AddPlayerDialog extends UiDialog<Player>
 {
 	public static final String RESOURCE_ID = "fxml/dialogs/addPlayerDialog.fxml";
+	private static final String CSS_ERROR_CLS = "textfield-error";
+
 
 	@FXML
 	public TextField forenameText;
@@ -39,6 +41,7 @@ public class AddPlayerDialog extends UiDialog<Player>
 
 		if( player != null )
 		{
+
 			forenameText.setText( player.getForename( ) );
 			surnameText.setText( player.getSurname( ) );
 
@@ -50,19 +53,27 @@ public class AddPlayerDialog extends UiDialog<Player>
 		}
 
 		addButtonEventHandler( ButtonType.OK, e -> {
-			if( forenameText.getText( ).isEmpty( ) )
+
+
+			if( forenameText.getText( ).equals( "" ) || surnameText.getText( ).equals( "" ) )
 			{
-				e.consume( );
+				if( forenameText.getText( ).isEmpty( ) )
+				{
+					forenameText.getStyleClass( ).add( CSS_ERROR_CLS );
+					e.consume( );
+				}
+
+				if( surnameText.getText( ).isEmpty( ) )
+				{
+					surnameText.getStyleClass( ).add( CSS_ERROR_CLS );
+					e.consume( );
+				}
+			} else {
+				resultCallback.apply(
+						new Player( forenameText.getText( ), surnameText.getText( ) )
+				);
 			}
 
-			if( surnameText.getText( ).isEmpty( ) )
-			{
-				e.consume( );
-			}
-
-			resultCallback.apply(
-					new Player( forenameText.getText( ), surnameText.getText( ) )
-			);
 		} );
 
 	}

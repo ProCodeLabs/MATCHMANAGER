@@ -7,6 +7,9 @@
  *                                                                             *
  ******************************************************************************/
 
+Parent {
+    -fx-text-fill: white;
+}
 
 .root {
     -fx-background-color: #2e2e2e;
@@ -78,7 +81,11 @@ Button:pressed {
  * ChoiceBox                                                                   *
  *                                                                             *
  ******************************************************************************/
-ChoiceBox {
+
+
+
+.combo-box .list-cell
+{
     -fx-background-radius: 0.166667em;
     -fx-border-radius: 0.166667em;
     -fx-border-style: solid;
@@ -87,35 +94,127 @@ ChoiceBox {
     -fx-text-fill: white;
 }
 
-ChoiceBox .context-menu {
+.combo-box-popup .list-view
+{
+    -fx-background-color: #353535;
+    -fx-border-radius: 0;
+    -fx-border-style: none;
+    -fx-background-radius: 0;
+}
+
+.combo-box-popup .list-view .list-cell
+{
+    -fx-padding: 4 0 4 5;
+
+    /* No alternate highlighting */
+    -fx-background-color: #353535;
+    -fx-border-radius: 0;
+    -fx-border-style: none;
+    -fx-background-radius: 0;
+}
+
+.combo-box-popup .list-view .list-cell:filled:selected, .combo-box-popup .list-view .list-cell:filled:selected:hover
+{
+    -fx-background-color: #4078ed;
+    -fx-border-radius: 0;
+    -fx-border-style: none;
+    -fx-background-radius: 0;
+}
+
+.combo-box-popup .list-view .list-cell:filled:hover
+{
+    -fx-background-color: #4078ed;
+    -fx-border-radius: 0;
+    -fx-border-style: none;
+    -fx-background-radius: 0;
+}
+
+.combo-box-base
+{
+    -fx-background-color: #353535;
+    -fx-border-radius: 0;
+    -fx-border-style: none;
+    -fx-background-radius: 0;
+}
+
+.combo-box-base:hover
+{
+    -fx-border-radius: 0;
+    -fx-border-style: none;
+    -fx-background-radius: 0;
+}
+
+.combo-box-base:showing
+{
+    -fx-border-radius: 0;
+    -fx-border-style: none;
+    -fx-background-radius: 0;
+}
+
+.combo-box-base:focused {
+    -fx-border-radius: 0;
+    -fx-border-style: none;
+    -fx-background-radius: 0;
+}
+
+.combo-box-base:disabled {
+    -fx-opacity: .4;
+}
+
+
+ComboBox {
+    -fx-background-radius: 0.166667em;
+    -fx-border-radius: 0.166667em;
+    -fx-border-style: solid;
+    -fx-border-color: white;
+    -fx-background-color: #353535;
+    -fx-text-fill: white;
+}
+
+.combo-box-base {
+    -fx-background-color: #353535;
+    -fx-text-fill: white;
+}
+
+Combobox .list-cell {
+    -fx-background-color: #353535;
+}
+
+.combo-box-popup > .list-view .text-field{
+    -fx-background-color: #353535;
+    -fx-text-fill: white;
+    -fx-fill: white;
+}
+
+ComboBox .context-menu {
     -fx-background-radius: 0;
     -fx-border-style: none;
     -fx-background-color: #353535;
     -fx-text-fill: white;
 }
 
-ChoiceBox .menu-item .label {
+ComboBox .menu-item .label {
     -fx-text-fill: white;
 
 }
 
-ChoiceBox .menu-item:focused {
+ComboBox .menu-item:focused {
     -fx-background-color: #4078ed;
 }
 
-ChoiceBox Label {
+ComboBox Label {
     -fx-text-fill: white;
 }
 
-ChoiceBox Label .context-menu {
+ComboBox Label .context-menu {
     -fx-text-fill: white;
 }
 
-ChoiceBox:hover {
+ComboBox:hover {
     -fx-background-color: #3d3e43;
 }
 
-ChoiceBox:pressed {
+ComboBox:pressed {
     -fx-background-color: #4078ed;
 }
 
@@ -275,4 +374,9 @@ TextField {
     -fx-background-insets: -1.4, 0, 1;
     -fx-background-radius: 1.4, 0, 0;
     -fx-padding: 1; /* 0.083333em; */
+}
+
+/**********************************************/
+.error {
+    -fx-background-image: url("images/sad_pepe_2.jpg");
 }

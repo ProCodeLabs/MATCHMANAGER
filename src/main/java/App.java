@@ -2,15 +2,15 @@ import Common.Constants;
 import Common.GlobalInstance;
 import Common.UtilLogger.ILogger;
 import Common.UtilLogger.LoggerFactory;
+import Core.Event.Manager.CoreEvent;
+import Core.Event.Manager.CoreEventDispatcher;
 import Core.Event.Manager.EventRegistrar;
 import javafx.application.Application;
-import javafx.scene.control.Alert;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import ui.Container.UiCoreWindow;
 import ui.Controller.SelectDatabaseController;
-import ui.Dialog.ModalEx.UiAlert;
 
 public class App extends Application
 {
@@ -43,6 +43,7 @@ public class App extends Application
 
 		try
 		{
+
 			if( Font.loadFont( GlobalInstance.getResourceUrl( Constants.PATH_FONT_RESOURCE ), 12 ) == null )
 			{
 				throw new Exception( "Failed to load font!" );
@@ -59,13 +60,8 @@ public class App extends Application
 		{
 			logger.info( "startup failed!" + ex );
 
-			UiAlert msgBox = new UiAlert( Alert.AlertType.ERROR );
-			{
-				msgBox.setHeaderText( "Startup failed! :( " );
-				msgBox.setContentText( ex.toString( ) );
-				msgBox.addStackTraceArea( ex );
-			}
-			msgBox.showAndWait( );
+			CoreEventDispatcher.fireEvent( CoreEvent.CORE_EXCEPTION, ex );
+
 		}
 	}
 }

@@ -6,32 +6,30 @@ import Common.UtilLogger.LoggerFactory;
 import Core.Event.Helper.IEventHandlerImpl;
 import Core.Event.Manager.CoreEvent;
 import Core.Event.Manager.CoreEventDispatcher;
-import javafx.application.Platform;
-import javafx.scene.control.Alert;
-import ui.Dialog.ModalEx.UiAlert;
+import ui.Dialog.ErrorDialog;
 
 public class CoreExceptionEvent implements IEventHandlerImpl
 {
 	private final ILogger logger = LoggerFactory.createLogger( getClass( ) );
 
 	@Override
-	public void onRegisterEvents(  )
+	public void onRegisterEvents( )
 	{
 		CoreEventDispatcher.addEventHandler( CoreEvent.CORE_EXCEPTION, e -> {
 			logger.critical( "Core error! " + e.getMessage( ) );
 
-			Platform.runLater( ( ) -> {
-				UiAlert msgBox = new UiAlert( Alert.AlertType.ERROR );
-				{
-					msgBox.setHeaderText( "something went wrong :( " );
-					msgBox.setContentText( e.getMessage( ) );
-					msgBox.addStackTraceArea( ( Exception ) e );
-				}
-				msgBox.showAndWait( );
+			ErrorDialog err = new ErrorDialog( e.getMessage( ) );
+			{
+				err.setResultCallback( result -> {
+					return;
+				} );
+			}
+			err.showDialog();
 
-				Platform.exit( );
-				System.exit( 0 );
-			} );
+			//Platform.runLater( ( ) -> {
+			//	Platform.exit( );
+			//	System.exit( 0 );
+			//} );
 		} );
 	}
 }
