@@ -6,6 +6,7 @@ import Core.Event.Manager.CoreEvent;
 import Core.Event.Manager.CoreEventDispatcher;
 import Core.Event.Manager.EventRegistrar;
 import javafx.application.Application;
+import javafx.scene.image.Image;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -34,12 +35,16 @@ public class App extends Application
 	@Override
 	public void start( final Stage primaryStage )
 	{
+
+
 		GlobalInstance.setPrimaryStage( primaryStage );
 		{
 			registrar.registerEvents( );
 		}
 		primaryStage.initStyle( StageStyle.UNDECORATED );
 		primaryStage.setTitle( APP_TITLE );
+
+		primaryStage.getIcons().add( new Image( App.class.getResourceAsStream( "images/mm_icon.png" )));
 
 		try
 		{
