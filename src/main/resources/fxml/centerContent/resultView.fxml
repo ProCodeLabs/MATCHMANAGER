@@ -16,7 +16,7 @@
             <children>
                 <Button mnemonicParsing="false" onAction="#onCloseDatabaseButtonClick" text="CLOSE DATABASE" />
 
-            <Button fx:id="showStats" mnemonicParsing="false" onAction="#onShowStatsButtonClicked" text="SHOW STATS">
+            <Button fx:id="showStats" mnemonicParsing="false" onAction="#onShowStatsButtonClicked" text="SHOW STATS" visible="false">
                <HBox.margin>
                   <Insets left="5.0" />
                </HBox.margin>

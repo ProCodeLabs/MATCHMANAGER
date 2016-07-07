@@ -19,6 +19,8 @@ import ui.StageCore.DialogStages.MatchResultView;
 import ui.StageCore.DialogStages.MatchStatStage;
 import ui.StageCore.Helper.UiStage;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 public class ResultViewController
 {
 	private static final String CONTAINER_TITLE = "RESULTVIEW";
@@ -48,15 +50,14 @@ public class ResultViewController
 	private Button buttonNext;
 
 	@FXML
-	Button showTree;
+	private Button showTree;
 
 	@FXML
-	Button showStats;
+	private Button showStats;
+
 
 	private ObservableList<Team> teamListA = FXCollections.observableArrayList( );
-	private ObservableList<Team> teamlistB = FXCollections.observableArrayList( );
-
-	private int numberOfGames = 0;
+	private ObservableList<Team> teamListB = FXCollections.observableArrayList( );
 
 	private MatchManager manager;
 
@@ -66,6 +67,7 @@ public class ResultViewController
 
 	private UiBaseContainer container;
 
+	private AtomicBoolean isMatchFinished = new AtomicBoolean( false );
 
 	public static void updateContainerStage( UiBaseContainer container, MatchManager manager )
 	{
@@ -85,12 +87,11 @@ public class ResultViewController
 		matchResultView = new MatchResultView( manager );
 
 		selectTeamA.setItems( teamListA );
-		selectTeamB.setItems( teamlistB );
+		selectTeamB.setItems( teamListB );
 
 
 		manager.getAllTeams( ).thenApply( l -> {
 			l.forEach( i -> Platform.runLater( ( ) -> {
-				numberOfGames++;
 				selectTeamA.getItems( ).add( i );
 				selectTeamB.getItems( ).add( i );
 			} ) );
@@ -106,15 +107,24 @@ public class ResultViewController
 			@Override
 			public void onChanged( Change<? extends Team> c )
 			{
-				//if( c.wasAdded( ) || c.wasRemoved( ) )
+				if( isMatchFinished.get( ) )
 				{
-					selectResultTeam.setDisable( selectResultTeam.getItems( ).size( ) < 2 );
+					return;
 				}
+
+				selectResultTeam.setDisable( selectResultTeam.getItems( ).size( ) < 2 );
 			}
 		} );
 
 		selectResultTeam.getSelectionModel( ).selectedItemProperty( ).addListener(
 				( ObservableValue<? extends Team> observable, Team oldValue, Team newValue ) -> {
+
+					if( isMatchFinished.get( ) )
+					{
+						return;
+					}
+
+
 					if( newValue != null )
 					{
 						buttonNext.setDisable( false );
@@ -129,13 +139,21 @@ public class ResultViewController
 		registerTeamChanger( selectTeamA, selectTeamB );
 		registerTeamChanger( selectTeamB, selectTeamA );
 
-		updateTitle( );
+		manager.getMatchCount( ).thenAcceptBoth( manager.getAllTeams( ), ( count, teams ) -> {
+			int max = MatchManager.calculateMatchCount( teams.size( ) );
+			if( count >= max )
+			{
+				isMatchFinished.set( true );
+			}
+
+			Platform.runLater( ( ) -> updateMatchCount( count, max ) );
+		} );
 	}
 
 
 	public void onShowStatsButtonClicked( )
 	{
-		Platform.runLater( ( ) -> matchStatStage.showWindow( ) );
+		//Platform.runLater( ( ) -> matchStatStage.showWindow( ) );
 	}
 
 	public void onShowTreeButtonClicked( )
@@ -147,6 +165,10 @@ public class ResultViewController
 	{
 		select.getSelectionModel( ).selectedItemProperty( )
 				.addListener( ( ObservableValue<? extends Team> observable, Team oldValue, Team newValue ) -> {
+					if( isMatchFinished.get( ) )
+					{
+						return;
+					}
 
 					if( newValue == null )
 					{
@@ -185,6 +207,11 @@ public class ResultViewController
 	{
 		selectA.getSelectionModel( ).selectedItemProperty( ).addListener(
 				( ObservableValue<? extends Team> observable, Team oldValue, Team newValue ) -> {
+					if( isMatchFinished.get( ) )
+					{
+						return;
+					}
+
 
 					if( oldValue != null )
 					{
@@ -242,18 +269,7 @@ public class ResultViewController
 				selectResultTeam.getItems( ).clear( );
 
 				manager.getMatchCount( ).thenAcceptBoth( manager.calculateMaxMatchNumber( ), ( count, max ) ->
-						Platform.runLater( ( ) -> {
-							if( count >= max - 1 )
-							{
-								buttonNext.setText( "FINISH" );
-							}
-							else if( count >= max )
-							{
-								setTournamentFinish( );
-							}
-
-							container.setTitle( CONTAINER_TITLE + " (" + count + "/" + ( numberOfGames - 1 ) + ")" );
-						} )
+						Platform.runLater( ( ) -> updateMatchCount( count, max ) )
 				);
 			} );
 
@@ -261,15 +277,28 @@ public class ResultViewController
 		} );
 	}
 
-	private void updateTitle( )
+	private void removeEliminatedTeams( )
 	{
+
 	}
 
-	private void setTournamentFinish( )
+	private void updateMatchCount( int count, int max )
 	{
-		selectTeamA.setDisable( true );
-		selectTeamB.setDisable( true );
-		selectResultTeam.setDisable( true );
+		if( count >= max )
+		{
+			selectTeamA.setDisable( true );
+			selectTeamB.setDisable( true );
+			selectResultTeam.setDisable( true );
+			isMatchFinished.set( true );
+
+		}
+		else if( count >= max -1)
+		{
+			buttonNext.setText( "FINISH" );
+			//isMatchFinished.set( true );
+		}
+
+		container.setTitle( CONTAINER_TITLE + " (" + count + "/" + max + ")" );
 	}
 
 	private void hideInfoWindows( )
